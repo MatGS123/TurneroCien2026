@@ -1,0 +1,9 @@
+El .env.example lo cambie a .env. por un tema de que no me andaba y demás, entonces quedo asi.
+
+Todos los cambios que hice funcionan, principalmente lo de los estudios médicos. Agregarlos y un botón de "Analizar con IA"
+
+que está como Placeholder nomás.
+
+La mayoría de lo que hice lo tengo grabado por si acaso hay que modificar alguna cosa y no recordamos como se hacia. 
+
+Eso nomás
