@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Settings')
+@section('title', 'Configuración')
 
 @section('content_header')
 
@@ -87,8 +87,8 @@
                                         del negocio</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#social" data-toggle="tab">Redes sociales</a>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="#header" data-toggle="tab">Cabezera</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#footer" data-toggle="tab">Pié de página</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#header" data-toggle="tab">Cabecera</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#footer" data-toggle="tab">Pie de página</a></li>
                                 {{-- <li class="nav-item"><a class="nav-link" href="#smtp" data-toggle="tab">SMTP</a>
                                 </li> --}}
                                 <li class="nav-item"><a class="nav-link" href="#seo" data-toggle="tab">SEO</a></li>
@@ -149,14 +149,13 @@
                                         <label for="inputName2" class="col-sm-2 col-form-label">WhatsApp</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputName2" name="whatsapp"
-                                                placeholder="WhatsApp Number" value="{{ $setting->whatsapp }}">
+                                                placeholder="Número de WhatsApp" value="{{ $setting->whatsapp }}">
                                             <small>Ingresar número de whatsapp con código sin espacios. Ex:
                                                 919865322154</small>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputName2" class="col-sm-2 col-form-label">Website
-                                            Logo</label>
+                                        <label for="inputName2" class="col-sm-2 col-form-label">Logo de Sitio Web</label>
                                         <div class="col-sm-10">
                                             <input type="file" class="form-control" id="inputName2"
                                                 placeholder="Profiel Picture" name="logo">
@@ -166,7 +165,7 @@
                                         <label for="inputName2" class="col-sm-2 col-form-label">Dirección</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputName2"
-                                                placeholder="Address" value="{{ $setting->address }}" name="address">
+                                                placeholder="Dirección..." value="{{ $setting->address }}" name="address">
                                             <small>La dirección será visible en la página de contacto</small>
                                         </div>
                                     </div>
@@ -227,9 +226,9 @@
                                 <!-- google analytics -->
                                 <div class="tab-pane" id="header">
                                     <div class="form-group row">
-                                        <label for="inputName" class="col-sm-2 col-form-label">Cabezera</label>
+                                        <label for="inputName" class="col-sm-2 col-form-label">Cabecera</label>
                                         <div class="col-sm-10">
-                                            <small>CSS personalizado, para la cabezera</small>
+                                            <small>CSS personalizado, para la cabecera</small>
                                             <textarea name="header" id="" class="form-control" cols="30" rows="20">{{ $setting->header }}</textarea>
                                         </div>
                                     </div>
@@ -430,7 +429,7 @@
                                         <label for="inputName2" class="col-sm-2 col-form-label">Descripción del sitio</label>
                                         <div class="col-sm-10">
                                             <textarea name="meta_description" class="form-control"
-                                                placeholder="Website description..."
+                                                placeholder="Descripción del sitio web..."
                                                 cols="30" rows="3">{{ $setting->meta_description }}</textarea>
                                             <small>Descripción para SEO</small>
                                         </div>

@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Trash Services')
+@section('title', 'Papelera')
 
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>Deleted Services</h1>
+            <h1>Servicios eliminados</h1>
             <small>Servicios eliminados, pueden ser restaurados</small>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Add New</a> |</li>
-                <li class=""> &nbsp; <a href="{{ route('service.index') }}">View All</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Añadir nuevo</a> |</li>
+                <li class=""> &nbsp; <a href="{{ route('service.index') }}">Ver todo</a></li>
             </ol>
         </div>
     </div>
@@ -24,7 +24,7 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <strong>Whoops!</strong> There were some problems with your input.<br>
+                <strong>Ups!</strong> Ocurrió un problema inesperado.<br>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -55,22 +55,22 @@
                                                 #
                                             </th>
                                             <th style="width: 25%">
-                                                Title
+                                                Título
                                             </th>
                                             <th style="width: 10%">
-                                                Image
+                                                Imagen
                                             </th>
                                             <th style="width: 10%">
-                                                Category
+                                                Categoría
                                             </th>
                                             <th>
-                                                Featured
+                                                Destacado
                                             </th>
 
                                             <th style="" class="text-center">
-                                                Status
+                                                Estado
                                             </th>
-                                            <th style="width: 20%">Action
+                                            <th style="width: 20%">Acción
                                             </th>
                                         </tr>
                                     </thead>
@@ -86,7 +86,7 @@
                                                     </a>
                                                     <br>
                                                     <small>
-                                                        Deleted: {{ $service->deleted_at->diffForHumans() }}
+                                                        Eliminado: {{ $service->deleted_at->diffForHumans() }}
                                                     </small>
                                                 </td>
                                                 <td>
@@ -105,16 +105,16 @@
                                                 </td>
                                                 <td>
                                                     @if ($service->featured)
-                                                        Yes
+                                                        Si
                                                     @else
                                                         No
                                                     @endif
                                                 </td>
                                                 <td class="project-state">
                                                     @if ($service->status)
-                                                        <span class="badge badge-success">Active</span>
+                                                        <span class="badge badge-success">Activo</span>
                                                     @else
-                                                        <span class="badge badge-danger">Pending</span>
+                                                        <span class="badge badge-danger">Pendiente</span>
                                                     @endif
                                                 </td>
 

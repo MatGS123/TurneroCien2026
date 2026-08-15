@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Service')
+@section('title', 'Editar servicio')
 
 @section('content_header')
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h1 class="m-0">Edit Service</h1>
+                <h1 class="m-0">Editar servicio</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Edit Service</li>
+                    <li class="breadcrumb-item active">Editar servicio</li>
                 </ol>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>Whoops!</strong> There were some problems with your input.<br>
+            <strong>Ups!</strong> Ocurrió un error inesperado.<br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -48,7 +48,7 @@
                 <div class="col-md-8">
                     <div class="card card-light">
                         <div class="card-header">
-                            <h3 class="card-title">Edit Service
+                            <h3 class="card-title">Editar servicio
                             </h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -59,7 +59,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="inputStatus">Title
+                                <label for="inputStatus">Título
                                 </label>
                                 <input class="form-control @error('title') is-invalid @enderror" type="text"
                                     id="title" name="title" placeholder="Title here.." value="{{ old('title',$service->title) }}">
@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <label for="inputStatus">Slug
                                 </label>
-                                <small>&nbsp;&nbsp;Unique url of the Service
+                                <small>&nbsp;&nbsp; El "slug" es la versión más adaptada para links
                                 </small>
                                 <input class="form-control bg-light @error('slug') is-invalid @enderror" type="text"
                                     id="slug" name="slug" placeholder="slug here.." value="{{ old('slug',$service->slug) }}">
@@ -92,9 +92,9 @@
                     </div>
                     <div class="card card-light">
                         <div class="card-header">
-                            <h3 class="card-title">Price
+                            <h3 class="card-title">Precio
                             </h3>
-                            <small class="text-muted pl-2"> NO CURRENCY SIGN - NO SPACE</small>
+                            <small class="text-muted pl-2"> SIN SIMBOLO DE MONEDA</small>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -107,10 +107,10 @@
                           <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="mb-0" for="price">Price</label>
+                                    <label class="mb-0" for="price">Precio</label>
                                     <input class="form-control" type="number" name="price" placeholder="Price"
                                         value="{{ old('price',$service->price) }}">
-                                        <p class="mb-0 text-muted small">Main Price</p>
+                                        <p class="mb-0 text-muted small">Precio principal</p>
                                     @error('price')
                                         <span class="text-danger">
                                             {{ $message }}
@@ -120,10 +120,10 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="mb-0" for="sale_price">Sale Price</label>
+                                    <label class="mb-0" for="sale_price">Precio de venta</label>
                                     <input class="form-control" type="number" name="sale_price" placeholder="Price"
                                         value="{{ old('sale_price',$service->sale_price) }}">
-                                        <p class="mb-0 text-muted small">Price for sale</p>
+                                        <p class="mb-0 text-muted small">Precio para la venta</p>
                                     @error('sale_price')
                                         <span class="text-danger">
                                             {{ $message }}
@@ -137,9 +137,9 @@
                     </div>
                     <div class="card card-light">
                         <div class="card-header">
-                            <h3 class="card-title">Excerpt
+                            <h3 class="card-title">Extracto
                             </h3>
-                            <small>&nbsp;&nbsp;Small Description of the Service
+                            <small>&nbsp;&nbsp;Pequeña descripción del servicio
                             </small>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -204,7 +204,7 @@
                     <div class="sticky-top">
                         <div class="card card-primary sticky-bottom">
                             <div class="card-header">
-                                <h3 class="card-title">Service Details
+                                <h3 class="card-title">Detalles del servicio
                                 </h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse"
@@ -216,12 +216,12 @@
                             </div>
                             <div class="card-body pb-0">
                                 <div class="form-group select2-dark">
-                                    <label>Category
+                                    <label>Categoría
                                     </label>
-                                    <small>&nbsp;&nbsp;Select category for Service</small>
+                                    <small>&nbsp;&nbsp;Selecciona una categoría para el servicio</small>
 
                                     <select id="category" name="category_id" class="select2" multiple=""
-                                    data-placeholder="Search Category" style="width: 100%;">
+                                    data-placeholder="Buscar categoría..." style="width: 100%;">
                                     <option value="">None</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
@@ -239,14 +239,14 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">Status</label>
+                                    <label for="inputStatus">Estado</label>
                                     <select required="required" name="status" id="inputStatus" class="form-control custom-select">
                                         <option disabled value="">Select Option</option>
                                         <option value="1" {{ isset($service->status) && $service->status == 1 ? 'selected' : '' }}>
-                                            PUBLISHED
+                                            PUBLICADO
                                         </option>
                                         <option value="0" {{ isset($service->status) && $service->status == 0 ? 'selected' : '' }}>
-                                            DRAFT
+                                            BORRADOR
                                         </option>
                                     </select>
                                 </div>
@@ -262,7 +262,7 @@
                                     </div>
                                 </div> --}}
                                 <div class="form-group pt-0 pb-0 text-right">
-                                    <button onclick="return confirm('Are you sure you want to update this item?');" type="submit" class="btn btn-danger">Update
+                                    <button onclick="return confirm('Are you sure you want to update this item?');" type="submit" class="btn btn-danger">Actualizar
                                     </button>
                                 </div>
                             </div>
@@ -270,7 +270,7 @@
                         </div>
                         <div class="card card-primary ">
                             <div class="card-header">
-                                <h3 class="card-title">Featured Image
+                                <h3 class="card-title">Imagen
                                 </h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse"
@@ -282,7 +282,7 @@
                             </div>
                             <div class="card-body pt-0 pb-0">
                                 <div class="form-group">
-                                    <small class="text-red">&nbsp;&nbsp;Note: size: Width-1200px Height: 800px
+                                    <small class="text-red">&nbsp;&nbsp;Nota: Tamaño recomendado: 1200 x 800 px
                                     </small>
                                     <input name="image" accept="image/*" type="file" id="imgInp">
                                     @if ($service->image)

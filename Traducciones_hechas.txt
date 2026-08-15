@@ -1,0 +1,85 @@
+LO QUE SE VA A PONER A CONTINUACION SON, APROXIMADAMENTE, TODO LO QUE TRADUJE Y EN QUE PARTE SE ENCUENTRA (LA MAYORIA)
+
+ADEMAS, SE SUMAN ALGUNAS ACOTACIONES DE COSAS QUE ENCONTRE MIENTRAS TRADUCIA
+
+Correcciones:
+Aádir > Añadir (En Dashboard: Categoría > Añadir)
+Add Category > Añadir categoría (Categoría > Añadir)
+All categories > Todas las categorías (Categorías > Ver)
+Category > Categoría (Categorías > Ver)
+Add category > Ver categoria (Categoría > Ver)
+
+Estado "Active" > Estado "Active" (Categorías > Ver)
+
+Add new > Añadir nuevo (Categorías > Ver)
+
+Edit + Delete > Editar + Borrar
+
+En "jquery.dataTables.js" = "Showing _START_ to _END_ of _TOTAL_ entries" > Mostrando _START_ a _END_ de _TOTAL_ registros
+
+Whoops! - There were some problems with your input > Ups! - Surgió un problema inesperado x2
+
+Create user > Crear usuario
+
+Add User > Añadir usuario x3
+
+Name > Nombre
+Placeholder = "Full Name" > Placeholder = "Nombre completo"
+Email > Correo
+Placeholder = "Email" > Placeholder = "Correo electrónico"
+Phone > Teléfono
+Placeholder = "Phone" > Placeholder = "Teléfono"
+Password > Contraseña
+Placeholder = "Password" > Placeholder = "Contraseña"
+Confirm password > Confirme su contraseña
+Placeholder = "Confirm password" > Placeholder = "Confirmar contraseña"
+User role > Rol de usuario
+Placeholder = "Select Role" > Placeholder = "Seleccionar rol"
+Is employee > Es empleado 
+(create.blade.php)
+
+Only for employees - Fill these details if adding an employee only > Solo para empleados - 
+Complete estos datos si va a añadir un empleado 
+(employee-hours.blade.php / index.blade.php / create.blade.php / edit.blade.php)
+
+Select Service - Link employees to services they are assigned > Seleccionar servicio -  
+Vincula a los empleados con los servicios que tienen asignados 
+(employee-hours.blade.php / create.blade.php / edit.blade.php)
+
+Service Duration - Create booking slots based on your preferred time duration. - 
+Select Duration > Duración del turno - Crea turnos según la duración seleccionada - 
+Elige la duración del turno 
+(employee-hours.blade.php / index.blade.php / create.blade.php / edit.blade.php)
+
+Preparation or Break time - Break between one to another appointment - No Break > 
+Preparación u hora del descanso - Pausa entre turnos. - Sin pausa 
+(employee-hours.blade.php / index.blade.php / create.blade.php / edit.blade.php)
+
+"Add more" y "Remove" en "Usuarios > Añadir > Disponibilidad del empleado" estan como texto plano y no como elementos interactivos (Encontre en index.blade.php que dice "class="text-right d-none text-primary")
+
+Date > Fecha
+
+From: - A: > De: - A: (Todos los que habia)
+
+Add holidays - No need to add time for a full day; for part-time work, specify the day and time. > 
+Añadir dias festivos - No es necesario en caso de jornadas completas. Para trabajo a tiempo parcial, detalla el día y el horario
+
+No holidays found for this user. Click "Add Holiday" to create one. > 
+No hay días festivos para este usuario. Haz click en "Añadir día festivo" para agregar uno
+
+Edit user > Editar usuario
+
+Edit admin - Name - Email - Phone - Password - Confirm Password - User role > Edit admin - Nombre - 
+Email - Teléfono - Contraseña - Confirmar contraseña - Rol del usuario
+
+Status - Is Employee - Update user > Estado - Es empleado - Actualizar usuario
+
+Active - Pending > Activo - Pendiente
+
+Configurar - Información del Negocio (Número de WhatsApp - Dirección) + SEO
+
+Perfil - Perfil + Citas + Cambiar contraseña
+
+Editar servicio en general
+
+Trash Services > Papelera

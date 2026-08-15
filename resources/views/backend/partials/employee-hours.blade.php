@@ -4,20 +4,20 @@
             <div class="col-md-12">
                 <hr>
                 <div class="mb-3">
-                    <h4 class="mb-0">Only For Employees </h4>
-                    <small class="text-muted">Fill these details if adding an employee only</small>
+                    <h4 class="mb-0">Solo para empleados </h4>
+                    <small class="text-muted">Complete estos datos si va a añadir un empleado</small>
                 </div>
 
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 mb-3 select2-dark">
                         <label for="service_id" class="my-0">
-                            <i class="fas fa-id-card"></i> Select Service
+                            <i class="fas fa-id-card"></i> Seleccionar servicio
                         </label>
-                        <small class="text-muted"> Link employees to services they are assigned
-                            to</small>
+                        <small class="text-muted"> Vincula a los empleados con los servicios que tienen asignados
+                            </small>
 
                         <select class="form-control select2 @error('service[]') is-invalid @enderror"
-                            name="service[]" data-placeholder="Select Service" id="service"
+                            name="service[]" data-placeholder="Seleccionar servicio" id="service"
                             multiple>
                             @foreach ($services as $service)
                                 <option value="{{ $service->id }}"
@@ -34,16 +34,15 @@
 
                     <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                         <label for="slot_duration" class="my-0">
-                            <i class="fas fa-stopwatch"></i> Service Duration
+                            <i class="fas fa-stopwatch"></i> Duración del turno
                         </label>
-                        <small class="text-muted"> Create booking slots based on your preferred time
-                            duration.</small>
+                        <small class="text-muted"> Crea turnos según la duración seleccionada</small>
 
                         <select class="form-control @error('slot_duration') is-invalid @enderror"
                             name="slot_duration" id="slot_duration">
                             <option value=""
                                 {{ old('slot_duration', optional($user->employee)->slot_duration) == '' ? 'selected' : '' }}>
-                                Select Duration
+                                Elige la duración del turno
                             </option>
 
                             @foreach ($steps as $stepValue)
@@ -63,15 +62,15 @@
 
                     <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                         <label for="break_duration" class="my-0">
-                            <i class="fas fa-coffee"></i> Preparation or Break time
+                            <i class="fas fa-coffee"></i> Preparación u hora del descanso
                         </label>
-                        <small class="text-muted"> Break between one to another appointment</small>
+                        <small class="text-muted"> Pausa entre turnos</small>
 
                         <select class="form-control @error('break_duration') is-invalid @enderror"
                             name="break_duration" id="break_duration">
                             <option value=""
                                 {{ old('break_duration', optional($user->employee)->break_duration) == '' ? 'selected' : '' }}>
-                                No Break
+                                Sin pausa
                             </option>
 
                             @foreach ($breaks as $breakValue)
@@ -94,10 +93,10 @@
                 <hr>
                 <div class="row">
                     <div class="mb-3">
-                        <h4 class="mb-0">Set Availability - For Employee</h4>
+                        <h4 class="mb-0">Disponibilidad del empleado</h4>
                         <small class="text-muted">
-                            Select days and timings, with the option to add multiple time slots in a
-                            day, e.g., 9 AM–12 PM and 4 PM–8 PM.
+                            Selecciona días y horarios, con opción a añadir varios intervalos 
+                            en el día, ej: 9 AM-12 PM y 4 PM-8 PM.
                         </small>
                     </div>
 
@@ -121,7 +120,7 @@
                                 <!-- First Time Input Row -->
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <strong>From:</strong>
+                                        <strong>De:</strong>
                                         <input type="time" class="form-control from"
                                             name="days[{{ $day }}][]"
                                             id="{{ $day }}From"
@@ -131,14 +130,14 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <strong>To:</strong>
+                                        <strong>A:</strong>
                                         <input type="time" class="form-control to"
                                             name="days[{{ $day }}][]"
                                             id="{{ $day }}To"
                                             value="{{ old('days.' . $day . '.1') ?? ($employeeDays[$day][1] ?? '') }}" />
                                         <div style="" id="{{ $day }}AddMore"
                                             class="text-right d-none text-primary">
-                                            Add More
+                                            Añadir
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +152,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <strong>From:</strong>
+                                                    <strong>De:</strong>
                                                     <input type="time" class="form-control from"
                                                         name="days[{{ $day }}][]"
                                                         value="{{ $time }}"
@@ -163,13 +162,13 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <strong>To</strong>
+                                                    <strong>A:</strong>
                                                     <input type="time" class="form-control to"
                                                         name="days[{{ $day }}][]"
                                                         value="{{ old('days.' . $day . '.' . ($index + 1)) ?? ($employeeDays[$day][$index + 1] ?? '') }}"
                                                         id="{{ $day }}" />
                                                     <div class="remove-field text-danger text-right">
-                                                        Remove</div>
+                                                        Quitar</div>
                                                 </div>
                                             </div>
 
@@ -228,7 +227,7 @@
                                                     name="holidays[to_time][]"
                                                     value="{{ old('holidays.to_time')[$index] ?? '' }}">
                                                 <div class="text-right text-danger removeHoliday"
-                                                    style="cursor:pointer;">Remove</div>
+                                                    style="cursor:pointer;">Quitar</div>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -291,7 +290,7 @@
                                                     name="holidays[to_time][]"
                                                     value="{{ $toTime }}">
                                                 <div class="text-right text-danger removeHoliday"
-                                                    style="cursor:pointer;">Remove</div>
+                                                    style="cursor:pointer;">Quitar</div>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -361,7 +360,7 @@
                                                     name="holidays[to_time][]"
                                                     value="{{ $toTime }}">
                                                 <div class="text-right text-danger removeHoliday"
-                                                    style="cursor:pointer;">Remove</div>
+                                                    style="cursor:pointer;">Quitar</div>
                                             </div>
                                         </div>
                                         <input type="hidden" name="holidays[recurring][]" value="{{ $holiday->recurring ? 1 : 0 }}">
@@ -418,7 +417,7 @@
                                                    name="holidays[to_time][]"
                                                    value="{{ $toTime }}">
                                             <div class="text-right text-danger removeHoliday" style="cursor:pointer;">
-                                                Remove
+                                                Quitar
                                             </div>
                                         </div>
                                     </div>
@@ -432,12 +431,13 @@
                 </div> --}}
                 <div class="row d-flex">
                     <div class="col-md-10">
-                        <h2 class="mb-0">Add Holidays</h2>
+                        <h2 class="mb-0">Añadir dias festivos</h2>
                         <p class="text-muted">
-                            No need to add time for a full day; for part-time work, specify the day and time.
+                            No es necesario en caso de jornadas completas. 
+                            Para trabajo a tiempo parcial, detalla el día y el horario
                         </p>
                         <span id="addHoliday" class="btn btn-primary mb-2 btn-sm">
-                            <i class="fa fa-plus"></i> Add Holiday
+                            <i class="fa fa-plus"></i> Añadir dias festivos
                         </span>
                         <div class="holidayContainer">
                             @php
@@ -477,7 +477,7 @@
                                 <div class="row holiday-row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="mb-0">Date</label>
+                                            <label class="mb-0">Fecha</label>
                                             <input class="form-control" type="date"
                                                    name="holidays[date][]"
                                                    value="{{ $date }}" required>
@@ -485,7 +485,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <strong>From:</strong>
+                                            <strong>De:</strong>
                                             <input type="time" class="form-control from"
                                                    name="holidays[from_time][]"
                                                    value="{{ $fromTime }}">
@@ -498,14 +498,14 @@
                                                    name="holidays[to_time][]"
                                                    value="{{ $toTime }}">
                                             <div class="text-right text-danger removeHoliday" style="cursor:pointer;">
-                                                Remove
+                                                Quitar
                                             </div>
                                         </div>
                                     </div>
                                     <input type="hidden" name="holidays[recurring][]" value="{{ $recurring }}">
                                 </div>
                             @empty
-                                <p>No holidays found for this user. Click "Add Holiday" to create one.</p>
+                                <p>No hay días festivos para este usuario. Haz click en "Añadir día festivo" para agregar uno</p>
                             @endforelse
                         </div>
                     </div>

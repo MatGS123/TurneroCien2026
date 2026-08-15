@@ -100,7 +100,7 @@
     <strong>© Copyright 2017 - {{ date('Y') }}, Developed by
       <a target="_blank" href="https://www.vfixtechnology.com">VFIX TECHNOLOGY</a>.
     </strong>
-    All rights reserved.
+    Todos los derechos reservados.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 1.0.1
     </div>

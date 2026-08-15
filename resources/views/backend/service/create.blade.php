@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Create Service')
+@section('title', 'Añadir servicio')
 
 @section('content_header')
     <div class="container-fluid">
@@ -220,7 +220,7 @@
                                     <small>&nbsp;&nbsp;Seleccionar categoría</small>
 
                                     <select id="category" name="category_id" class="select2" multiple=""
-                                    data-placeholder="Search Category" style="width: 100%;">
+                                    data-placeholder="Buscar categoría.." style="width: 100%;">
                                     <option value="">Ninguna</option>
                                     @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -269,7 +269,7 @@
                         </div>
                         <div class="card card-primary ">
                             <div class="card-header">
-                                <h3 class="card-title">Imágen
+                                <h3 class="card-title">Imagen
                                 </h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse"

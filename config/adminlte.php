@@ -381,7 +381,7 @@ return [
             'submenu' => [
 
                 [
-                    'text' => 'Create Service',
+                    'text' => 'Crear servicio',
                     'icon'    => 'fas fa-fw fa-plus',
                     'route'  => 'service.create',
                     'can'    => 'services.create'

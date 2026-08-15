@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'All Services')
+@section('title', 'Todos los servicios')
 
 @section('content_header')
     <div class="row mb-2">
@@ -9,8 +9,8 @@
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Add New</a> |</li>
-                <li class=""> &nbsp; <a href="{{ route('service.trash') }}">View Trash</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Añadir nuevo</a> |</li>
+                <li class=""> &nbsp; <a href="{{ route('service.trash') }}">Ver papelera</a></li>
             </ol>
         </div>
     </div>
@@ -113,9 +113,9 @@
 
                                                 <td class="project-state">
                                                     @if ($service->status)
-                                                        <span class="badge badge-success">Active</span>
+                                                        <span class="badge badge-success">Activo</span>
                                                     @else
-                                                        <span class="badge badge-danger">Pending</span>
+                                                        <span class="badge badge-danger">Pendiente</span>
                                                     @endif
                                                 </td>
                                                 <td class="project-actions text-right d-flex justify-content-between">

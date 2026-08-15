@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Category')
+@section('title', 'Ver categoría')
 
 @section('content_header')
 
     <div class="container-fluid">
         <div class="row ">
             <div class="col-sm-6">
-                <h1 class="m-0">All Categories</h1>
+                <h1 class="m-0">Todas las categorías</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item active">Categoría</li>
                 </ol>
             </div>
         </div>
@@ -27,7 +27,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>Whoops!</strong> There were some problems with your input.<br>
+            <strong>Ups!</strong> Surgió un problema inesperado.<br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -49,7 +49,7 @@
 
             <div class="col-md-12 ">
                 <h5><a href="{{ route('category.create') }}" class="btn btn-primary mb-1"><i class="fas fa-fw fa-plus "></i>
-                        Add New</a>
+                        Añadir nuevo</a>
                 </h5>
                 <div class="card p-2">
 
@@ -98,7 +98,7 @@
                                         </td>
                                         <td>
                                             @if ($category->status)
-                                                <span class="badge badge-success">Active</span>
+                                                <span class="badge badge-success">Activo</span>
                                             @else
                                                 <span class="badge badge-danger">In active</span>
                                             @endif
@@ -110,7 +110,7 @@
                                                     href="{{ route('category.edit', $category->id) }}">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
-                                                    Edit
+                                                    Editar
                                                 </a>
                                             </div>
                                             <div>
@@ -122,7 +122,7 @@
                                                         onclick="return confirm('Category cannot be delted - Post attached');"
                                                         class="btn btn-danger btn-sm ml-2">
                                                         <i class="fas fa-trash"></i>
-                                                        Delete
+                                                        Borrar
                                                         </a>
                                                     </button>
                                                 </form>

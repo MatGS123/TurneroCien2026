@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'All Users')
+@section('title', 'Todos los usuarios')
 
 @section('content_header')
     <div class="row mb-2">
@@ -9,8 +9,8 @@
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('user.create') }}">+ Add New</a> |</li>
-                <li class=""> &nbsp; <a href="{{ route('user.trash') }}">View Trash</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('user.create') }}">+ Añadir nuevo</a> |</li>
+                <li class=""> &nbsp; <a href="{{ route('user.trash') }}">Ver papelera</a></li>
             </ol>
         </div>
     </div>
@@ -24,7 +24,7 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <strong>Whoops!</strong> There were some problems with your input.<br>
+                <strong>Ups!</strong> Ocurrió un problema inesperado.<br>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -58,7 +58,7 @@
                                             Email
                                         </th>
                                         <th style="width: 10%">
-                                            Imágen
+                                            Imagen
                                         </th>
                                         <th style="width: 10%">
                                             Rol
@@ -100,7 +100,7 @@
 
                                             <td class="project-state">
                                                 @if ($user->status)
-                                                    <span class="badge badge-success">Active</span>
+                                                    <span class="badge badge-success">Activo</span>
                                                 @else
                                                     <span class="badge badge-danger">In-Active</span>
                                                 @endif
@@ -112,7 +112,7 @@
                                                         href="{{ route('user.edit', $user->id) }}">
                                                         <i class="fas fa-pencil-alt">
                                                         </i>
-                                                        Edit
+                                                        Editar
                                                     </a>
                                                 </div>
                                                 <div>
@@ -121,11 +121,11 @@
                                                         @csrf
                                                         @method('delete')
                                                         <button
-                                                            onclick="return confirm('Are you sure you want to delete this item?');"
+                                                            onclick="return confirm('Estás seguro que deseas eliminar esto?');"
                                                             type="submit" class="btn btn-danger btn-sm">
                                                             <i class="fas fa-trash">
                                                             </i>
-                                                            Trash
+                                                            Papelera
                                                         </button>
                                                     </form>
                                                 </div>

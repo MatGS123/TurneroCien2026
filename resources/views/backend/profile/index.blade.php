@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'User Profile')
+@section('title', 'Perfil del usuario')
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-2">
@@ -417,7 +417,7 @@
                                         <div class="form-group row">
                                             <div class="offset-sm-2 col-sm-10">
                                                 <button onclick="return confirm('Are you sure you want ')" type="submit"
-                                                    class="btn btn-danger">Submit</button>
+                                                    class="btn btn-danger">Guardar</button>
                                             </div>
                                         </div>
                                     </form>
@@ -435,7 +435,7 @@
                                             <div class="form-group row">
                                                 <label for="inputExperience" class="col-sm-2 col-form-label">Bio</label>
                                                 <div class="col-sm-10">
-                                                    <textarea class="form-control" id="inputExperience" placeholder="Your profile details...." rows="10"
+                                                    <textarea class="form-control" id="inputExperience" placeholder="Detalles de tu perfil...." rows="10"
                                                         name="bio" value="{{ $user->employee->bio }}">{{ $user->employee->bio }}</textarea>
                                                 </div>
                                             </div>
@@ -490,9 +490,8 @@
                                             <div class="col-md-12">
                                                 <hr>
                                                 <div class="mb-3">
-                                                    <h4 class="mb-0">Only For Employees </h4>
-                                                    <small class="text-muted">Fill these details if adding an employee
-                                                        only</small>
+                                                    <h4 class="mb-0">Solo para empleados </h4>
+                                                    <small class="text-muted">Complete estos datos si va a añadir un empleado</small>
                                                 </div>
 
                                                 <form action="{{ route('employee.profile.update', $user->employee->id) }}"
@@ -505,18 +504,16 @@
 
                                                         <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                                                             <label for="slot_duration" class="my-0">
-                                                                <i class="fas fa-stopwatch"></i> Service Duration
+                                                                <i class="fas fa-stopwatch"></i> Duración del turno
                                                             </label>
-                                                            <small class="text-muted"> Create booking slots based on your
-                                                                preferred time
-                                                                duration.</small>
+                                                            <small class="text-muted"> Crea turnos según la duración seleccionada.</small>
 
                                                             <select
                                                                 class="form-control @error('slot_duration') is-invalid @enderror"
                                                                 name="slot_duration" id="slot_duration">
                                                                 <option value=""
                                                                     {{ old('slot_duration', optional($user->employee)->slot_duration) == '' ? 'selected' : '' }}>
-                                                                    Select Duration
+                                                                    Elige la duración del turno
                                                                 </option>
 
                                                                 @foreach ($steps as $stepValue)
@@ -537,17 +534,15 @@
 
                                                         <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                                                             <label for="break_duration" class="my-0">
-                                                                <i class="fas fa-coffee"></i> Preparation or Break time
+                                                                <i class="fas fa-coffee"></i> Preparación u hora del descanso
                                                             </label>
-                                                            <small class="text-muted"> Break between one to another
-                                                                appointment</small>
-
+                                                            <small class="text-muted"> Pausa entre turnos.</small>
                                                             <select
                                                                 class="form-control @error('break_duration') is-invalid @enderror"
                                                                 name="break_duration" id="break_duration">
                                                                 <option value=""
                                                                     {{ old('break_duration', optional($user->employee)->break_duration) == '' ? 'selected' : '' }}>
-                                                                    No Break
+                                                                    Sin pausa
                                                                 </option>
 
                                                                 @foreach ($breaks as $breakValue)
@@ -572,11 +567,11 @@
 
                                                     <div class="row">
                                                         <div class="mb-3">
-                                                            <h4 class="mb-0">Set Availability - For Employee</h4>
+                                                            <h4 class="mb-0">Disponibilidad del empleado</h4>
                                                             <small class="text-muted">
-                                                                Select days and timings, with the option to add multiple
-                                                                time slots in a
-                                                                day, e.g., 9 AM–12 PM and 4 PM–8 PM.
+                                                                Selecciona días y horarios, con 
+                                                                opción a añadir varios intervalos en el 
+                                                                día, ej: 9 AM-12 PM y 4 PM-8 PM.
                                                             </small>
                                                         </div>
 
@@ -601,7 +596,7 @@
                                                                     <!-- First Time Input Row -->
                                                                     <div class="col-md-4">
                                                                         <div class="form-group">
-                                                                            <strong>From:</strong>
+                                                                            <strong>De:</strong>
                                                                             <input type="time"
                                                                                 class="form-control from"
                                                                                 name="days[{{ $day }}][]"
@@ -612,7 +607,7 @@
 
                                                                     <div class="col-md-4">
                                                                         <div class="form-group">
-                                                                            <strong>To:</strong>
+                                                                            <strong>A:</strong>
                                                                             <input type="time" class="form-control to"
                                                                                 name="days[{{ $day }}][]"
                                                                                 id="{{ $day }}To"
@@ -620,7 +615,7 @@
                                                                             <div style=""
                                                                                 id="{{ $day }}AddMore"
                                                                                 class="text-right d-none text-primary">
-                                                                                Add More
+                                                                                Añadir
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -636,7 +631,7 @@
 
                                                                                 <div class="col-md-4">
                                                                                     <div class="form-group">
-                                                                                        <strong>From:</strong>
+                                                                                        <strong>De:</strong>
                                                                                         <input type="time"
                                                                                             class="form-control from"
                                                                                             name="days[{{ $day }}][]"
@@ -647,7 +642,7 @@
 
                                                                                 <div class="col-md-4">
                                                                                     <div class="form-group">
-                                                                                        <strong>To</strong>
+                                                                                        <strong>A:</strong>
                                                                                         <input type="time"
                                                                                             class="form-control to"
                                                                                             name="days[{{ $day }}][]"
@@ -655,7 +650,7 @@
                                                                                             id="{{ $day }}" />
                                                                                         <div
                                                                                             class="remove-field text-danger text-right">
-                                                                                            Remove</div>
+                                                                                            Quitar</div>
                                                                                     </div>
                                                                                 </div>
 
@@ -673,13 +668,13 @@
 
                                                     <div class="row d-flex">
                                                         <div class="col-md-10">
-                                                            <h2 class="mb-0">Add Holidays</h2>
+                                                            <h2 class="mb-0">Añadir días festivos</h2>
                                                             <p class="text-muted">
-                                                                No need to add time for a full day; for part-time work,
-                                                                specify the day and time.
+                                                                No es necesario en caso de jornadas completas. 
+                                                                Para trabajo a tiempo parcial, detalla el día y el horario.
                                                             </p>
                                                             <span id="addHoliday" class="btn btn-primary mb-2 btn-sm">
-                                                                <i class="fa fa-plus"></i> Add Holiday
+                                                                <i class="fa fa-plus"></i> Añadir día festivo
                                                             </span>
                                                             <div class="holidayContainer">
                                                                 @php
@@ -741,7 +736,7 @@ if ($usingOldInput) {
                                                                     <div class="row holiday-row">
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
-                                                                                <label class="mb-0">Date</label>
+                                                                                <label class="mb-0">Fecha</label>
                                                                                 <input class="form-control" type="date"
                                                                                     name="holidays[date][]"
                                                                                     value="{{ $date }}" required>
@@ -749,7 +744,7 @@ if ($usingOldInput) {
                                                                         </div>
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
-                                                                                <strong>From:</strong>
+                                                                                <strong>De:</strong>
                                                                                 <input type="time"
                                                                                     class="form-control from"
                                                                                     name="holidays[from_time][]"
@@ -758,14 +753,14 @@ if ($usingOldInput) {
                                                                         </div>
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
-                                                                                <strong>To:</strong>
+                                                                                <strong>A:</strong>
                                                                                 <input type="time"
                                                                                     class="form-control to"
                                                                                     name="holidays[to_time][]"
                                                                                     value="{{ $toTime }}">
                                                                                 <div class="text-right text-danger removeHoliday"
                                                                                     style="cursor:pointer;">
-                                                                                    Remove
+                                                                                    Quitar
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -773,8 +768,7 @@ if ($usingOldInput) {
                                                                             value="{{ $recurring }}">
                                                                     </div>
                                                                 @empty
-                                                                    <p>No holidays found for this user. Click "Add Holiday"
-                                                                        to create one.</p>
+                                                                    <p>No hay días festivos para este usuario. Haz click en "Añadir día festivo" para agregar uno.</p>
                                                                 @endforelse
                                                             </div>
                                                         </div>
@@ -803,13 +797,13 @@ if ($usingOldInput) {
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>User</th>
-                                                                    <th>Service</th>
+                                                                    <th>Usuario</th>
+                                                                    <th>Servicio</th>
                                                                     <th>Staff</th>
-                                                                    <th>Date</th>
-                                                                    <th>Time</th>
-                                                                    <th>Status</th>
-                                                                    <th>Action</th>
+                                                                    <th>Fecha</th>
+                                                                    <th>Hora</th>
+                                                                    <th>Estado</th>
+                                                                    <th>Acción</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -891,13 +885,13 @@ if ($usingOldInput) {
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>User</th>
-                                                                    <th>Service</th>
+                                                                    <th>Usuario</th>
+                                                                    <th>Servicio</th>
                                                                     <th>Staff</th>
-                                                                    <th>Date</th>
-                                                                    <th>Time</th>
-                                                                    <th>Status</th>
-                                                                    <th>Action</th>
+                                                                    <th>Fecha</th>
+                                                                    <th>Hora</th>
+                                                                    <th>Estado</th>
+                                                                    <th>Acción</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -946,7 +940,7 @@ if ($usingOldInput) {
                                                                                 data-amount="{{ $appointment->amount }}"
                                                                                 data-status="{{ $appointment->status }}"
                                                                                 data-notes="{{ $appointment->notes }}">
-                                                                                View
+                                                                                Ver
                                                                             </button>
 
                                                                         </td>
@@ -976,31 +970,31 @@ if ($usingOldInput) {
                                                     <!-- Password -->
                                                     <div class="tab-pane" id="password">
                                                         <div class="form-group row">
-                                                            <label for="inputName" class="col-sm-2 col-form-label">Old
-                                                                Password</label>
+                                                            <label for="inputName" class="col-sm-2 col-form-label">Contraseña
+                                                                Antigua</label>
                                                             <div class="col-sm-10">
                                                                 <input type="password" class="form-control"
-                                                                    id="inputName" placeholder="Old Password"
+                                                                    id="inputName" placeholder="Contraseña antigua..."
                                                                     name="current_password"
                                                                     autocomplete="current_password">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
-                                                            <label for="inputEmail" class="col-sm-2 col-form-label">New
-                                                                Password</label>
+                                                            <label for="inputEmail" class="col-sm-2 col-form-label">Nueva
+                                                                Contraseña</label>
                                                             <div class="col-sm-10">
                                                                 <input type="password" class="form-control"
-                                                                    id="inputEmail" placeholder="New Password"
+                                                                    id="inputEmail" placeholder="Nueva contraseña..."
                                                                     name="password" autocomplete="password_confirmation">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label for="inputName2"
-                                                                class="col-sm-2 col-form-label">Confirm
-                                                                Password</label>
+                                                                class="col-sm-2 col-form-label">Confirmar
+                                                                Contraseña</label>
                                                             <div class="col-sm-10">
                                                                 <input type="password" class="form-control"
-                                                                    id="inputName2" placeholder="Confirm Password"
+                                                                    id="inputName2" placeholder="Confirmar contraseña..."
                                                                     name="password_confirmation"
                                                                     autocomplete="password_confirmation">
                                                             </div>
@@ -1013,7 +1007,7 @@ if ($usingOldInput) {
                                                     <div class="offset-sm-2 col-sm-10">
                                                         <button
                                                             onclick="return confirm('Are you sure you want to update profile?');"
-                                                            type="submit" class="btn btn-danger">Update</button>
+                                                            type="submit" class="btn btn-danger">Actualizar</button>
                                                     </div>
                                                 </div>
                                     </form>
@@ -1152,7 +1146,7 @@ if ($usingOldInput) {
                     <div class="form-group">
                         <strong>To:</strong>
                         <input type="time" class="form-control to" name="holidays[to_time][]">
-                        <div class="text-right text-danger removeHoliday" style="cursor:pointer;">Remove</div>
+                        <div class="text-right text-danger removeHoliday" style="cursor:pointer;">Quitar</div>
                     </div>
                 </div>
                 <input type="hidden" name="holidays[recurring][]" value="0">
