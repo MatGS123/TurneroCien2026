@@ -60,7 +60,7 @@
                                                 Título
                                             </th>
                                             <th style="width: 10%">
-                                                Imágen
+                                                Imagen
                                             </th>
                                             <th style="width: 10%">
                                                 Categoría
