@@ -983,22 +983,24 @@ $(document).ready(function() {
                data: bookingData,
                success: function(response) {
                    // Update modal with booking details
-                   const formattedDate = new Date(bookingState.selectedDate).toLocaleDateString(
-                       'en-US', {
+                   const rawDate = new Date(bookingState.selectedDate).toLocaleDateString(
+                       'es-ES', {
                            weekday: 'long',
                            year: 'numeric',
                            month: 'long',
                            day: 'numeric'
                        });
+                    
+                    const formattedDate = rawDate.charAt(0).toUpperCase() + rawDate.slice(1);
 
                    const bookingDetails = `
-                   <div class="mb-2"><strong>Customer:</strong> ${$("#customer-name").val()}</div>
+                   <div class="mb-2"><strong>Cliente:</strong> ${$("#customer-name").val()}</div>
                    <div class="mb-2"><strong>Obra social:</strong> ${$("#customer-obra-social").val() || 'N/A'}</div>
-                   <div class="mb-2"><strong>Service:</strong> ${bookingState.selectedService.title}</div>
-                   <div class="mb-2"><strong>Professional:</strong> ${bookingState.selectedEmployee.user.name}</div>
-                   <div class="mb-2"><strong>Date & Time:</strong> ${formattedDate} at ${bookingState.selectedTime.display || bookingState.selectedTime}</div>
-                   <div class="mb-2"><strong>Amount:</strong> ${bookingState.selectedService.price}</div>
-                   <div><strong>Reference:</strong> ${response.booking_id || 'BK-' + Math.random().toString(36).substr(2, 8).toUpperCase()}</div>
+                   <div class="mb-2"><strong>Servicio:</strong> ${bookingState.selectedService.title}</div>
+                   <div class="mb-2"><strong>Profesional:</strong> ${bookingState.selectedEmployee.user.name}</div>
+                   <div class="mb-2"><strong>Fecha y Hora:</strong> ${formattedDate} a las ${bookingState.selectedTime.display || bookingState.selectedTime}</div>
+                   <div class="mb-2"><strong>Monto:</strong> ${bookingState.selectedService.price}</div>
+                   <div><strong>Referencia:</strong> ${response.booking_id || 'BK-' + Math.random().toString(36).substr(2, 8).toUpperCase()}</div>
                    `;
 
                    $('#modal-booking-details').html(bookingDetails);

@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Category')
+@section('title', 'Editar Categoría')
 
 @section('content_header')
 
     <div class="container-fluid">
         <div class="row mb-1">
             <div class="col-sm-6">
-                <h1 style="text-decoration: underline;" class="m-0 text-decoration-underline">Edit {{ $category->title }}</h1>
+                <h1 style="text-decoration: underline;" class="m-0 text-decoration-underline">Editar {{ $category->title }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Edit Category</li>
+                    <li class="breadcrumb-item active">Editar Categoría</li>
                 </ol>
             </div>
         </div>
@@ -27,7 +27,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>Whoops!</strong> There were some problems with your input.<br>
+            <strong>Ups!</strong> Ocurrió un problema inesperado.<br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

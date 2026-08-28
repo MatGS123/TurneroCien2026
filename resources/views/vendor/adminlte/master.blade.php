@@ -97,7 +97,7 @@
 
 
    <footer class="main-footer @if(Route::is('login','register','password.confirm','password.update','password.reset','password.request')) mx-auto mt-5 @endif ">
-    <strong>© Copyright 2017 - {{ date('Y') }}, Developed by
+    <strong>© Copyright 2017 - {{ date('Y') }}, Desarrollado por
       <a target="_blank" href="https://www.vfixtechnology.com">VFIX TECHNOLOGY</a>.
     </strong>
     Todos los derechos reservados.

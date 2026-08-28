@@ -76,12 +76,12 @@
 
 
                             <div class="form-group ">
-                                <label><strong>Status:</strong></label>
+                                <label><strong>Estado:</strong></label>
                                 <select name="status" class="form-control" id="modalStatusSelect">
-                                    <option value="Pending payment">Pendient de pago</option>
+                                    <option value="Pending payment">Pendiente de pago</option>
                                     <option value="Processing">En proceso</option>
-                                    <option value="Confirmed">Confirmadp</option>
-                                    <option value="Cancelled">Canceladp</option>
+                                    <option value="Confirmed">Confirmado</option>
+                                    <option value="Cancelled">Cancelado</option>
                                     <option value="Completed">Completado</option>
                                     <option value="On Hold">En espera</option>
                                     {{-- <option value="Rescheduled">Rescheduled</option> --}}
@@ -94,7 +94,7 @@
                             <button type="submit"
                                 onclick="return confirm('Are you sure you want to update booking status?')"
                                 class="btn btn-danger">Actualizar estado</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
 
                     </div>
@@ -167,14 +167,14 @@
                                     alt="User profile picture">
                             </div>
                             <div class="text-center">
-                                <a data-toggle="modal" data-target="#profileImageModal" href="">Cambiar imágen</a>
+                                <a data-toggle="modal" data-target="#profileImageModal" href="">Cambiar imagen</a>
                                 @if ($user->image)
                                     <form action="{{ route('delete.profile.image', $user->id) }}" method="post">
                                         @csrf
                                         @method('PATCH')
                                         <button onclick="return confirm('Are you sure you want to remove profile image?')"
                                             type="submit" class="btn btn-sm btn-danger py-0 fw-bold">Remover
-                                            Imágen</button>
+                                            Imagen</button>
                                     </form>
                                 @endif
                             </div>
@@ -184,12 +184,12 @@
 
                                 <li class="list-group-item">
                                     <b>Última conexión</b> <a
-                                        class="float-right">{{ $user->lastSuccessfulLoginAt() ? $user->lastSuccessfulLoginAt()->diffForHumans() : 'NA' }}</a>
+                                        class="float-right">{{ $user->lastSuccessfulLoginAt() ? ucfirst($user->lastSuccessfulLoginAt()->diffForHumans()) : 'NA' }}</a>
                                 </li>
 
                                 <li class="list-group-item">
                                     <b>Creación</b> <a
-                                        class="float-right">{{ $user->created_at->diffForHumans() }}</a>
+                                        class="float-right">{{ ucfirst($user->created_at->diffForHumans()) }}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Rol: </b> <a class="float-right">{{ ucwords($user->getRoleNames()->first()) }}
@@ -212,7 +212,7 @@
 
                                 @if ($user->comments)
                                     <li class="nav-item"><a class="nav-link" href="#timeline"
-                                            data-toggle="tab">Commentarios</a>
+                                            data-toggle="tab">Comentarios</a>
                                     </li>
                                 @endif
                                 <li class="nav-item "><a class="nav-link active" href="#settings"
@@ -271,8 +271,7 @@
                                             <i class="fas fa-envelope bg-primary"></i>
                                             <div class="timeline-item">
                                                 <span class="time"><i class="far fa-clock"></i> 12:05</span>
-                                                <h3 class="timeline-header"><a href="#">Support Team</a> sent you an
-                                                    email</h3>
+                                                <h3 class="timeline-header"><a href="#">Soporte</a> Le envié un correo electrónico</h3>
                                                 <div class="timeline-body">
                                                     Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
                                                     weebly ning heekya handango imeem plugg dopplr jibjab, movity
@@ -280,8 +279,8 @@
                                                     quora plaxo ideeli hulu weebly balihoo...
                                                 </div>
                                                 <div class="timeline-footer">
-                                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                    <a href="#" class="btn btn-primary btn-sm">Leer mas</a>
+                                                    <a href="#" class="btn btn-danger btn-sm">Borrar</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -357,7 +356,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Login</th>
-                                                                <th>Logout</th>
+                                                                <th>Cerrar sesión</th>
                                                                 {{-- <th>City</th>
                                                                 <th>Country</th> --}}
                                                             </tr>
@@ -395,14 +394,14 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="form-group row">
-                                            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                            <label for="inputName" class="col-sm-2 col-form-label">Nombre</label>
                                             <div class="col-sm-10">
                                                 <input type="text" name="name" class="form-control" id="inputName"
                                                     placeholder="Name" value="{{ $user->name }}">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                            <label for="inputEmail" class="col-sm-2 col-form-label">Correo</label>
                                             <div class="col-sm-10">
                                                 <input style="background-color: rgb(221, 221, 221);" type="email"
                                                     name="email"
@@ -477,7 +476,7 @@
                                             <div class="form-group row">
                                                 <div class="offset-sm-2 col-sm-10">
                                                     <button onclick="return confirm('Are you sure you want ')"
-                                                        type="submit" class="btn btn-danger">Submit</button>
+                                                        type="submit" class="btn btn-danger">Guardar</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -519,7 +518,7 @@
                                                                 @foreach ($steps as $stepValue)
                                                                     <option value="{{ $stepValue }}"
                                                                         {{ old('slot_duration', optional($user->employee)->slot_duration) == $stepValue ? 'selected' : '' }}>
-                                                                        {{ $stepValue }} minutes
+                                                                        {{ $stepValue }} minutos
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -587,7 +586,7 @@
                                                                                     @if (old('days.' . $day) || isset($employeeDays[$day])) checked @endif>
                                                                                 <label class="custom-control-label"
                                                                                     for="{{ $day }}">
-                                                                                    {{ ucfirst($day) }}
+                                                                                    {{ $diasTraducidos[$day] ?? ucfirst($day) }}
                                                                                 </label>
                                                                             </div>
                                                                         </div>
@@ -775,8 +774,8 @@ if ($usingOldInput) {
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12 pt-2 pl-md-3">
                                                         <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure you want to update this user?')">Update
-                                                            Avalibility</button>
+                                                            onclick="return confirm('Are you sure you want to update this user?')">Actualizar
+                                                            Disponibilidad</button>
                                                     </div>
                                                 </form>
                                             </div>
