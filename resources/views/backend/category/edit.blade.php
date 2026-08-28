@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Category')
+@section('title', 'Editar categoría')
 
 @section('content_header')
 
@@ -27,7 +27,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>Whoops!</strong> There were some problems with your input.<br>
+            <strong>Ups!</strong> Ocurrió un error inesperado.<br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
