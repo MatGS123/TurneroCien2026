@@ -546,9 +546,9 @@ $(document).ready(function() {
 
         // Update next button text
         if (bookingState.currentStep === 5) {
-            $("#next-step").html('Confirm Booking <i class="bi bi-check-circle"></i>');
+            $("#next-step").html('Confirmar turno <i class="bi bi-check-circle"></i>');
         } else {
-            $("#next-step").html('Next <i class="bi bi-arrow-right"></i>');
+            $("#next-step").html('Avanzar <i class="bi bi-arrow-right"></i>');
         }
     }
 
@@ -557,29 +557,29 @@ $(document).ready(function() {
         switch (step) {
             case 1:
                 if (!bookingState.selectedEmployee) {
-                    alert("Please select a professional");
+                    alert("Por favor selecciona un profesional");
                     return false;
                 }
                 return true;
             case 2:
                 if (!bookingState.selectedCategory) {
-                    alert("Please select a category");
+                    alert("Por favor selecciona una categoria");
                     return false;
                 }
                 return true;
             case 3:
                 if (!bookingState.selectedService) {
-                    alert("Please select a service");
+                    alert("Por favor selecciona un servicio");
                     return false;
                 }
                 return true;
             case 4:
                 if (!bookingState.selectedDate) {
-                    alert("Please select a date");
+                    alert("Por favor selecciona una fecha");
                     return false;
                 }
                 if (!bookingState.selectedTime) {
-                    alert("Please select a time slot");
+                    alert("Por favor selecciona una franja horaria");
                     return false;
                 }
                 return true;
@@ -1013,24 +1013,24 @@ $(document).ready(function() {
                    setTimeout(resetBooking, 1000);
                },
                error: function(xhr) {
-                   let errorMessage = 'Booking failed. Please try again.';
+                   let errorMessage = 'Error al reservar el turno. Inténtelo nuevamente.';
 
         if (xhr.responseJSON && xhr.responseJSON.message) {
             errorMessage = xhr.responseJSON.message;
         } else if (xhr.status === 422) {
-            errorMessage = 'Validation error: Please check your information.';
+            errorMessage = 'Error de validación. Por favor, revisa tu información.';
         }
 
         alert(errorMessage);
         nextBtn.prop('disabled', false).html(
-            'Confirm Booking <i class="bi bi-check-circle"></i>');
+            'Avanzar <i class="bi bi-check-circle"></i>');
                },
                complete: function() {
                    // Re-enable button if request fails
                    if (nextBtn.prop('disabled')) {
                        setTimeout(() => {
                            nextBtn.prop('disabled', false).html(
-                               'Confirm Booking <i class="bi bi-check-circle"></i>');
+                               'Confirmar turno <i class="bi bi-check-circle"></i>');
                        }, 2000);
                    }
                }

@@ -123,10 +123,10 @@
 @section('js')
     <script>
         function DeleteAlert() {
-            var confirmed = confirm("Are you sure you want to delete this data?");
+            var confirmed = confirm("Estas seguro que quieres borrar esto?");
             if (confirmed) {
                 // code to delete data goes here
-                console.log("Data has been deleted.");
+                console.log("Se borró correctamente.");
 
             } else {
                 addEventListener("click", function(event) {

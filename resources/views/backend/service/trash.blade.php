@@ -120,11 +120,11 @@
 
                                                 <td class="project-actions text-right d-flex">
                                                     <div class="mr-2">
-                                                        <a onclick="return confirm('Are you sure you want to Restore this item?');"
+                                                        <a onclick="return confirm('Estas seguro que quieres restaurar esto??');"
                                                             class="btn btn-primary btn-sm"
                                                             href="{{ route('service.restore', $service->id) }}"> <i
                                                                 class="fas fa-folder">
-                                                            </i> Restore </a>
+                                                            </i> Restaurar </a>
                                                     </div>
                                                     <div>
                                                         <form action="{{ route('service.force.delete', $service->id) }}"
@@ -132,11 +132,11 @@
                                                             @csrf
                                                             @method('delete')
                                                             <button
-                                                                onclick="return confirm('Are you sure you want to delete this item?');"
+                                                                onclick="return confirm('Estas seguro que quieres borrar esto?');"
                                                                 type="submit" class="btn btn-danger btn-sm">
                                                                 <i class="fas fa-trash">
                                                                 </i>
-                                                                Delete
+                                                                Borrar
                                                             </button>
                                                         </form>
                                                     </div>

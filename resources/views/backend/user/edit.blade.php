@@ -498,12 +498,12 @@ if ($usingOldInput) {
 
                     {{-- <div class="col-xs-12 col-sm-12 col-md-12 pt-2 pl-md-3">
                         <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('Are you sure you want to update this user?')">Update user</button>
+                            onclick="return confirm('Estas seguro que quieres actualizar este usuario?')">Update user</button>
                     </div> --}}
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 pt-2 pl-md-3">
                 <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('Are you sure you want to update this user?')">Actualizar usuario</button>
+                    onclick="return confirm('Estas seguro que quieres actualizar este usuario?')">Actualizar usuario</button>
             </div>
         </div>
     </div>

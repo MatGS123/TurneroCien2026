@@ -141,7 +141,7 @@ class VendorPublishCommand extends Command
             )
             : search(
                 label: "Which provider or tag's files would you like to publish?",
-                placeholder: 'Search...',
+                placeholder: 'Buscar...',
                 options: fn ($search) => array_values(array_filter(
                     $choices,
                     fn ($choice) => str_contains(strtolower($choice), strtolower($search))

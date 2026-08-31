@@ -1,16 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'All Services')
+@section('title', 'Todos los servicios')
 
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>All Users</h1>
+            <h1>Todos los usuarios</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('user.create') }}">+ Add New</a> |</li>
-                <li class=""> &nbsp; <a href="{{ route('user.trash') }}">View Trash</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('user.create') }}">+ Añadir nuevo</a> |</li>
+                <li class=""> &nbsp; <a href="{{ route('user.trash') }}">Ver papelera</a></li>
             </ol>
         </div>
     </div>
@@ -24,7 +24,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <strong>Whoops!</strong> There were some problems with your input.<br>
+                    <strong>Ups!</strong> Ocurrió un error inesperado.<br>
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -52,19 +52,19 @@
                                             #
                                         </th>
                                         <th style="width: 20%">
-                                            Name
+                                            Nombre
                                         </th>
                                         <th style="width: 10%">
-                                            Image
+                                            Imagen
                                         </th>
                                         <th style="width: 10%">
-                                            Status
+                                            Estado
                                         </th>
                                         <th style="width: 10%">
-                                            Role
+                                            Rol
                                         </th>
                                         <th style="width: 12%">
-                                            Action
+                                            Accion
                                         </th>
                                     </tr>
                                 </thead>
@@ -97,18 +97,18 @@
 
                                             <td class="project-state">
                                                 @if ($user->status)
-                                                    <span class="badge badge-success">Active</span>
+                                                    <span class="badge badge-success">Activo</span>
                                                 @else
-                                                    <span class="badge badge-danger">Pending</span>
+                                                    <span class="badge badge-danger">Pendiente</span>
                                                 @endif
                                             </td>
                                             <td class="project-actions text-right d-flex ">
                                                 <div>
-                                                    <a onclick="return confirm('Are you sure you want to restore this user?')"  class="btn btn-primary btn-sm mr-2"
+                                                    <a onclick="return confirm('Estas seguro que quieres restaurar este usuario?')"  class="btn btn-primary btn-sm mr-2"
                                                         href="{{ route('user.restore', $user->id) }}">
                                                         <i class="fas fa-folder">
                                                         </i>
-                                                        Restore
+                                                        Restaurar
                                                     </a>
                                                 </div>
                                                 <div>
@@ -117,11 +117,11 @@
                                                         @csrf
                                                         @method('delete')
                                                         <button
-                                                            onclick="return confirm('Are you sure you want to delete this item?');"
+                                                            onclick="return confirm('Estas seguro que quieres borrar este item?');"
                                                             type="submit" class="btn btn-danger btn-sm">
                                                             <i class="fas fa-trash">
                                                             </i>
-                                                            Trash
+                                                            Papelera
                                                         </button>
                                                     </form>
                                                 </div>

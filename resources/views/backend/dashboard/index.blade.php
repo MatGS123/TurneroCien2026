@@ -35,7 +35,7 @@
 
     <!-- Appointment Modal -->
     <form id="appointmentStatusForm" method="POST" action="{{ route('dashboard.update.status') }}"
-        onsubmit="return confirm('Are you sure you want to update the booking status?')">
+        onsubmit="return confirm('Estas seguro que quieres actualizar el estado del turno?')">
 
         @csrf
         <input type="hidden" name="appointment_id" id="modalAppointmentId">
@@ -44,7 +44,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Appointment Details</h5>
+                        <h5 class="modal-title">Detalles del turno</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -77,8 +77,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Actualizar Status</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Actualizar Estado</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>

@@ -92,7 +92,7 @@
 
                         <div class="modal-footer">
                             <button type="submit"
-                                onclick="return confirm('Are you sure you want to update booking status?')"
+                                onclick="return confirm('Estas seguro que quieres actualizar este turno?')"
                                 class="btn btn-danger">Actualizar estado</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
@@ -172,7 +172,7 @@
                                     <form action="{{ route('delete.profile.image', $user->id) }}" method="post">
                                         @csrf
                                         @method('PATCH')
-                                        <button onclick="return confirm('Are you sure you want to remove profile image?')"
+                                        <button onclick="return confirm('Estas seguro que quieres quitar esta imagen de perfil?')"
                                             type="submit" class="btn btn-sm btn-danger py-0 fw-bold">Remover
                                             Imagen</button>
                                     </form>
@@ -415,7 +415,7 @@
 
                                         <div class="form-group row">
                                             <div class="offset-sm-2 col-sm-10">
-                                                <button onclick="return confirm('Are you sure you want ')" type="submit"
+                                                <button onclick="return confirm('Estas seguro que quieres actualizar este perfil?')" type="submit"
                                                     class="btn btn-danger">Guardar</button>
                                             </div>
                                         </div>
@@ -475,7 +475,7 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="offset-sm-2 col-sm-10">
-                                                    <button onclick="return confirm('Are you sure you want ')"
+                                                    <button onclick="return confirm('Estas seguro que quieres guardar?')"
                                                         type="submit" class="btn btn-danger">Guardar</button>
                                                 </div>
                                             </div>
@@ -774,7 +774,7 @@ if ($usingOldInput) {
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12 pt-2 pl-md-3">
                                                         <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure you want to update this user?')">Actualizar
+                                                            onclick="return confirm('Estas seguro que quieres actualizar esta disponibilidad?')">Actualizar
                                                             Disponibilidad</button>
                                                     </div>
                                                 </form>
@@ -1005,7 +1005,7 @@ if ($usingOldInput) {
                                                 <div class="form-group row">
                                                     <div class="offset-sm-2 col-sm-10">
                                                         <button
-                                                            onclick="return confirm('Are you sure you want to update profile?');"
+                                                            onclick="return confirm('Estas seguro que quieres actualizar este perfil?');"
                                                             type="submit" class="btn btn-danger">Actualizar</button>
                                                     </div>
                                                 </div>

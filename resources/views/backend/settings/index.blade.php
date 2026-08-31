@@ -474,7 +474,7 @@
                                 <div class="tab-pane" id="social-login">
                                     <h3>Login Google</h3>
                                     <div class="form-group row pt-3">
-                                        <label for="clientId" class="col-sm-2 col-form-label">Client Id</label>
+                                        <label for="clientId" class="col-sm-2 col-form-label">Cliente Id</label>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="social_login[google][client_id]" value="">
                                             <input type="text" class="form-control" id="clientId"
@@ -511,7 +511,7 @@
                                             <input type="checkbox" class="custom-control-input" id="google_login_status"
                                                 name="social_login[google][status]" value="1"
                                                 {{ $setting->social_login['google']['status'] ?? false ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="google_login_status">Disable/Enable
+                                            <label class="custom-control-label" for="google_login_status">Desactivar/Activar
                                             </label>
                                         </div>
                                     </div>
@@ -560,7 +560,7 @@
                                                 value="1"
                                                 {{ $setting->social_login['facebook']['status'] ?? false ? 'checked' : '' }}>
                                             <label class="custom-control-label"
-                                                for="facebook_login_status">Disable/Enable</label>
+                                                for="facebook_login_status">Desactivar/Activar</label>
                                         </div>
                                     </div>
 
@@ -571,7 +571,7 @@
                         <!-- /.tab-content -->
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
-                                <button onclick="return confirm('Are you sure you want to update settings?');"
+                                <button onclick="return confirm('Estas seguro que quieres actualizar las configuraciones?');"
                                     type="submit" class="btn btn-danger text-left">Actualizar</button>
                             </div>
                         </div>

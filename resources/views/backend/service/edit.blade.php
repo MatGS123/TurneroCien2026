@@ -262,7 +262,7 @@
                                     </div>
                                 </div> --}}
                                 <div class="form-group pt-0 pb-0 text-right">
-                                    <button onclick="return confirm('Are you sure you want to update this item?');" type="submit" class="btn btn-danger">Actualizar
+                                    <button onclick="return confirm('Estas seguro que quieres actualizar esto?');" type="submit" class="btn btn-danger">Actualizar
                                     </button>
                                 </div>
                             </div>
