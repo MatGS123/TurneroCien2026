@@ -9,9 +9,10 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "jeroennoten/laravel-adminlte": "^3.14",
-        "laravel/framework": "^11.31",
+        "laravel/ai": "^1.1",
+        "laravel/framework": "^12.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
         "rappasoft/laravel-authentication-log": "^5.0",
