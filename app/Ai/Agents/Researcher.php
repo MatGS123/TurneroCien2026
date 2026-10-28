@@ -17,8 +17,8 @@ use Laravel\Ai\Providers\Tools\ProviderTool;
 use Stringable;
 
 #[Provider(Lab::OpenRouter)]
-#[Model('openrouter/free')]
-#[MaxSteps(6)]
+#[Model('openai/gpt-4o-mini')]
+#[MaxSteps(4)]
 class Researcher implements Agent, Conversational, HasTools
 {
     use Promptable;

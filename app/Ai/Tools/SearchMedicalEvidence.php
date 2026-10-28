@@ -21,9 +21,9 @@ class SearchMedicalEvidence implements Tool
         ->acceptJson()
         ->post('https://api.tavily.com/search', [
             'query' => $request['query'],
-            'search_depth' => 'advanced',
-            'chunks_per_source' => 2,
-            'max_results' => 8,
+            'search_depth' => 'basic',
+            'chunks_per_source' => 1,
+            'max_results' => 5,
             'include_answer' => false,
             'include_raw_content' => false,
 

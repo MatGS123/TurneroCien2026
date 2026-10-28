@@ -14,6 +14,8 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\ObraSocialController;
+use App\Http\Controllers\AiSuiteController;
+use App\Http\Controllers\ConsultantController;
 
 use Illuminate\Http\Request;
 
@@ -24,21 +26,31 @@ Route::get('/',[FrontendController::class,'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::prefix('obras-sociales')->name('obras-sociales.')->group(function () {
-    Route::get('/',                                    [ObraSocialController::class, 'index'])->name('index');
-    Route::get('/create',                              [ObraSocialController::class, 'create'])->name('create');
-    Route::post('/',                                   [ObraSocialController::class, 'store'])->name('store');
-    Route::get('/{obraSocial}/edit',                   [ObraSocialController::class, 'edit'])->name('edit');
-    Route::put('/{obraSocial}',                        [ObraSocialController::class, 'update'])->name('update');
-    Route::delete('/{obraSocial}',                     [ObraSocialController::class, 'destroy'])->name('destroy');
-    Route::post('/{obraSocial}/coseguros',             [ObraSocialController::class, 'storeCoseguro'])->name('coseguros.store');
-    Route::delete('/{obraSocial}/coseguros/{coseguro}',[ObraSocialController::class, 'destroyCoseguro'])->name('coseguros.destroy');
-    Route::get('/listar',                              [ObraSocialController::class, 'listar'])->name('listar');
-});
+    Route::prefix('suite-ia')->name('ai.')->group(function () {
+        Route::get('/', [AiSuiteController::class, 'index'])->name('suite.index');
+        Route::get('/researcher', [AiSuiteController::class, 'researcher'])->name('researcher');
+        Route::post('/researcher/ask', [AiSuiteController::class, 'askResearcher'])->name('researcher.ask');
+        Route::get('/consultant/documents', [ConsultantController::class, 'index'])->name('consultant.documents');
+        Route::get('/consultant', [ConsultantController::class, 'index'])->name('consultant');
+        Route::get('/consultant/studies', [ConsultantController::class, 'studies'])->name('consultant.studies');
+        Route::post('/consultant/analyze', [ConsultantController::class, 'analyze'])->name('consultant.analyze');
+    });
 
-Route::prefix('estudios')->name('estudios.')->group(function () {
+    Route::prefix('obras-sociales')->name('obras-sociales.')->group(function () {
+        Route::get('/',                                    [ObraSocialController::class, 'index'])->name('index');
+        Route::get('/create',                              [ObraSocialController::class, 'create'])->name('create');
+        Route::post('/',                                   [ObraSocialController::class, 'store'])->name('store');
+        Route::get('/{obraSocial}/edit',                   [ObraSocialController::class, 'edit'])->name('edit');
+        Route::put('/{obraSocial}',                        [ObraSocialController::class, 'update'])->name('update');
+        Route::delete('/{obraSocial}',                     [ObraSocialController::class, 'destroy'])->name('destroy');
+        Route::post('/{obraSocial}/coseguros',             [ObraSocialController::class, 'storeCoseguro'])->name('coseguros.store');
+        Route::delete('/{obraSocial}/coseguros/{coseguro}',[ObraSocialController::class, 'destroyCoseguro'])->name('coseguros.destroy');
+        Route::get('/listar',                              [ObraSocialController::class, 'listar'])->name('listar');
+    });
+
+    Route::prefix('estudios')->name('estudios.')->group(function () {
         Route::get('/', [EstudioController::class, 'index'])->name('index');
         Route::post('/', [EstudioController::class, 'store'])->name('store');
         Route::get('/{estudio}/descargar', [EstudioController::class, 'descargar'])->name('descargar');
@@ -130,7 +142,7 @@ Route::get('/employees/{employee}/categories/{category}/services', [FrontendCont
 
 //get availibility
 Route::get('/employees/{employee}/availability/{date?}', [FrontendController::class, 'getEmployeeAvailability'])
-    ->name('employee.availability');
+->name('employee.availability');
 
 //create appointment
 Route::post('/bookings', [AppointmentController::class, 'store'])->name('bookings.store');
