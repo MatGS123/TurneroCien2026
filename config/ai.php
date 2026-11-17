@@ -21,10 +21,6 @@ return [
 'default_for_reranking' => 'cohere',
 'default_for_classification' => 'typesafe',
 
-    'researcher_model' => env('RESEARCHER_AI_MODEL', 'openai/gpt-4o-mini'),
-    'request_timeout' => (int) env('AI_REQUEST_TIMEOUT', 180),
-    'search_timeout' => (int) env('AI_SEARCH_TIMEOUT', 45),
-
     'consultant_provider' => env('CONSULTANT_AI_PROVIDER', 'openrouter'),
     'consultant_model' => env('CONSULTANT_AI_MODEL', 'deepseek/deepseek-chat'),
 
@@ -129,8 +125,7 @@ return [
 
 'groq' => [
     'driver' => 'groq',
-    'key' => env('GROQ_API_KEY'),
-    'url' => env('GROQ_BASE_URL', 'https://api.groq.com/openai/v1'),
+'key' => env('GROQ_API_KEY'),
 ],
 
 'jina' => [
@@ -164,8 +159,7 @@ return [
 
 'openrouter' => [
     'driver' => 'openrouter',
-    'key' => env('OPENROUTER_API_KEY'),
-    'url' => env('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
+'key' => env('OPENROUTER_API_KEY'),
 ],
 
 'typesafe' => [

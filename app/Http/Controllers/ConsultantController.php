@@ -7,19 +7,17 @@ use App\Models\Appointment;
 use App\Models\Employee;
 use App\Models\Estudio;
 use App\Services\DocumentTextExtractor;
-use App\Services\Ai\OpenAiCompatibleClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Responses\StructuredAgentResponse;
 use Throwable;
 
 class ConsultantController extends Controller
 {
-    public function __construct(
-        private DocumentTextExtractor $extractor,
-        private OpenAiCompatibleClient $ai,
-    )
+    public function __construct(private DocumentTextExtractor $extractor)
     {
     }
 
@@ -89,8 +87,7 @@ class ConsultantController extends Controller
                 Log::warning('Consultant could not extract a study.', [
                     'study_id' => $study->id,
                     'user_id' => $request->user()?->id,
-                             'exception_class' => $exception::class,
-                'code' => (string) $exception->getCode(),
+                             'exception' => $exception,
                 ]);
             }
         }
@@ -105,23 +102,18 @@ class ConsultantController extends Controller
         $prompt = $this->buildPrompt($documents, $validated['question'] ?? null, $validated['analysis_type'] ?? null, $warnings);
 
         try {
-            $analysisJson = $this->askConsultant($prompt);
-            $analysisJson = preg_replace('/^\s*```(?:json)?\s*|\s*```\s*$/i', '', trim($analysisJson));
-            $analysis = json_decode($analysisJson, true, 512, JSON_THROW_ON_ERROR);
+            $response = $this->askConsultant($prompt);
 
-            if (! is_array($analysis) || ! isset($analysis['message'], $analysis['analysis_type'])
-                || ! is_array($analysis['documents_reviewed'] ?? null)
-                || ! is_array($analysis['findings'] ?? null)
-                || ! is_array($analysis['comparisons'] ?? null)
-                || ! is_array($analysis['chart'] ?? null)
-                || ! is_array($analysis['warnings'] ?? null)) {
-                throw new \RuntimeException('El proveedor no devolvió el objeto JSON esperado por Consultant.');
+            if (! $response instanceof StructuredAgentResponse) {
+                throw new \RuntimeException('El proveedor no devolvió una respuesta estructurada.');
             }
+
+            $analysis = $response->structured;
             $analysis['warnings'] = array_values(array_unique([
                 ...$warnings,
                 ...($analysis['warnings'] ?? []),
             ]));
-            $analysis['chart'] = $this->sanitizeChart(is_array($analysis['chart'] ?? null) ? $analysis['chart'] : []);
+            $analysis['chart'] = $this->sanitizeChart($analysis['chart'] ?? []);
 
             return response()->json([
                 'analysis' => $analysis,
@@ -135,8 +127,7 @@ class ConsultantController extends Controller
             Log::error('Consultant failed to analyze documents.', [
                 'user_id' => $request->user()?->id,
                        'study_ids' => $validated['study_ids'],
-                       'exception_class' => $exception::class,
-                'code' => (string) $exception->getCode(),
+                       'exception' => $exception,
             ]);
 
             return response()->json([
@@ -229,24 +220,40 @@ class ConsultantController extends Controller
         . implode("\n\n", $sections);
     }
 
-    private function askConsultant(string $prompt): string
+    private function askConsultant(string $prompt): mixed
     {
-        $provider = config('ai.consultant_provider', 'openrouter');
-        if ($provider !== 'openrouter') {
-            throw new \RuntimeException('Consultant solo admite OpenRouter para preservar la política de privacidad.');
+        $provider = Lab::from(config('ai.consultant_provider', 'openai'));
+
+        try {
+            $providerKey = config('ai.providers.' . $provider->value . '.key');
+
+            if ($provider === Lab::OpenRouter && blank($providerKey)) {
+                throw new \RuntimeException('OPENROUTER_API_KEY no está configurada.');
+            }
+
+            return Consultant::make()->prompt(
+                $prompt,
+                provider: $provider,
+                model: config('ai.consultant_model')
+            );
+        } catch (Throwable $primaryException) {
+            $openAiKey = config('ai.providers.openai.key');
+
+            if ($provider !== Lab::OpenAI && filled($openAiKey)) {
+                Log::warning('Consultant provider failed; retrying with OpenAI fallback.', [
+                    'provider' => $provider->value,
+                    'exception' => $primaryException,
+                ]);
+
+                return Consultant::make()->prompt(
+                    $prompt,
+                    provider: Lab::OpenAI,
+                    model: env('CONSULTANT_FALLBACK_MODEL', 'gpt-5-mini')
+                );
+            }
+
+            throw $primaryException;
         }
-
-        $contract = json_encode(Consultant::outputContract(), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
-        return $this->ai->chat(
-            'openrouter',
-            config('ai.consultant_model', 'deepseek/deepseek-chat'),
-            [
-                ['role' => 'system', 'content' => Consultant::instructions()],
-                ['role' => 'user', 'content' => "Analiza los documentos y devuelve exclusivamente JSON válido con esta estructura y estos tipos:\n{$contract}\n\n{$prompt}"],
-            ],
-            ['response_format' => ['type' => 'json_object'], 'temperature' => 0.1]
-        );
     }
 
     private function promptValue(?string $value): string

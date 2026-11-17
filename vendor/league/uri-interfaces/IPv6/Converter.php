@@ -171,7 +171,7 @@ final class Converter
             return strtolower($host);
         }
 
-        $components['ipAddress'] = strtolower(self::expandIp($components['ipAddress']));
+        $components['ipAddress'] = strtolower($components['ipAddress']);
 
         return self::build($components);
     }

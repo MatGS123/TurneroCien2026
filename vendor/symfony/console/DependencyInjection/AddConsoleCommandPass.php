@@ -112,11 +112,6 @@ class AddConsoleCommandPass implements CompilerPassInterface
                 $usages ??= $tag['usages'] ?? null;
             }
 
-            if ($invokableRef) {
-                $help ??= $attribute?->help;
-                $usages ??= $attribute?->usages;
-            }
-
             $definition->addMethodCall('setName', [$commandName]);
 
             if ($aliases) {

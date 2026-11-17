@@ -17,7 +17,6 @@ namespace Ramsey\Uuid\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use ValueError;
 
-use function is_string;
 use function preg_match;
 use function sprintf;
 use function substr;
@@ -103,7 +102,7 @@ final class Hexadecimal implements TypeInterface
     public function __unserialize(array $data): void
     {
         // @codeCoverageIgnoreStart
-        if (!is_string($data['string'] ?? null)) {
+        if (!isset($data['string'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
         // @codeCoverageIgnoreEnd
@@ -122,7 +121,7 @@ final class Hexadecimal implements TypeInterface
             $value = substr($value, 2);
         }
 
-        if (!preg_match('/\A[A-Fa-f0-9]+\z/', $value)) {
+        if (!preg_match('/^[A-Fa-f0-9]+$/', $value)) {
             throw new InvalidArgumentException('Value must be a hexadecimal number');
         }
 

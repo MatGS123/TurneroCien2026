@@ -16,7 +16,6 @@ namespace Carbon\Traits;
 use Carbon\CarbonInterval;
 use Carbon\Exceptions\InvalidIntervalException;
 use DateInterval;
-use Time\Duration;
 
 /**
  * Trait to call rounding methods to interval or the interval of a period.
@@ -38,11 +37,11 @@ trait IntervalRounding
         return null;
     }
 
-    protected function roundWith(DateInterval|Duration|string|float|int $precision, callable|string $function): ?static
+    protected function roundWith(DateInterval|string|float|int $precision, callable|string $function): ?static
     {
         $unit = 'second';
 
-        if ($precision instanceof DateInterval || $precision instanceof Duration) {
+        if ($precision instanceof DateInterval) {
             $precision = CarbonInterval::instance($precision)->forHumans(['locale' => 'en']);
         }
 

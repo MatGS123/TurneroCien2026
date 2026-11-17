@@ -8,7 +8,6 @@ use App\Models\Appointment;
 use App\Models\ClinicalNote;
 use App\Services\AudioDurationValidator;
 use App\Services\ClinicalNoteDocumentService;
-use App\Services\Ai\OpenAiCompatibleClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Laravel\Ai\Enums\Lab;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
@@ -24,7 +24,6 @@ class ScribeController extends Controller
     public function __construct(
         private ClinicalNoteDocumentService $documents,
         private AudioDurationValidator $audioDuration,
-        private OpenAiCompatibleClient $ai,
     ) {
     }
 
@@ -116,23 +115,16 @@ class ScribeController extends Controller
 
         try {
             $provider = config('ai.scribe_provider', 'groq');
-            if ($provider !== 'groq') {
+            if ($provider !== Lab::Groq->value) {
                 throw new \RuntimeException('Scribe solo admite el proveedor Groq.');
             }
 
-            $organized = $this->ai->chat(
-                'groq',
-                config('ai.scribe_text_model', 'openai/gpt-oss-120b'),
-                [
-                    ['role' => 'system', 'content' => Scribe::instructions()],
-                    ['role' => 'user', 'content' => Scribe::promptFor($validated['transcription'])],
-                ],
-                [
-                    'reasoning_effort' => config('ai.scribe_reasoning_effort', 'low'),
-                    'temperature' => 0,
-                ]
-            );
-            $organized = trim($organized);
+            $response = retry(2, fn () => Scribe::make()->prompt(
+                Scribe::promptFor($validated['transcription']),
+                provider: Lab::Groq,
+                model: config('ai.scribe_text_model', 'openai/gpt-oss-120b'),
+            ), 2000, fn (Throwable $exception) => (int) $exception->getCode() === 429);
+            $organized = trim((string) ($response->text ?? $response));
             if ($organized === '') {
                 throw new \RuntimeException('Groq no devolvió una nota organizada.');
             }

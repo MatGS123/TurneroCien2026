@@ -3,7 +3,6 @@
 namespace Illuminate\Validation;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\UndefinedValue;
 
 class ValidationData
 {
@@ -87,9 +86,9 @@ class ValidationData
     {
         $results = [];
 
-        $value = Arr::get($masterData, $attribute, new UndefinedValue);
+        $value = Arr::get($masterData, $attribute, '__missing__');
 
-        if (! $value instanceof UndefinedValue) {
+        if ($value !== '__missing__') {
             Arr::set($results, $attribute, $value);
         }
 

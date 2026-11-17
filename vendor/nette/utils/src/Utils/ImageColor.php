@@ -8,7 +8,7 @@
 namespace Nette\Utils;
 
 use Nette;
-use function strlen;
+use function hexdec, ltrim, max, min, round, strlen;
 
 
 /**

@@ -9,7 +9,7 @@ namespace Nette\Schema;
 
 use Nette;
 use Nette\Utils\Reflection;
-use function count, is_array, is_float, is_int, is_object, is_scalar, is_string, strlen;
+use function array_map, count, explode, get_debug_type, implode, in_array, is_array, is_float, is_int, is_object, is_scalar, is_string, is_subclass_of, method_exists, preg_match, preg_quote, preg_replace, preg_replace_callback, settype, str_replace, strlen, trim, var_export;
 
 
 /**
@@ -130,14 +130,14 @@ final class Helpers
 
 	/**
 	 * Adds a range error to the context if the value (or its length for strings/arrays) is outside the given range.
-	 * @param  array{int|float|null, int|float|null}  $range
+	 * @param  array{?float, ?float}  $range
 	 */
 	public static function validateRange(mixed $value, array $range, Context $context, string $types = ''): void
 	{
 		if (is_array($value) || is_string($value)) {
 			[$length, $label] = is_array($value)
 				? [count($value), 'items']
-				: (in_array('unicode', explode('|', $types), true)
+				: (in_array('unicode', explode('|', $types), strict: true)
 					? [Nette\Utils\Strings::length($value), 'characters']
 					: [strlen($value), 'bytes']);
 
@@ -160,7 +160,7 @@ final class Helpers
 
 	/**
 	 * Checks whether a value falls within the given [min, max] range (null means no bound).
-	 * @param  array{int|float|null, int|float|null}  $range
+	 * @param  array{?float, ?float}  $range
 	 */
 	public static function isInRange(mixed $value, array $range): bool
 	{
@@ -174,10 +174,7 @@ final class Helpers
 	 */
 	public static function validatePattern(string $value, string $pattern, Context $context): void
 	{
-		$res = @preg_match("\x01^(?:$pattern)$\x01Du", $value); // @ - an invalid pattern is thrown below
-		if ($res === false && preg_last_error() === PREG_INTERNAL_ERROR) {
-			throw new Nette\InvalidStateException("Invalid pattern '$pattern': " . Nette\Utils\Helpers::getLastError());
-		} elseif (!$res) {
+		if (!preg_match("\x01^(?:$pattern)$\x01Du", $value)) {
 			$context->addError(
 				"The %label% %path% expects to match pattern '%pattern%', %value% given.",
 				Message::PatternMismatch,
@@ -189,16 +186,11 @@ final class Helpers
 
 	/**
 	 * Returns a closure that casts a value to the given type (built-in, backed enum, class with constructor, or plain class).
-	 * A null stays null for an enum or a class, and for a built-in type only when written as ?type.
 	 * @return \Closure(mixed, Context): mixed
 	 */
 	public static function getCastStrategy(string $type): \Closure
 	{
-		if (str_starts_with($type, '?')) {
-			$cast = self::getCastStrategy(substr($type, 1));
-			return static fn($value, Context $context) => $value === null ? null : $cast($value, $context);
-
-		} elseif (Nette\Utils\Validators::isBuiltinType($type)) {
+		if (Nette\Utils\Validators::isBuiltinType($type)) {
 			return static function ($value) use ($type) {
 				settype($value, $type);
 				return $value;
@@ -206,20 +198,13 @@ final class Helpers
 
 		} elseif (is_subclass_of($type, \BackedEnum::class)) {
 			return static function ($value, Context $context) use ($type) {
-				if ($value === null) {
-					return null;
-				}
-
 				try {
 					return $type::from($value);
-				} catch (\TypeError|\ValueError) {
+				} catch (\TypeError | \ValueError) {
 					$context->addError(
 						'The %label% %path% expects to be %expected%, %value% given.',
 						Message::TypeMismatch,
-						[
-							'value' => $value,
-							'expected' => implode('|', array_map(fn(\BackedEnum $case) => self::formatValue($case->value), $type::cases())),
-						],
+						['value' => $value, 'expected' => implode('|', array_map(fn(\BackedEnum $case) => self::formatValue($case->value), $type::cases()))],
 					);
 					return null;
 				}
@@ -236,10 +221,6 @@ final class Helpers
 			: static fn($value) => Nette\Utils\Arrays::toObject((array) $value, new $type);
 
 		return static function ($value) use ($factory, $type) {
-			if ($value === null) {
-				return null;
-			}
-
 			try {
 				return $factory($value);
 			} catch (\Error $e) {

@@ -125,13 +125,10 @@ class SyslogUdpHandler extends AbstractSyslogHandler
         }
 
         if ($this->rfc === self::RFC3164) {
-            // RFC 3164 timestamps have no zone and receivers read them as local time, so they
-            // follow the record's timezone (the Logger's) instead of being converted to UTC
-            $date = $datetime->format($this->dateFormats[$this->rfc]);
-            // RFC 3164 pads a day of the month below 10 with a space, not a zero (e.g. "Aug  7")
-            if ($date[4] === '0') {
-                $date[4] = ' ';
-            }
+            // see https://github.com/phpstan/phpstan/issues/5348
+            // @phpstan-ignore-next-line
+            $dateNew = $datetime->setTimezone(new \DateTimeZone('UTC'));
+            $date = $dateNew->format($this->dateFormats[$this->rfc]);
 
             return "<$priority>" .
                 $date . " " .

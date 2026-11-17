@@ -147,11 +147,8 @@ class JsonFormatter extends NormalizerFormatter
     {
         $oldNewline = $this->appendNewline;
         $this->appendNewline = false;
-        try {
-            $formatted = array_map(fn (LogRecord $record) => $this->format($record), $records);
-        } finally {
-            $this->appendNewline = $oldNewline;
-        }
+        $formatted = array_map(fn (LogRecord $record) => $this->format($record), $records);
+        $this->appendNewline = $oldNewline;
 
         return implode("\n", $formatted);
     }
@@ -164,11 +161,6 @@ class JsonFormatter extends NormalizerFormatter
     protected function normalize(mixed $data, int $depth = 0): mixed
     {
         if (is_null($data) || is_scalar($data)) {
-            if (\is_float($data) && !is_finite($data)) {
-                // INF and NAN can't be represented in JSON; json_encode() would turn them into 0
-                return parent::normalize($data, $depth);
-            }
-
             return $data;
         }
 

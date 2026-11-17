@@ -30,11 +30,6 @@ use Monolog\Utils;
  *    objects (e.g. tokens buried in an exception stack trace). If a pattern
  *    cannot be applied, the record is dropped instead of emitted unredacted.
  *
- * Objects in the record cannot be modified either, so sensitive keys found in what
- * formatters normalize them to (public properties, or jsonSerialize()) are only
- * handled by the output pass. That means their values are subject to
- * $minSecretLength and must be strings or Stringable to be removed.
- *
  * On top of the sensitive keys, secrets are also read from the properties of the
  * objects in the record matching a constructor parameter marked
  * #[SensitiveParameter]. Those can only be handled by the output pass, as the
@@ -80,7 +75,7 @@ final class RedactingFormatter implements WrappingFormatterInterface
      * @param string             $mask                      Replacement token
      * @param bool               $redactSensitiveParameters Whether to also read secrets off the properties matching a
      *                                                      #[SensitiveParameter] constructor parameter, which requires
-     *                                                      reflecting on every object in the record
+     *                                                      walking and reflecting on every object in the record
      * @param int                $minSecretLength           Minimum length a secret must have to be removed from the
      *                                                      output, to avoid short values like "pass" redacting
      *                                                      unrelated data
@@ -178,18 +173,11 @@ final class RedactingFormatter implements WrappingFormatterInterface
             return [];
         }
 
-        // every spelling the wrapped formatter can produce has to be looked for: json-escaped with or
-        // without unicode/slash escaping, html-escaped, and with line breaks turned into spaces
+        // a secret shows up escaped in json output (quotes/backslashes/newlines) and in html output
+        // (& < >), so every spelling the wrapped formatter can produce has to be looked for
         $escapedSecrets = [];
         foreach ($secrets as $secret) {
-            $spellings = [
-                htmlspecialchars($secret, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'),
-                str_replace(["\r\n", "\r", "\n"], ' ', $secret),
-            ];
-            foreach ([0, JSON_UNESCAPED_UNICODE, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES] as $flags) {
-                $spellings[] = substr(Utils::jsonEncode($secret, (Utils::DEFAULT_JSON_FLAGS & ~(JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)) | $flags, true), 1, -1);
-            }
-            foreach ($spellings as $escaped) {
+            foreach ([substr(Utils::jsonEncode($secret, null, true), 1, -1), htmlspecialchars($secret, ENT_NOQUOTES, 'UTF-8')] as $escaped) {
                 if ($escaped !== $secret && $escaped !== '') {
                     $escapedSecrets[] = $escaped;
                 }
@@ -229,7 +217,8 @@ final class RedactingFormatter implements WrappingFormatterInterface
             return;
         }
 
-        if (!\is_object($data)) {
+        // the array walk above is essentially free, reflecting on objects is not
+        if (!\is_object($data) || !$this->redactSensitiveParameters) {
             return;
         }
 
@@ -239,24 +228,16 @@ final class RedactingFormatter implements WrappingFormatterInterface
         }
         $seen[$id] = true;
 
-        // the array walks are essentially free, reflecting on objects is not
-        if ($this->redactSensitiveParameters) {
-            foreach ($this->getSensitiveProperties($data) as $property) {
-                if ($property->isInitialized($data)) {
-                    $this->addSecret($property->getValue($data), $secrets);
-                }
+        foreach ($this->getSensitiveProperties($data) as $property) {
+            if ($property->isInitialized($data)) {
+                $this->addSecret($property->getValue($data), $secrets);
             }
         }
 
-        // formatters normalize an object to its public properties or to jsonSerialize(), so sensitive
-        // keys are looked for in both, which also reaches the objects nested inside this one
-        $this->collect(get_object_vars($data), $secrets, $seen, $depth);
-        if ($data instanceof \JsonSerializable) {
-            try {
-                $this->collect($data->jsonSerialize(), $secrets, $seen, $depth);
-            } catch (\Throwable) {
-                // the wrapped formatter deals with it failing
-            }
+        // public properties only, matching what formatters get to see, but enough to reach
+        // objects nested inside this one
+        foreach (get_object_vars($data) as $value) {
+            $this->collect($value, $secrets, $seen, $depth + 1);
         }
     }
 

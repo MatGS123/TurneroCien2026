@@ -85,7 +85,6 @@ trait Week
 
             $week = $this->week(null, $dayOfWeek, $dayOfYear);
             $day = $this->dayOfWeek;
-            $time = $this->avoidMutation();
             $date = $this->year($year);
 
             $date = match ($date->weekYear(null, $dayOfWeek, $dayOfYear) - $year) {
@@ -98,11 +97,11 @@ trait Week
                 ->addWeeks($week - $date->week(null, $dayOfWeek, $dayOfYear))
                 ->startOfWeek($dayOfWeek);
 
-            if ($date->dayOfWeek !== $day) {
-                $date = $date->next($day);
+            if ($date->dayOfWeek === $day) {
+                return $date;
             }
 
-            return $date->setTimeFrom($time);
+            return $date->next($day);
         }
 
         $year = $this->year;

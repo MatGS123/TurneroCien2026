@@ -51,11 +51,9 @@ class RedisSessionHandler extends AbstractSessionHandler
         $this->ttl = $options['ttl'] ?? null;
     }
 
-    protected function doRead(#[\SensitiveParameter] string $sessionId): string|false
+    protected function doRead(#[\SensitiveParameter] string $sessionId): string
     {
-        $data = $this->redis->get($this->prefix.$sessionId);
-
-        return $data instanceof ErrorInterface ? false : ($data ?: '');
+        return $this->redis->get($this->prefix.$sessionId) ?: '';
     }
 
     protected function doWrite(#[\SensitiveParameter] string $sessionId, string $data): bool
@@ -98,11 +96,6 @@ class RedisSessionHandler extends AbstractSessionHandler
 
     public function updateTimestamp(#[\SensitiveParameter] string $sessionId, string $data): bool
     {
-        // PHP 8.6 calls updateTimestamp() instead of write() for a session that is still empty
-        if ('' === $data || (\function_exists('igbinary_serialize') && igbinary_serialize([]) === $data)) {
-            return $this->destroy($sessionId);
-        }
-
         $ttl = ($this->ttl instanceof \Closure ? ($this->ttl)() : $this->ttl) ?? \ini_get('session.gc_maxlifetime');
 
         return $this->redis->expire($this->prefix.$sessionId, (int) $ttl);

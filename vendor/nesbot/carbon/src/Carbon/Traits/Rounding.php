@@ -17,7 +17,6 @@ use Carbon\CarbonInterface;
 use Carbon\Exceptions\UnknownUnitException;
 use Carbon\WeekDay;
 use DateInterval;
-use Time\Duration;
 
 /**
  * Trait Rounding.
@@ -38,7 +37,7 @@ trait Rounding
      */
     public function roundUnit(
         string $unit,
-        DateInterval|Duration|string|float|int $precision = 1,
+        DateInterval|string|float|int $precision = 1,
         callable|string $function = 'round',
     ): static {
         $metaUnits = [
@@ -175,7 +174,7 @@ trait Rounding
     /**
      * Truncate the current instance at the given unit with given precision if specified.
      */
-    public function floorUnit(string $unit, DateInterval|Duration|string|float|int $precision = 1): static
+    public function floorUnit(string $unit, DateInterval|string|float|int $precision = 1): static
     {
         return $this->roundUnit($unit, $precision, 'floor');
     }
@@ -183,7 +182,7 @@ trait Rounding
     /**
      * Ceil the current instance at the given unit with given precision if specified.
      */
-    public function ceilUnit(string $unit, DateInterval|Duration|string|float|int $precision = 1): static
+    public function ceilUnit(string $unit, DateInterval|string|float|int $precision = 1): static
     {
         return $this->roundUnit($unit, $precision, 'ceil');
     }

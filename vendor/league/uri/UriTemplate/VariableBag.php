@@ -46,14 +46,10 @@ final class VariableBag implements ArrayAccess, Countable, IteratorAggregate
     private array $variables = [];
 
     /**
-     * @param iterable<array-key, InputValue>|ExtractionResult $variables
+     * @param iterable<array-key, InputValue> $variables
      */
-    public function __construct(iterable|ExtractionResult $variables = [])
+    public function __construct(iterable $variables = [])
     {
-        if ($variables instanceof ExtractionResult) {
-            $variables = array_filter($variables->variables(), static fn (array|string|null $value): bool => null !== $value);
-        }
-
         foreach ($variables as $name => $value) {
             $this->assign((string) $name, $value);
         }
@@ -84,10 +80,7 @@ final class VariableBag implements ArrayAccess, Countable, IteratorAggregate
         $this->assign($offset, $value); /* @phpstan-ignore-line */
     }
 
-    /**
-     * @return null|string|array<string>
-     */
-    public function offsetGet(mixed $offset): null|string|array
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->fetch($offset);
     }

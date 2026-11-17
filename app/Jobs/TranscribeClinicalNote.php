@@ -12,7 +12,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use App\Services\Ai\OpenAiCompatibleClient;
+use Laravel\Ai\AiManager;
+use Laravel\Ai\Files\Audio;
 use Throwable;
 
 class TranscribeClinicalNote implements ShouldQueue
@@ -31,7 +32,7 @@ class TranscribeClinicalNote implements ShouldQueue
         return [30, 120, 300];
     }
 
-    public function handle(OpenAiCompatibleClient $ai): void
+    public function handle(AiManager $ai): void
     {
         $note = ClinicalNote::find($this->clinicalNoteId);
         if (! $note || in_array($note->status, ['transcribed', 'organized', 'confirmed'], true)) {
@@ -48,14 +49,14 @@ class TranscribeClinicalNote implements ShouldQueue
         $note->update(['status' => 'transcribing', 'error_message' => null]);
 
         try {
-            $text = $ai->transcribeWithGroq(
-                $disk->path($audioPath),
-                config('ai.scribe_stt_model', 'whisper-large-v3'),
-                config('ai.scribe_language', 'es'),
-                (int) config('ai.scribe_timeout', 180),
+            $response = $ai->transcriptionProvider('groq')->transcribe(
+                Audio::fromPath($disk->path($audioPath)),
+                language: config('ai.scribe_language', 'es'),
+                model: config('ai.scribe_stt_model', 'whisper-large-v3'),
+                timeout: (int) config('ai.scribe_timeout', 180),
             );
 
-            $text = trim($text);
+            $text = trim($response->text);
             if ($text === '') {
                 throw new TranscriptionException('Groq no devolvió texto. Verificá que el audio se escuche bien.');
             }

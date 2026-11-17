@@ -115,7 +115,7 @@ final class QueryString
                 throw new SyntaxError('The pair can not be converted to build a query string.', previous: $typeError);
             }
 
-            $keyValuePairs[] = [Encoder::encodeQueryKeyValue($key), null === $value ? null : Encoder::encodeQueryKeyValue($value)];
+            $keyValuePairs[] = [(string) Encoder::encodeQueryKeyValue($key), null === $value ? null : Encoder::encodeQueryKeyValue($value)];
         }
 
         return ($converter ?? Converter::fromRFC3986())->toValue($keyValuePairs);
@@ -375,7 +375,7 @@ final class QueryString
     }
 
     /**
-     * @param list<non-empty-array<string|null>> $pairs
+     * @param array<non-empty-list<string|null>> $pairs
      *
      * @return array<int, array{0:string, 1:string|null}>
      */

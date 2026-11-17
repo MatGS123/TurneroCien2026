@@ -113,28 +113,11 @@ trait InteractsWithDockerComposeServices
                 return ! array_key_exists($service, $compose['volumes'] ?? []);
             })->each(function ($service) use (&$compose) {
                 $compose['volumes']["sail-{$service}"] = ['driver' => 'local'];
-            });
 
-        // The MongoDB service also persists the search index in a dedicated volume...
-        if (in_array('mongodb', $services)) {
-            if (! array_key_exists('sail-mongodb-config', $compose['volumes'] ?? [])) {
-                $compose['volumes']['sail-mongodb-config'] = ['driver' => 'local'];
-            }
-
-            // Existing services are not rebuilt from the stub, so mount the volume if it is missing...
-            if (isset($compose['services']['mongodb'])) {
-                $volumes = $compose['services']['mongodb']['volumes'] ?? [];
-
-                $isMounted = collect($volumes)->contains(function ($volume) {
-                    return is_string($volume) && str_starts_with($volume, 'sail-mongodb-config:');
-                });
-
-                if (! $isMounted) {
-                    $volumes[] = 'sail-mongodb-config:/data/configdb';
-                    $compose['services']['mongodb']['volumes'] = $volumes;
+                if ($service === 'mongodb') {
+                    $compose['volumes']['sail-mongodb-config'] = ['driver' => 'local'];
                 }
-            }
-        }
+            });
 
         // If the list of volumes is empty, we can remove it...
         if (empty($compose['volumes'])) {
@@ -187,10 +170,6 @@ trait InteractsWithDockerComposeServices
             }
 
             $environment = str_replace('DB_HOST=127.0.0.1', "DB_HOST=mariadb", $environment);
-        } elseif (in_array('mongodb', $services)) {
-            if ($this->laravel->config->has('database.connections.mongodb')) {
-                $environment = preg_replace('/DB_CONNECTION=.*/', 'DB_CONNECTION=mongodb', $environment);
-            }
         }
 
         $environment = str_replace('DB_USERNAME=root', "DB_USERNAME=sail", $environment);
@@ -209,16 +188,7 @@ trait InteractsWithDockerComposeServices
         }
 
         if (in_array('mongodb', $services)) {
-            $username = $this->environmentValue($environment, 'MONGODB_USERNAME');
-            $password = $this->environmentValue($environment, 'MONGODB_PASSWORD');
-
-            // The MongoDB image enables authentication only when both credentials are provided
-            $credentials = ($username !== '' && $password !== '')
-                ? rawurlencode($username).':'.rawurlencode($password).'@'
-                : '';
-
-            $environment .= "\nMONGODB_URI=mongodb://{$credentials}mongodb:27017"
-                .($credentials === '' ? '' : '/?authSource=admin');
+            $environment .= "\nMONGODB_URI=mongodb://mongodb:27017";
             $environment .= "\nMONGODB_DATABASE=laravel";
         }
 
@@ -268,28 +238,11 @@ trait InteractsWithDockerComposeServices
     }
 
     /**
-     * Get the value of an environment variable from the ".env" file contents.
-     *
-     * @param  string  $environment
-     * @param  string  $key
-     * @return string
-     */
-    protected function environmentValue($environment, $key)
-    {
-        if (preg_match('/^'.preg_quote($key, '/').'=(.*)$/m', $environment, $matches)) {
-            return trim($matches[1], " \t\"'");
-        }
-
-        return '';
-    }
-
-    /**
      * Configure PHPUnit to use the dedicated testing database.
      *
-     * @param  array  $services
      * @return void
      */
-    protected function configurePhpUnit(array $services = [])
+    protected function configurePhpUnit()
     {
         if (! file_exists($path = $this->laravel->basePath('phpunit.xml'))) {
             $path = $this->laravel->basePath('phpunit.xml.dist');
@@ -307,17 +260,6 @@ trait InteractsWithDockerComposeServices
             '<env name="DB_DATABASE" value="testing"/>',
             $phpunit
         );
-
-        // The MongoDB driver reads MONGODB_DATABASE
-        if (in_array('mongodb', $services)) {
-            $phpunit = preg_replace('/^.*<env[ \t]+name="MONGODB_DATABASE".*\n/m', '', $phpunit);
-
-            $phpunit = preg_replace(
-                '/^([ \t]*)<\/php>/m',
-                '        <env name="MONGODB_DATABASE" value="testing"/>'."\n".'$1</php>',
-                $phpunit
-            );
-        }
 
         file_put_contents($this->laravel->basePath('phpunit.xml'), $phpunit);
     }

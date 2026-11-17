@@ -99,11 +99,6 @@ final class StreamWrapper
         return $this->stream->write($data);
     }
 
-    public function stream_flush(): bool
-    {
-        return true;
-    }
-
     public function stream_tell(): int
     {
         return $this->stream->tell();

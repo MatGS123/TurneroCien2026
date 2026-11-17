@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace League\Uri;
 
 use BackedEnum;
+use Closure;
 use Deprecated;
 use finfo;
 use League\Uri\Contracts\Conditionable;
@@ -254,13 +255,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
      */
     private function formatHost(?string $host): ?string
     {
-        if (null === $host) {
-            return null;
-        }
-
-        $formattedHost = HostRecord::from($host);
-
-        return str_contains($host, '%') ? $formattedHost->percentEncoded() : $formattedHost->toAscii();
+        return HostRecord::from($host)->toAscii();
     }
 
     /**
@@ -433,9 +428,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $bufferSize = 8192;
 
-        /**
-         * @return array{0: string, 1: string}
-         */
+        /** @var Closure(SplFileobject): array{0:string, 1:string} $fromFileObject */
         $fromFileObject = function (SplFileObject $path) use ($finfo, $bufferSize): array {
             $raw = $path->fread($bufferSize);
             false !== $raw || throw new SyntaxError('The file `'.$path.'` does not exist or is not readable.');
@@ -448,10 +441,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
             return [$mimetype, $raw];
         };
 
-        /**
-         * @param resource $stream
-         * @return array{0: string, 1: string}
-         */
+        /** @var Closure(resource): array{0:string, 1:string} $fromResource */
         $fromResource = function ($stream) use ($finfo, $path, $bufferSize): array {
             set_error_handler(fn (int $errno, string $errstr, string $errfile, int $errline) => true);
             $raw = fread($stream, $bufferSize);
@@ -466,10 +456,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
             return [$mimetype, $raw];
         };
 
-        /**
-         * @param resource|null $context
-         * @return array{0: string, 1: string}
-         */
+        /** @var Closure(Stringable|string, resource|null): array{0:string, 1:string} $fromPath */
         $fromPath = function (Stringable|string $path, $context) use ($finfo): array {
             $path = (string) $path;
             set_error_handler(fn (int $errno, string $errstr, string $errfile, int $errline) => true);
@@ -706,7 +693,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
     {
         $server += ['IIS_WasUrlRewritten' => null, 'UNENCODED_URL' => '', 'PHP_SELF' => '', 'QUERY_STRING' => null];
         if ('1' === $server['IIS_WasUrlRewritten'] && '' !== $server['UNENCODED_URL']) {
-            return array_values(explode('?', $server['UNENCODED_URL'], 2) + [1 => null]);
+            return explode('?', $server['UNENCODED_URL'], 2) + [1 => null];
         }
 
         if (isset($server['REQUEST_URI'])) {
@@ -766,7 +753,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
      */
     private static function formatDataPath(string $path): string
     {
-        if ('' === $path) {
+        if ('' == $path) {
             return 'text/plain;charset=us-ascii,';
         }
 
@@ -807,10 +794,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
             $parameters = substr($parameters, 0, - strlen($matches[0]));
         }
 
-        $res = array_filter(
-            array_filter(explode(';', $parameters), self::validateParameter(...)),
-            static fn (string $v): bool => '' !== $v,
-        );
+        $res = array_filter(array_filter(explode(';', $parameters), self::validateParameter(...)));
         [] === $res || throw new SyntaxError('The path parameters `'.$parameters.'` is invalid.');
         if (!$isBinary) {
             return;
@@ -829,7 +813,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
     {
         $properties = explode('=', $parameter);
 
-        return 2 !== count($properties) || 'base64' === strtolower($properties[0]);
+        return 2 != count($properties) || 'base64' === strtolower($properties[0]);
     }
 
     /**
@@ -1081,7 +1065,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
             && null === $this->port
             && null === $this->query
             && null === $this->fragment
-            && !('' !== $this->scheme && null !== $this->scheme && null === $this->host);
+            && !('' != $this->scheme && null === $this->host);
     }
 
     /**
@@ -1257,7 +1241,7 @@ final class Uri implements Conditionable, UriInterface, Transformable
         null !== $document || throw new RuntimeException('Unable to extract the document part from the URI path.');
 
         $data = match (true) {
-            str_ends_with($mediaType, ';base64') => (string) base64_decode($document, true),
+            str_ends_with((string) $mediaType, ';base64') => (string) base64_decode($document, true),
             default => rawurldecode($document),
         };
 

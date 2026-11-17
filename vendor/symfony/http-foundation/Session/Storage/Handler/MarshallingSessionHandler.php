@@ -62,11 +62,9 @@ class MarshallingSessionHandler implements \SessionHandlerInterface, \SessionUpd
         return $this->handler->gc($maxlifetime);
     }
 
-    public function read(#[\SensitiveParameter] string $sessionId): string|false
+    public function read(#[\SensitiveParameter] string $sessionId): string
     {
-        if (false === $data = $this->handler->read($sessionId)) {
-            return false;
-        }
+        $data = $this->handler->read($sessionId);
 
         try {
             return $this->marshaller->unmarshall($data);
@@ -78,11 +76,6 @@ class MarshallingSessionHandler implements \SessionHandlerInterface, \SessionUpd
 
     public function write(#[\SensitiveParameter] string $sessionId, string $data): bool
     {
-        // empty data must reach the inner handler unchanged so that it destroys the session
-        if ('' === $data || (\function_exists('igbinary_serialize') && igbinary_serialize([]) === $data)) {
-            return $this->handler->write($sessionId, $data);
-        }
-
         $failed = [];
         $marshalledData = $this->marshaller->marshall(['data' => $data], $failed);
 

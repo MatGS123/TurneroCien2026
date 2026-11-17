@@ -149,21 +149,11 @@ class PhpDocParser
 			$tagStartLine = $tokens->currentTokenLine();
 			$tagStartIndex = $tokens->currentTokenIndex();
 
-			try {
-				$tokens->pushSavePoint();
-				$tagValue = $this->parseDoctrineTagValue($tokens, $tag);
-				$tokens->dropSavePoint();
-
-			} catch (ParserException $e) {
-				$tokens->rollback();
-				$tagValue = new Ast\PhpDoc\InvalidTagValueNode($this->parseOptionalDescription($tokens, false), $e);
-			}
-
 			return $this->enrichWithAttributes($tokens, new Ast\PhpDoc\PhpDocTagNode(
 				$tag,
 				$this->enrichWithAttributes(
 					$tokens,
-					$tagValue,
+					$this->parseDoctrineTagValue($tokens, $tag),
 					$tagStartLine,
 					$tagStartIndex,
 				),
@@ -587,8 +577,7 @@ class PhpDocParser
 
 	private function parseDoctrineArgument(TokenIterator $tokens): Doctrine\DoctrineArgument
 	{
-		// a quoted key, e.g. "key"="value", is not valid Doctrine syntax, but is accepted as the key
-		if (!$tokens->isCurrentTokenType(Lexer::TOKEN_IDENTIFIER, Lexer::TOKEN_DOUBLE_QUOTED_STRING, Lexer::TOKEN_DOCTRINE_ANNOTATION_STRING)) {
+		if (!$tokens->isCurrentTokenType(Lexer::TOKEN_IDENTIFIER)) {
 			$startLine = $tokens->currentTokenLine();
 			$startIndex = $tokens->currentTokenIndex();
 
@@ -605,12 +594,8 @@ class PhpDocParser
 
 		try {
 			$tokens->pushSavePoint();
-			$isIdentifier = $tokens->isCurrentTokenType(Lexer::TOKEN_IDENTIFIER);
 			$currentValue = $tokens->currentTokenValue();
-			$tokens->next();
-			if (!$isIdentifier) {
-				$currentValue = $this->doctrineConstantExprParser->parseDoctrineString($currentValue, $tokens)->value;
-			}
+			$tokens->consumeTokenType(Lexer::TOKEN_IDENTIFIER);
 
 			$key = $this->enrichWithAttributes(
 				$tokens,

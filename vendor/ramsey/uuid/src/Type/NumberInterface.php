@@ -23,8 +23,6 @@ interface NumberInterface extends TypeInterface
 {
     /**
      * Returns true if this number is less than zero
-     *
-     * @pure
      */
     public function isNegative(): bool;
 }

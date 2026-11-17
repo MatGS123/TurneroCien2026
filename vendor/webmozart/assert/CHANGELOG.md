@@ -1,12 +1,6 @@
 Changelog
 =========
 
-## 2.5.1
-
-### Fixed
-
-- Reject trailing newlines on `unicodeLetters`.
-
 ## 2.5.0
 
 ### Added

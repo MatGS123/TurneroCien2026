@@ -77,16 +77,8 @@ final class BrickMathCalculator implements CalculatorInterface
 
         $quotient = BigDecimal::of($dividend->toString());
 
-        try {
-            foreach ($divisors as $divisor) {
-                $quotient = $quotient->dividedBy($divisor->toString(), $scale, $brickRounding);
-            }
-        } catch (MathException $exception) {
-            throw new InvalidArgumentException(
-                $exception->getMessage(), /** @phpstan-ignore possiblyImpure.methodCall */
-                (int) $exception->getCode(), /** @phpstan-ignore possiblyImpure.methodCall */
-                $exception
-            );
+        foreach ($divisors as $divisor) {
+            $quotient = $quotient->dividedBy($divisor->toString(), $scale, $brickRounding);
         }
 
         if ($scale === 0) {

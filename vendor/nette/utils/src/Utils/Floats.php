@@ -8,6 +8,7 @@
 namespace Nette\Utils;
 
 use Nette;
+use function abs, is_finite, is_nan, max, round;
 
 
 /**

@@ -440,7 +440,7 @@ trait BuildsQueries
                     $originalColumn ??= $this->getOriginalColumnNameForCursorPagination($this, $previousColumn);
 
                     $builder->where(
-                        $originalColumn !== $previousColumn && Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn,
+                        Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn,
                         '=',
                         $cursor->parameter($previousColumn)
                     );
@@ -462,7 +462,7 @@ trait BuildsQueries
                     $originalColumn = $this->getOriginalColumnNameForCursorPagination($this, $column);
 
                     $secondBuilder->where(
-                        $originalColumn !== $column && Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn,
+                        Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn,
                         $direction === 'asc' ? '>' : '<',
                         $cursor->parameter($column)
                     );

@@ -8,7 +8,7 @@
 namespace Nette\Utils;
 
 use Nette;
-use function sprintf, strlen;
+use function array_pop, chmod, decoct, dirname, end, fclose, file_exists, file_get_contents, file_put_contents, fopen, implode, is_dir, is_file, is_link, mkdir, preg_match, preg_split, realpath, rename, rmdir, rtrim, sprintf, str_replace, stream_copy_to_stream, stream_is_local, strtr, uniqid, unlink, usleep;
 use const DIRECTORY_SEPARATOR;
 
 
@@ -50,14 +50,11 @@ final class FileSystem
 		} elseif (is_dir($origin)) {
 			static::createDir($target);
 			foreach (new \FilesystemIterator($target) as $item) {
-				assert($item instanceof \SplFileInfo);
+				\assert($item instanceof \SplFileInfo);
 				static::delete($item->getPathname());
 			}
 
-			foreach ($iterator = new \RecursiveIteratorIterator(
-				new \RecursiveDirectoryIterator($origin, \RecursiveDirectoryIterator::SKIP_DOTS),
-				\RecursiveIteratorIterator::SELF_FIRST,
-			) as $item) {
+			foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($origin, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item) {
 				if ($item->isDir()) {
 					static::createDir($target . '/' . $iterator->getSubPathname());
 				} else {
@@ -114,7 +111,7 @@ final class FileSystem
 			}
 		} elseif (is_dir($path)) {
 			foreach (new \FilesystemIterator($path) as $item) {
-				assert($item instanceof \SplFileInfo);
+				\assert($item instanceof \SplFileInfo);
 				static::delete($item->getPathname());
 			}
 
@@ -245,7 +242,7 @@ final class FileSystem
 	public static function writeAtomic(string $file, string $content, ?int $mode = 0o666): void
 	{
 		$file = realpath($file) ?: $file; // writes through a symlink to its target, as write() does
-		$tmp = $file . '.' . uniqid(more_entropy: true) . '.tmp';
+		$tmp = $file . '.' . uniqid('', more_entropy: true) . '.tmp';
 		try {
 			static::write($tmp, $content, $mode);
 			// plain rename() is atomic; static::rename() must not be used here, it deletes the target first
@@ -260,7 +257,7 @@ final class FileSystem
 				usleep(5_000); // on Windows, rename fails while the target is open in another process
 			}
 		} catch (\Throwable $e) {
-			@unlink($tmp); // @ file may not exist
+			@unlink($tmp);
 			throw $e;
 		}
 	}
@@ -284,7 +281,7 @@ final class FileSystem
 			}
 		} elseif (is_dir($path)) {
 			foreach (new \FilesystemIterator($path) as $item) {
-				assert($item instanceof \SplFileInfo);
+				\assert($item instanceof \SplFileInfo);
 				static::makeWritable($item->getPathname(), $dirMode, $fileMode);
 			}
 
@@ -325,12 +322,10 @@ final class FileSystem
 
 
 	/**
-	 * Normalizes `..` and `.` and directory separators in path; a scheme like `phar://` is kept.
+	 * Normalizes `..` and `.` and directory separators in path.
 	 */
 	public static function normalizePath(string $path): string
 	{
-		$scheme = preg_match('#^[a-z][a-z0-9+.-]*://#i', $path, $m) ? $m[0] : '';
-		$path = substr($path, strlen($scheme));
 		$parts = $path === '' ? [] : preg_split('~[/\\\]+~', $path);
 		$res = [];
 		foreach ($parts as $part) {
@@ -341,9 +336,9 @@ final class FileSystem
 			}
 		}
 
-		return $scheme . ($res === ['']
+		return $res === ['']
 			? DIRECTORY_SEPARATOR
-			: implode(DIRECTORY_SEPARATOR, $res));
+			: implode(DIRECTORY_SEPARATOR, $res);
 	}
 
 

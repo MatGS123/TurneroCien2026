@@ -46,7 +46,7 @@ final class Utils
         $promise = new Promise([$queue, 'run']);
         $queue->add(function () use ($task, $promise): void {
             try {
-                if (State::isPending($promise)) {
+                if (Is::pending($promise)) {
                     $promise->resolve($task());
                 }
             } catch (\Throwable $e) {
@@ -156,7 +156,7 @@ final class Utils
                 $results[$idx] = $value;
             },
             function ($reason, $idx, Promise $aggregate): void {
-                if (State::isPending($aggregate)) {
+                if (Is::pending($aggregate)) {
                     $aggregate->reject($reason);
                 }
             }
@@ -175,7 +175,7 @@ final class Utils
                 }
 
                 foreach ($promises as $promise) {
-                    if (State::isPending($promise)) {
+                    if (Is::pending($promise)) {
                         return self::all($promises, $recursive);
                     }
                 }
@@ -211,7 +211,7 @@ final class Utils
         return Each::of(
             $promises,
             function ($value, $idx, PromiseInterface $p) use (&$results, $count): void {
-                if (State::isSettled($p)) {
+                if (Is::settled($p)) {
                     return;
                 }
                 $results[$idx] = $value;

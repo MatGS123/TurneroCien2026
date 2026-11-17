@@ -373,17 +373,11 @@ class RouteUrlGenerator
     /**
      * Encode a parameter value that is being substituted into a route URI.
      *
-     * Values wrapped in an EncodedParameter are already URL encoded and are used as-is.
-     *
      * @param  mixed  $value
      * @return mixed
      */
     protected function encodeParameter($value)
     {
-        if ($value instanceof EncodedParameter) {
-            return $value->value();
-        }
-
         return is_string($value) || $value instanceof Stringable
             ? strtr((string) $value, ['%' => '%25', '?' => '%3F', '#' => '%23'])
             : $value;
@@ -434,10 +428,7 @@ class RouteUrlGenerator
         // will make the initial query string if it wasn't started with strings.
         if (count($keyed) < count($parameters)) {
             $query .= '&'.implode(
-                '&', array_map(
-                    fn ($value) => rawurlencode((string) $value),
-                    $this->getNumericParameters($parameters)
-                )
+                '&', $this->getNumericParameters($parameters)
             );
         }
 

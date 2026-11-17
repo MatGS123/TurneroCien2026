@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Ai\Agents\Researcher;
-use App\Ai\Tools\SearchMedicalEvidence;
-use App\Services\Ai\OpenAiCompatibleClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,12 +12,9 @@ use Throwable;
 
 class AiSuiteController extends Controller
 {
-    public function __construct(
-        private OpenAiCompatibleClient $ai,
-        private SearchMedicalEvidence $evidence,
-    ) {
-    }
-
+    /**
+     * Show the AI Suite agent selector.
+     */
     public function index(): View
     {
         $agents = [
@@ -52,11 +47,17 @@ class AiSuiteController extends Controller
         return view('backend.ai-suite.index', compact('agents'));
     }
 
+    /**
+     * Show the Researcher chat shell.
+     */
     public function researcher(): View
     {
         return view('backend.ai-suite.researcher');
     }
 
+    /**
+     * Send a question to the Researcher agent and return its answer.
+     */
     public function askResearcher(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -64,25 +65,8 @@ class AiSuiteController extends Controller
         ]);
 
         try {
-            $results = $this->evidence->search($validated['message']);
-            $researchPayload = [
-                'consulta' => $validated['message'],
-                'resultados_recuperados' => $results,
-            ];
-
-            if ($results === []) {
-                $researchPayload['nota'] = 'La búsqueda no recuperó fuentes verificables. No respondas con conocimiento interno ni inventes fuentes; explica que no hay evidencia recuperada suficiente.';
-            }
-
-            $answer = $this->ai->chat(
-                'openrouter',
-                config('ai.researcher_model', 'openai/gpt-4o-mini'),
-                [
-                    ['role' => 'system', 'content' => Researcher::instructions()],
-                    ['role' => 'user', 'content' => "Analiza esta consulta usando exclusivamente los resultados reales que siguen.\n\n".json_encode($researchPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)],
-                ],
-                ['temperature' => 0.2]
-            );
+            $response = Researcher::make()->prompt($validated['message']);
+            $answer = $response->text;
 
             return response()->json([
                 'answer' => $answer,
@@ -94,12 +78,12 @@ class AiSuiteController extends Controller
         } catch (Throwable $exception) {
             Log::error('Researcher failed to answer a question.', [
                 'user_id' => $request->user()?->id,
-                'exception_class' => $exception::class,
-                'code' => (string) $exception->getCode(),
+                       'message' => $validated['message'],
+                       'exception' => $exception,
             ]);
 
             return response()->json([
-                'message' => 'No se pudo obtener una respuesta de Researcher. Revisá la configuración de OpenRouter y Tavily e intentá nuevamente.',
+                'message' => 'No se pudo obtener una respuesta de Researcher. Revisá la configuración del proveedor de IA e intentá nuevamente.',
             ], 502);
         }
     }
