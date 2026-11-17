@@ -23,6 +23,8 @@ class NotifyUserAppointmentStatusUpdated
     public function handle(StatusUpdated $event): void
     {
         $email = $event->appointment->email;
-        \Notification::route('mail',$email)->notify(new UserNotificationBookingUpdated($event->appointment));
+        if (filled($email)) {
+            \Notification::route('mail', $email)->notify(new UserNotificationBookingUpdated($event->appointment));
+        }
     }
 }

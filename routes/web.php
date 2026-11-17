@@ -16,6 +16,7 @@ use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\ObraSocialController;
 use App\Http\Controllers\AiSuiteController;
 use App\Http\Controllers\ConsultantController;
+use App\Http\Controllers\ScribeController;
 
 use Illuminate\Http\Request;
 
@@ -26,9 +27,9 @@ Route::get('/',[FrontendController::class,'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:superadmin|secretarias|empleado');
 
-    Route::prefix('suite-ia')->name('ai.')->group(function () {
+    Route::prefix('suite-ia')->name('ai.')->middleware('role:superadmin|empleado')->group(function () {
         Route::get('/', [AiSuiteController::class, 'index'])->name('suite.index');
         Route::get('/researcher', [AiSuiteController::class, 'researcher'])->name('researcher');
         Route::post('/researcher/ask', [AiSuiteController::class, 'askResearcher'])->name('researcher.ask');
@@ -36,6 +37,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/consultant', [ConsultantController::class, 'index'])->name('consultant');
         Route::get('/consultant/studies', [ConsultantController::class, 'studies'])->name('consultant.studies');
         Route::post('/consultant/analyze', [ConsultantController::class, 'analyze'])->name('consultant.analyze');
+        Route::get('/scribe', [ScribeController::class, 'index'])->name('scribe');
+        Route::post('/scribe/transcribe', [ScribeController::class, 'transcribe'])->name('scribe.transcribe');
+        Route::get('/scribe/notes/{clinicalNote}', [ScribeController::class, 'status'])->name('scribe.status');
+        Route::post('/scribe/notes/{clinicalNote}/organize', [ScribeController::class, 'organize'])->name('scribe.organize');
+        Route::post('/scribe/notes/{clinicalNote}/confirm', [ScribeController::class, 'confirm'])->name('scribe.confirm');
+        Route::post('/scribe/notes/{clinicalNote}/export', [ScribeController::class, 'export'])->name('scribe.export');
+        Route::get('/scribe/notes/{clinicalNote}/download/{format}', [ScribeController::class, 'download'])->name('scribe.download');
     });
 
     Route::prefix('obras-sociales')->name('obras-sociales.')->group(function () {
@@ -50,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/listar',                              [ObraSocialController::class, 'listar'])->name('listar');
     });
 
-    Route::prefix('estudios')->name('estudios.')->group(function () {
+    Route::prefix('estudios')->name('estudios.')->middleware('role:superadmin|empleado')->group(function () {
         Route::get('/', [EstudioController::class, 'index'])->name('index');
         Route::post('/', [EstudioController::class, 'store'])->name('store');
         Route::get('/{estudio}/descargar', [EstudioController::class, 'descargar'])->name('descargar');
@@ -58,33 +66,33 @@ Route::middleware(['auth'])->group(function () {
 
 
     //user
-    Route::resource('user',UserController::class)->middleware('permission:users.view| users.create | users.edit | users.delete');
+    Route::resource('user',UserController::class)->middleware('role:superadmin|secretarias');
     //update user password
 
     //profile page
-    Route::get('profile',[ProfileController::class,'index'])->name('profile');
+    Route::get('profile',[ProfileController::class,'index'])->name('profile')->middleware('role:superadmin|empleado');
     //user profile update
-    Route::patch('profile-update/{user}',[ProfileController::class,'profileUpdate'])->name('user.profile.update');
+    Route::patch('profile-update/{user}',[ProfileController::class,'profileUpdate'])->name('user.profile.update')->middleware('role:superadmin|empleado');
     Route::patch('user/pasword-update/{user}',[UserController::class,'password_update'])->name('user.password.update');
     Route::put('user/profile-pic/{user}',[UserController::class,'updateProfileImage'])->name('user.profile.image.update');
 
     //delete profile image
     Route::patch('delete-profile-image/{user}',[UserController::class,'deleteProfileImage'])->name('delete.profile.image');
     //trash view for users
-    Route::get('user-trash', [UserController::class, 'trashView'])->name('user.trash');
-    Route::get('user-restore/{id}', [UserController::class, 'restore'])->name('user.restore');
+    Route::get('user-trash', [UserController::class, 'trashView'])->name('user.trash')->middleware('role:superadmin|secretarias');
+    Route::get('user-restore/{id}', [UserController::class, 'restore'])->name('user.restore')->middleware('role:superadmin|secretarias');
     //deleted permanently
-    Route::delete('user-delete/{id}', [UserController::class, 'force_delete'])->name('user.force.delete');
+    Route::delete('user-delete/{id}', [UserController::class, 'force_delete'])->name('user.force.delete')->middleware('role:superadmin|secretarias');
 
-    Route::get('settings', [SettingController::class, 'index'])->name('setting')->middleware('permission:setting update');
-    Route::post('settings/{setting}', [SettingController::class, 'update'])->name('setting.update');
+    Route::get('settings', [SettingController::class, 'index'])->name('setting')->middleware('role:superadmin');
+    Route::post('settings/{setting}', [SettingController::class, 'update'])->name('setting.update')->middleware('role:superadmin');
 
 
-    Route::resource('category', CategoryController::class)->middleware('permission:categories.view| categories.create | categories.edit | categories.delete');
+    Route::resource('category', CategoryController::class)->middleware('role:superadmin|secretarias');
 
 
     // Services
-    Route::resource('service', ServiceController::class)->middleware('permission:services.view| services.create | services.edit | services.delete');
+    Route::resource('service', ServiceController::class)->middleware('role:superadmin|secretarias');
     Route::get('service-trash', [ServiceController::class, 'trashView'])->name('service.trash');
     Route::get('service-restore/{id}', [ServiceController::class, 'restore'])->name('service.restore');
     //deleted permanently
@@ -98,14 +106,14 @@ Route::middleware(['auth'])->group(function () {
 
     //employee
     // Route::resource('user',UserController::class);
-    Route::get('employee-booking',[UserController::class,'EmployeeBookings'])->name('employee.bookings');
-    Route::get('my-booking/{id}',[UserController::class,'show'])->name('employee.booking.detail');
+    Route::get('employee-booking',[UserController::class,'EmployeeBookings'])->name('employee.bookings')->middleware('role:empleado');
+    Route::get('my-booking/{id}',[UserController::class,'show'])->name('employee.booking.detail')->middleware('role:empleado');
 
     // employee profile self data update
-    Route::patch('employe-profile-update/{employee}',[ProfileController::class,'employeeProfileUpdate'])->name('employee.profile.update');
+    Route::patch('employe-profile-update/{employee}',[ProfileController::class,'employeeProfileUpdate'])->name('employee.profile.update')->middleware('role:empleado');
 
     //employee bio
-    Route::put('employee-bio/{employee}',[EmployeeController::class,'updateBio'])->name('employee.bio.update');
+    Route::put('employee-bio/{employee}',[EmployeeController::class,'updateBio'])->name('employee.bio.update')->middleware('role:empleado');
 
 
 
@@ -146,9 +154,9 @@ Route::get('/employees/{employee}/availability/{date?}', [FrontendController::cl
 
 //create appointment
 Route::post('/bookings', [AppointmentController::class, 'store'])->name('bookings.store');
-Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments')->middleware('permission:appointments.view| appointments.create | services.appointments | appointments.delete');
+Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments')->middleware(['auth', 'role:superadmin|secretarias|empleado']);
 
-Route::post('/appointments/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update.status');
+Route::post('/appointments/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update.status')->middleware(['auth', 'role:superadmin|secretarias|empleado']);
 
 //update status from dashbaord
-Route::post('/update-status', [DashboardController::class, 'updateStatus'])->name('dashboard.update.status');
+Route::post('/update-status', [DashboardController::class, 'updateStatus'])->name('dashboard.update.status')->middleware(['auth', 'role:superadmin|secretarias|empleado']);

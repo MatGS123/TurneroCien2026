@@ -22,7 +22,9 @@ class NotifyEmployeeAppointmentStatusUpdated
      */
     public function handle(StatusUpdated $event): void
     {
-        $email = $event->appointment->employee->user->email;
-        \Notification::route('mail',$email)->notify(new EmployeeNotificationBookingUpdated($event->appointment));
+        $email = $event->appointment->employee?->user?->email;
+        if (filled($email)) {
+            \Notification::route('mail', $email)->notify(new EmployeeNotificationBookingUpdated($event->appointment));
+        }
     }
 }

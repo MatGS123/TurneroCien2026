@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Service;
@@ -18,7 +19,15 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // Get the role type from the request (either 'employee', 'customer', or 'moderator')
-        $users = User::latest()->get();
+        $query = User::query();
+
+        if (auth()->user()->hasRole('secretarias') && !auth()->user()->hasRole('superadmin')) {
+            $query->whereDoesntHave('roles', function ($roleQuery) {
+                $roleQuery->where('name', 'superadmin');
+            });
+        }
+
+        $users = $query->latest()->get();
         return view('backend.user.index', compact('users'));
     }
 
@@ -38,8 +47,10 @@ class UserController extends Controller
             'sunday',
         ];
 
-        //$roles = Role::where('name', '!=', 'admin')->get();
-        $roles = Role::where('name', '!=', 'admin')->get();
+        $allowedRoles = auth()->user()->hasRole('superadmin')
+            ? ['superadmin', 'secretarias', 'empleado']
+            : ['secretarias', 'empleado'];
+        $roles = Role::whereIn('name', $allowedRoles)->orderBy('name')->get();
         $services = Service::whereStatus(1)->get();
         return view('backend.user.create',compact('roles','services','days'));
     }
@@ -53,10 +64,13 @@ class UserController extends Controller
         //dd($request->all());
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'nullable|string|email|unique:users,email',
             'phone' => 'required|string|unique:users,phone',
             'password' => 'required|string|min:8|confirmed',
-            'roles' => 'required|exists:roles,name', // Validate role
+            'roles' => ['required', 'array', 'size:1'],
+            'roles.*' => ['required', Rule::in(auth()->user()->hasRole('superadmin')
+                ? ['superadmin', 'secretarias', 'empleado']
+                : ['secretarias', 'empleado'])],
             'service' => 'nullable',
             'slot_duration' => 'nullable',
             'break_duration' => 'nullable',
@@ -67,18 +81,19 @@ class UserController extends Controller
 
         $user = User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
+            'email' => $data['email'] ?: null,
             'phone' => $data['phone'] ?? "", // Optional field
             'email_verified_at' => now(),
             'password' => \Hash::make($data['password']),
         ]);
 
         // Assign the role to the user
-        $user->assignRole($data['roles']);
+        $selectedRole = $data['roles'][0];
+        $user->assignRole($selectedRole);
 
 
         // transform time slots into from and to combination
-        if($request->is_employee)
+        if($selectedRole === 'empleado')
         {
             $transformedData = $this->transformOpeningHours($data['days']); // Use $this->transformOpeningHours
             $data['days'] = $transformedData;
@@ -93,7 +108,7 @@ class UserController extends Controller
             $employee->services()->attach($data['service']);
         }
 
-        return redirect()->back()->withSuccess('User has been created successfully!');
+        return redirect()->back()->withSuccess('¡El usuario se creó correctamente!');
     }
 
     /**
@@ -109,6 +124,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+        $targetUser = User::findOrFail($id);
+        abort_if($targetUser->hasRole('superadmin') && !auth()->user()->hasRole('superadmin'), 403);
+
 
         // Available days of the week
         $days = [
@@ -134,9 +152,10 @@ class UserController extends Controller
 
         //dd($employeeDays);
 
-        // Get all roles excluding 'admin'
-        $roles = Role::all();
-       // $roles = Role::where('name', '!=', 'admin')->get();
+        $allowedRoles = auth()->user()->hasRole('superadmin')
+            ? ['superadmin', 'secretarias', 'empleado']
+            : ['secretarias', 'empleado'];
+        $roles = Role::whereIn('name', $allowedRoles)->orderBy('name')->get();
 
         // Get all active services
         $services = Service::whereStatus(1)->get();
@@ -147,24 +166,29 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        abort_if($user->hasRole('superadmin') && !auth()->user()->hasRole('superadmin'), 403);
+
 
         //dd($user);
         // Validate request data
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $user->id ,
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
             'social.*' => 'sometimes',
             'password' => 'nullable|string|min:8|confirmed',
-            'roles' => 'nullable|array|exists:roles,name', // Validate roles array
+            'roles' => ['required', 'array', 'size:1'],
+            'roles.*' => ['required', Rule::in(auth()->user()->hasRole('superadmin')
+                ? ['superadmin', 'secretarias', 'empleado']
+                : ['secretarias', 'empleado'])],
             'service' => 'nullable',
             'slot_duration' => function ($attribute, $value, $fail) use ($request) {
                 // Check if 'is_employee' is true and 'slot_duration' is missing
-                if ($request->is_employee && !$value) {
-                    $fail('The ' . $attribute . ' field is required when the employee is true.');
+                if (in_array('empleado', (array) $request->input('roles', []), true) && !$value) {
+                    $fail('El campo ' . $attribute . ' es obligatorio cuando el usuario es un profesional.');
                 }
                 // If it's present, it should be numeric
                 if ($value && !is_numeric($value)) {
-                    $fail('The ' . $attribute . ' field must be numeric.');
+                    $fail('El campo ' . $attribute . ' debe ser numérico.');
                 }
             },
             'break_duration' => 'nullable',
@@ -182,24 +206,26 @@ class UserController extends Controller
         if (\Auth::id() === $user->id) {
             // Check if roles key exists AND its value is different from current roles
             if ($request->filled('roles') && !$user->hasAnyRole($request->roles)) {
-                return redirect()->back()->withErrors(['roles' => 'You cannot change your own role.']);
+                return redirect()->back()->withErrors(['roles' => 'No podés cambiar tu propio rol.']);
             }
 
             if ($request->has('status') && $request->status != $user->status) {
-                return redirect()->back()->withErrors(['status' => 'You cannot change your own status.']);
+                return redirect()->back()->withErrors(['status' => 'No podés cambiar tu propio estado.']);
             }
 
         }
 
 
         // Always keep 'admin' role for super admin (user ID 1)
-        if ($user->id === 1 && (!in_array('admin', $request->roles ?? []))) {
-            return redirect()->back()->withErrors(['roles' => 'The first user must always have the admin role.']);
+        $roles = $data['roles'];
+        $selectedRole = $roles[0];
+
+        if ($user->id === 1 && $selectedRole !== 'superadmin') {
+            return redirect()->back()->withErrors(['roles' => 'El primer usuario siempre debe conservar el rol de superadmin.']);
         }
 
-        // Ensure admin role is not removed from any user who currently has it
-        if ($user->hasRole('admin') && !in_array('admin', $request->roles ?? [])) {
-            return redirect()->back()->withErrors(['roles' => 'The admin role cannot be removed.']);
+        if ($user->hasRole('superadmin') && $selectedRole !== 'superadmin') {
+            return redirect()->back()->withErrors(['roles' => 'El rol de superadmin no se puede quitar.']);
         }
 
 
@@ -213,31 +239,19 @@ class UserController extends Controller
         // Update user details
         $user->update([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => $request->input('email') ?: null,
             'phone' => $request->phone ?? $user->phone,
             'password' => $request->password ? \Hash::make($request->password) : $user->password,
             'status' => $status,
         ]);
 
         // Sync roles: Always retain admin role for the first user
-        if ($request->roles) {
-            $roles = $request->roles;
-
-            // Ensure admin role is present
-            if ($user->id === 1 || $user->hasRole('admin')) {
-                if (!in_array('admin', $roles)) {
-                    $roles[] = 'admin';
-                }
-            }
-
-            // Sync roles
-            $user->syncRoles($roles);
-        }
+        $user->syncRoles($roles);
 
 
 
         // Check if is_employee is set and true
-        if (!empty($data['is_employee'])) {
+        if ($selectedRole === 'empleado') {
             // Transform days data if provided
             if (!empty($data['days'])) {
                 $data['days'] = $this->transformOpeningHours($data['days']);
@@ -314,7 +328,7 @@ class UserController extends Controller
         }
 
 
-        return redirect()->route('user.index')->with('success', 'Profile has been updated successfully!');
+        return redirect()->route('user.index')->with('success', '¡El perfil se actualizó correctamente!');
     }
 
 
@@ -335,23 +349,35 @@ class UserController extends Controller
      */
     public function destroy(User $user, Request $request)
     {
+        if ($user->hasRole('superadmin') && !$request->user()->hasRole('superadmin')) {
+            return back()->withErrors('Solo un superadmin puede eliminar a otro superadmin.');
+        }
+
         if($user->id == 1)
         {
-            return back()->withErrors('First admin user cannot be deleted.');
+            return back()->withErrors('El primer administrador no se puede eliminar.');
         }
 
         if ($user->id === $request->user()->id) {
-            return back()->withErrors('You cannot delete yourself.');
+            return back()->withErrors('No podés eliminarte a vos mismo.');
         }
 
         $user->delete();
-        return redirect()->back()->with('success', 'User has been successfully trashed!');
+        return redirect()->back()->with('success', '¡El usuario se envió a la papelera correctamente!');
     }
 
 
     public function trashView(Request $request)
     {
-        $users = User::onlyTrashed()->latest()->get();
+        $query = User::onlyTrashed();
+
+        if (auth()->user()->hasRole('secretarias') && !auth()->user()->hasRole('superadmin')) {
+            $query->whereDoesntHave('roles', function ($roleQuery) {
+                $roleQuery->where('name', 'superadmin');
+            });
+        }
+
+        $users = $query->latest()->get();
         return view('backend.user.trash',compact('users'));
     }
 
@@ -359,10 +385,13 @@ class UserController extends Controller
     public function restore($id)
     {
         $user = User::withTrashed()->find($id);
+        if ($user) {
+            $this->protectSuperadminAccount($user);
+        }
         if(!is_null($user)){
             $user->restore();
         }
-        return redirect()->back()->with("success", "User Restored Succesfully");
+        return redirect()->back()->with("success", "Usuario restaurado correctamente");
     }
 
 
@@ -370,17 +399,18 @@ class UserController extends Controller
     {
         // Retrieve the trashed user with its associated employee, holidays, appointments, and bookings
         $user = User::withTrashed()->findOrFail($id);
+        $this->protectSuperadminAccount($user);
 
         //for employee
-        if($user->employee->appointments->count())
+        if($user->employee && $user->employee->appointments->count())
         {
-            return back()->withErrors('User cannot be deleted permanently, already engaged in existing bookings!');
+            return back()->withErrors('El usuario no se puede eliminar permanentemente porque tiene turnos asociados.');
         }
 
         //for user
         if($user->appointments->count())
         {
-            return back()->withErrors('User cannot be deleted permanently, already engaged in existing bookings!');
+            return back()->withErrors('El usuario no se puede eliminar permanentemente porque tiene turnos asociados.');
         }
 
         // Check if the user has an associated employee
@@ -416,13 +446,14 @@ class UserController extends Controller
         // Permanently delete the user from the database
         $user->forceDelete();
 
-        return back()->withSuccess('User and all related data (employee, holidays, appointments, bookings) have been deleted permanently!');
+        return back()->withSuccess('El usuario y todos sus datos relacionados se eliminaron permanentemente.');
     }
 
 
 
     public function password_update(Request $request, User $user)
     {
+        $this->protectSuperadminAccount($user);
         $request->validate([
             'current_password' => 'required',
             'password' => 'required|string|min:8|confirmed',
@@ -430,18 +461,19 @@ class UserController extends Controller
         ]);
 
         if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Current password does not match!']);
+            return back()->withErrors(['current_password' => '¡La contraseña actual no coincide!']);
         }
 
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->back()->with('success', 'Password has been successfully Updated!');
+        return redirect()->back()->with('success', '¡La contraseña se actualizó correctamente!');
     }
 
     public function updateProfileImage(Request $request, User $user)
     {
-        $request->validate([
+                $this->protectSuperadminAccount($user);
+$request->validate([
             'image' => 'required|image|mimes:png,jpg,jpeg,webp|max:2048',
             'delete_image' => 'nullable'
         ]);
@@ -467,7 +499,8 @@ class UserController extends Controller
     //delete profile image
     public function deleteProfileImage(User $user)
     {
-        $destination = public_path('uploads/images/profile/'.$user->image);
+                $this->protectSuperadminAccount($user);
+$destination = public_path('uploads/images/profile/'.$user->image);
         if(\File::exists($destination))
         {
             \File::delete($destination);
@@ -479,6 +512,17 @@ class UserController extends Controller
         return back()->withSuccess('Profile image deleted!');
     }
 
+
+    private function protectSuperadminAccount(User $targetUser): void
+    {
+        $actor = auth()->user();
+
+        abort_if(
+            $targetUser->hasRole('superadmin')
+            && (!$actor || !$actor->hasRole('superadmin')),
+            403
+        );
+    }
 
     // Transform the data
     function transformOpeningHours($data)

@@ -30,7 +30,7 @@ class SummerNoteController extends Controller
             return response()->json(['url' => $imageUrl]);
         }
 
-        return response()->json(['error' => 'Image not found.'], 404);
+        return response()->json(['error' => 'No se encontró la imagen.'], 404);
     }
 
 
@@ -51,7 +51,7 @@ class SummerNoteController extends Controller
             \File::delete($destination);
             return response()->json(['message' => 'Image deleted successfully']);
         } else {
-            return response()->json(['message' => 'Image not found'], 404);
+            return response()->json(['message' => 'No se encontró la imagen.'], 404);
         }
 
         return response()->json(['message' => 'Image deleted successfully']);

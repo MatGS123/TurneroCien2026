@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'All Services')
+@section('title', 'Todos los servicios')
 
 @section('content_header')
     <div class="row mb-2">
@@ -9,8 +9,8 @@
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Add New</a> |</li>
-                <li class=""> &nbsp; <a href="{{ route('service.trash') }}">View Trash</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Agregar nuevo</a> |</li>
+                <li class=""> &nbsp; <a href="{{ route('service.trash') }}">Ver papelera</a></li>
             </ol>
         </div>
     </div>
@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 @if (count($errors) > 0)
                 <div class="alert alert-dismissable alert-danger mt-3">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <strong>!</strong>Error<br>
@@ -39,7 +39,7 @@
             @endif
             @if (session('success'))
                 <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <strong>{{ session('success') }}</strong>
@@ -66,7 +66,7 @@
                                                 Categoría
                                             </th>
                                             {{-- <th style="width: 10%">
-                                                Featured
+                                                Destacado
                                             </th> --}}
                                             <th style="width: 10%" class="text-center">
                                                 Estado
@@ -113,9 +113,9 @@
 
                                                 <td class="project-state">
                                                     @if ($service->status)
-                                                        <span class="badge badge-success">Active</span>
+                                                        <span class="badge badge-success">Activo</span>
                                                     @else
-                                                        <span class="badge badge-danger">Pending</span>
+                                                        <span class="badge badge-danger">Pendiente</span>
                                                     @endif
                                                 </td>
                                                 <td class="project-actions text-right d-flex justify-content-between">
@@ -133,7 +133,7 @@
                                                             @csrf
                                                             @method('delete')
                                                             <button
-                                                                onclick="return confirm('Confirmar eliminación?');"
+                                                                onclick="return confirm('¿Confirmar eliminación?');"
                                                                 type="submit" class="btn btn-danger btn-sm">
                                                                 <i class="fas fa-trash">
                                                                 </i>
@@ -176,6 +176,7 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
+                language: { url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}" },
                 responsive: true
             });
 

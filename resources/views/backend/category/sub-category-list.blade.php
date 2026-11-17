@@ -22,7 +22,7 @@
                     href="{{ route('category.edit', $subcategory->id) }}">
                     <i class="fas fa-pencil-alt">
                     </i>
-                    Edit
+                    Editar
                 </a>
             </div>
             <div>
@@ -31,10 +31,10 @@
                     @csrf
                     @method('DELETE')
                     <button
-                        onclick="return confirm('Category cannot be deleted - Post attached');"
+                        onclick="return confirm('La categoría no se puede eliminar porque tiene publicaciones asociadas.');"
                         class="btn btn-danger btn-sm ml-2">
                         <i class="fas fa-trash"></i>
-                        Delete
+                        Eliminar
                         </a>
                     </button>
                 </form>

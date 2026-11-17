@@ -76,14 +76,13 @@ class DatabaseSeeder extends Seeder
             Permission::firstOrCreate(['name' => $permissionName]);
         }
 
-        // Create roles if they do not exist
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $moderatorRole = Role::firstOrCreate(['name' => 'moderator']);
-        $employeeRole = Role::firstOrCreate(['name' => 'employee']);
-        $subscriberRole = Role::firstOrCreate(['name' => 'subscriber']);
+        // Create the three operational roles.
+        $superadminRole = Role::firstOrCreate(['name' => 'superadmin', 'guard_name' => 'web']);
+        $secretariasRole = Role::firstOrCreate(['name' => 'secretarias', 'guard_name' => 'web']);
+        $empleadoRole = Role::firstOrCreate(['name' => 'empleado', 'guard_name' => 'web']);
 
-        // Assign all permissions to the 'admin' role
-        $adminRole->syncPermissions(Permission::all());
+        // Superadmin receives every permission.
+        $superadminRole->syncPermissions(Permission::all());
 
         // Create the initial admin user
         $user = User::create([
@@ -95,44 +94,15 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin123'),
         ]);
 
-        // Assign specific permissions to the 'moderator' role
-        $moderatorPermissions = [
-            'appointments.view',
-            'appointments.create',
-            'appointments.edit',
-            'appointments.delete',
+        foreach (['ai.view', 'studies.view', 'profile.view', 'settings.edit'] as $restrictedPermission) {
+            Permission::firstOrCreate(['name' => $restrictedPermission, 'guard_name' => 'web']);
+        }
+        $superadminRole->syncPermissions(Permission::all());
+        $secretariasRole->syncPermissions(Permission::whereNotIn('name', ['settings.edit', 'ai.view', 'studies.view', 'profile.view'])->get());
+        $empleadoRole->syncPermissions(Permission::whereIn('name', ['appointments.view', 'ai.view', 'studies.view', 'profile.view'])->get());
 
-            'categories.view',
-            'categories.create',
-            'categories.edit',
-            'categories.delete',
-
-            'services.view',
-            'services.create',
-            'services.edit',
-            'services.delete',
-        ];
-
-        $moderatorRole->syncPermissions(Permission::whereIn('name', $moderatorPermissions)->get());
-
-        // Assign the 'admin' role to the user
-        $user->assignRole($adminRole);
-
-
-
-         // Create admin as employee with additional details
-        $employee = Employee::create([
-            'user_id' => $user->id,
-            'days' => [
-                "monday" => ["06:00-22:00"],
-                "tuesday" => ["06:00-15:00", "16:00-22:00"],
-                "wednesday" => ["09:00-12:00", "14:00-23:00"],
-                "thursday" => ["09:00-20:00"],
-                "friday" => ["06:00-17:00"],
-                "saturday" => ["05:00-18:00"]
-            ],
-            'slot_duration' => 30
-        ]);
+        // The superadmin is not an employee.
+        $user->assignRole($superadminRole);
 
         return $user;
     }
@@ -228,10 +198,6 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Attach all services to the employee (not directly to user)
-        if ($user->employee) {
-            $allServices = Service::all();
-            $user->employee->services()->sync($allServices->pluck('id'));
-        }
+        // Employees receive their services when an employee account is created.
     }
 }

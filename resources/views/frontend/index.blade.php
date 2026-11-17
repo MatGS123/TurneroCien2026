@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
 <meta charset="UTF-8">
@@ -43,7 +43,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 @auth
 <li class="nav-item">
-<a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+<a class="nav-link" href="{{ route('dashboard') }}">Panel</a>
 </li>
 @endauth
 
@@ -223,8 +223,8 @@ Seleccione una fecha para ver los horarios
 <input type="text" class="form-control" id="customer-name" required>
 </div>
 <div class="col-md-6">
-<label for="customer-email" class="form-label">Email</label>
-<input type="email" class="form-control" id="customer-email" required>
+<label for="customer-email" class="form-label">Correo electrónico <small class="text-muted">(opcional)</small></label>
+<input type="email" class="form-control" id="customer-email">
 </div>
 <div class="col-md-12">
 <label for="customer-phone" class="form-label">Teléfono</label>
@@ -623,14 +623,14 @@ $(document).ready(function() {
                        });
                    } else {
                        $("#categories-container").html(
-                           '<div class="col-12 text-center py-5"><p>No categories available for this professional.</p></div>'
+                           '<div class="col-12 text-center py-5"><p>No hay categorías disponibles para este profesional.</p></div>'
                        );
                    }
                },
                error: function(xhr) {
                    console.error(xhr);
                    $("#categories-container").html(
-                       '<div class="col-12 text-center py-5"><p>Error loading categories. Please try again.</p></div>'
+                       '<div class="col-12 text-center py-5"><p>Error al cargar las categorías. Intentá nuevamente.</p></div>'
                    );
                }
         });
@@ -687,14 +687,14 @@ $(document).ready(function() {
                        $(".selected-category-name").text(
                            `Categoría: ${bookingState.selectedCategory.title}`);
                        $("#services-container").html(
-                           '<div class="col-12 text-center py-5"><p>No services available for this category.</p></div>'
+                           '<div class="col-12 text-center py-5"><p>No hay servicios disponibles para esta categoría.</p></div>'
                        );
                    }
                },
                error: function(xhr) {
                    console.error(xhr);
                    $("#services-container").html(
-                       '<div class="col-12 text-center py-5"><p>Error loading services. Please try again.</p></div>'
+                       '<div class="col-12 text-center py-5"><p>Error al cargar los servicios. Intentá nuevamente.</p></div>'
                    );
                }
         });
@@ -822,7 +822,7 @@ $(document).ready(function() {
         $("#time-slots-container").html(`
         <div class="text-center w-100 py-4">
         <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">Cargando...</span>
         </div>
         <div class="mt-2">Checking availability...</div>
         </div>
@@ -992,12 +992,12 @@ $(document).ready(function() {
                        });
 
                    const bookingDetails = `
-                   <div class="mb-2"><strong>Customer:</strong> ${$("#customer-name").val()}</div>
+                   <div class="mb-2"><strong>Paciente:</strong> ${$("#customer-name").val()}</div>
                    <div class="mb-2"><strong>Obra social:</strong> ${$("#customer-obra-social").val() || 'N/A'}</div>
                    <div class="mb-2"><strong>Service:</strong> ${bookingState.selectedService.title}</div>
-                   <div class="mb-2"><strong>Professional:</strong> ${bookingState.selectedEmployee.user.name}</div>
-                   <div class="mb-2"><strong>Date & Time:</strong> ${formattedDate} at ${bookingState.selectedTime.display || bookingState.selectedTime}</div>
-                   <div class="mb-2"><strong>Amount:</strong> ${bookingState.selectedService.price}</div>
+                   <div class="mb-2"><strong>Profesional:</strong> ${bookingState.selectedEmployee.user.name}</div>
+                   <div class="mb-2"><strong>Fecha y hora:</strong> ${formattedDate} at ${bookingState.selectedTime.display || bookingState.selectedTime}</div>
+                   <div class="mb-2"><strong>Importe:</strong> ${bookingState.selectedService.price}</div>
                    <div><strong>Reference:</strong> ${response.booking_id || 'BK-' + Math.random().toString(36).substr(2, 8).toUpperCase()}</div>
                    `;
 

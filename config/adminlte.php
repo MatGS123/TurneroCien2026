@@ -317,7 +317,7 @@ return [
 ],
 
 [
-    'text' => 'Dashboard',
+    'text' => 'Panel',
 'route' => 'home',
 'icon' => 'fas fa-fw fa-home',
 'route' => 'dashboard'
@@ -326,7 +326,7 @@ return [
     'text' => ' Todas las citas',
 'route' => 'appointments',
 'icon' => 'fas fa-calendar-check',
-'can'  => 'appointments.view | appointments.create | appointments.edit | appointments.delete',
+'can'  => ['appointments.view', 'appointments.create', 'appointments.edit', 'appointments.delete'],
 
 ],
 
@@ -334,7 +334,7 @@ return [
     'text' => 'Categorías',
 'icon' => 'fas fa-fw fa-folder',
 'url'  => 'category*',
-'can'  => 'categories.view | categories.create | categories.edit | categories.delete',
+'can'  => ['categories.view', 'categories.create', 'categories.edit', 'categories.delete'],
 'submenu' => [
     [
         'text' => 'Añadir',
@@ -355,7 +355,7 @@ return [
     'text'    => 'Usuarios',
 'url'  => 'user*',
 'icon'    => 'fas fa-fw fa-users',
-'can'  => 'users.view | users.create | users.edit | users.delete',
+'can'  => ['users.view', 'users.create', 'users.edit', 'users.delete'],
 'submenu' => [
     [
         'text' => 'Añadir',
@@ -377,11 +377,11 @@ return [
     'text'    => 'Servicios',
 'url'  => 'service*',
 'icon'    => 'fas fa-fw fa-briefcase',
-'can'  => 'services.view | services.create | services.edit | services.delete',
+'can'  => ['services.view', 'services.create', 'services.edit', 'services.delete'],
 'submenu' => [
 
     [
-        'text' => 'Create Service',
+        'text' => 'Crear servicio',
 'icon'    => 'fas fa-fw fa-plus',
 'route'  => 'service.create',
 'can'    => 'services.create'
@@ -404,12 +404,14 @@ return [
 [
     'text'  => 'Estudios Médicos',
 'route' => 'estudios.index',
-'icon'  => 'fas fa-fw fa-file-medical',
+'icon' => 'fas fa-fw fa-file-medical',
+'can' => 'studies.view',
 ],
 [
     'text'  => 'Suite de IA',
 'route' => 'ai.suite.index',
-'icon'  => 'fas fa-fw fa-robot',
+'icon' => 'fas fa-fw fa-robot',
+'can' => 'ai.view',
 ],
 
 [
@@ -421,13 +423,14 @@ return [
     'text' => 'Perfil',
 'route' => 'profile',
 'icon' => 'fas fa-fw fa-user',
+'can' => 'profile.view',
 
 ],
 [
     'text' => 'Configurar',
 'route'  => 'setting',
 'icon' => 'fas fa-fw fa-cog',
-'can'  => 'setting update',
+'can'  => 'settings.edit',
 ],
 
 // [

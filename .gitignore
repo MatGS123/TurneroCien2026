@@ -1,1 +1,9 @@
 .env
+
+# Agregado 2026-11-17
+.env.*
+!.env.example
+*.backup
+*.backup-*
+/vendor/pestphp/pest/.temp/
+/storage/testing/

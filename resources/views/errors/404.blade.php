@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,7 @@
             <p class="lead">
                 The page you’re looking for doesn’t exist.
             </p>
-            <a href="{{ route('home') }}" class="btn btn-primary">Go Home</a>
+            <a href="{{ route('home') }}" class="btn btn-primary">Ir al inicio</a>
         </div>
     </div>
 </body>

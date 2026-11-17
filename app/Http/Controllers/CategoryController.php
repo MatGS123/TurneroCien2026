@@ -55,7 +55,7 @@ class CategoryController extends Controller
         }
 
         Category::create($data);
-        return redirect()->route('category.index')->withSuccess('Category has been created successfully!');
+        return redirect()->route('category.index')->withSuccess('¡La categoría se creó correctamente!');
     }
 
     /**
@@ -124,7 +124,7 @@ class CategoryController extends Controller
 
         }
         $category->update($data);
-        return redirect()->route('category.index')->with('success', 'Category has been updated successfully.');
+        return redirect()->route('category.index')->with('success', '¡La categoría se actualizó correctamente!');
     }
 
     /**
@@ -134,7 +134,7 @@ class CategoryController extends Controller
     {
         if($category->services->count())
        {
-            return back()->withErrors('Category cannot be deleted as it is linked to services.');
+            return back()->withErrors('La categoría no se puede eliminar porque está vinculada a servicios.');
        }
 
         $destination = public_path('uploads/images/category/'.$category->image);
@@ -143,6 +143,6 @@ class CategoryController extends Controller
             \File::delete($destination);
         }
         $category->delete();
-        return redirect()->back()->with('success', 'Category has been deleted successfully.');
+        return redirect()->back()->with('success', '¡La categoría se eliminó correctamente!');
     }
 }

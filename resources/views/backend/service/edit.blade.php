@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Service')
+@section('title', 'Editar servicio')
 
 @section('content_header')
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h1 class="m-0">Edit Service</h1>
+                <h1 class="m-0">Editar servicio</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Edit Service</li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
+                    <li class="breadcrumb-item active">Editar servicio</li>
                 </ol>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>Whoops!</strong> There were some problems with your input.<br>
+            <strong>¡Ups!</strong> Se encontraron algunos problemas con los datos ingresados.<br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -62,7 +62,7 @@
                                 <label for="inputStatus">Title
                                 </label>
                                 <input class="form-control @error('title') is-invalid @enderror" type="text"
-                                    id="title" name="title" placeholder="Title here.." value="{{ old('title',$service->title) }}">
+                                    id="title" name="title" placeholder="Título aquí.." value="{{ old('title',$service->title) }}">
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -73,7 +73,7 @@
                                 <small>&nbsp;&nbsp;Unique url of the Service
                                 </small>
                                 <input class="form-control bg-light @error('slug') is-invalid @enderror" type="text"
-                                    id="slug" name="slug" placeholder="slug here.." value="{{ old('slug',$service->slug) }}">
+                                    id="slug" name="slug" placeholder="slug aquí.." value="{{ old('slug',$service->slug) }}">
                                 @error('slug')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -107,10 +107,10 @@
                           <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="mb-0" for="price">Price</label>
-                                    <input class="form-control" type="number" name="price" placeholder="Price"
+                                    <label class="mb-0" for="price">Precio</label>
+                                    <input class="form-control" type="number" name="price" placeholder="Precio"
                                         value="{{ old('price',$service->price) }}">
-                                        <p class="mb-0 text-muted small">Main Price</p>
+                                        <p class="mb-0 text-muted small">Main Precio</p>
                                     @error('price')
                                         <span class="text-danger">
                                             {{ $message }}
@@ -120,10 +120,10 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="mb-0" for="sale_price">Sale Price</label>
-                                    <input class="form-control" type="number" name="sale_price" placeholder="Price"
+                                    <label class="mb-0" for="sale_price">Sale Precio</label>
+                                    <input class="form-control" type="number" name="sale_price" placeholder="Precio"
                                         value="{{ old('sale_price',$service->sale_price) }}">
-                                        <p class="mb-0 text-muted small">Price for sale</p>
+                                        <p class="mb-0 text-muted small">Precio for sale</p>
                                     @error('sale_price')
                                         <span class="text-danger">
                                             {{ $message }}
@@ -162,7 +162,7 @@
                         <div class="card-header">
                             <h3 class="card-title">SEO
                             </h3>
-                            <small>&nbsp;&nbsp;Search engine details
+                            <small>&nbsp;&nbsp;Detalles para buscadores
                             </small>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"
@@ -176,7 +176,7 @@
                             <div class="form-group">
                                 <label for="">SEO Title
                                 </label>
-                                <input placeholder="Service title here for seo..." type="text" class="form-control"
+                                <input placeholder="Título del servicio para SEO..." type="text" class="form-control"
                                     name="meta_title" id="" value="{{ old('meta_title',$service->meta_title) }}">
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                             <div class="form-group">
                                 <label for="">SEO Description
                                 </label>
-                                <textarea placeholder="Service description here for seo..." class="form-control" name="meta_description"
+                                <textarea placeholder="Descripción del servicio para SEO..." class="form-control" name="meta_description"
                                     id="" cols="0" rows="4" value="{{ old('meta_description',$service->meta_description) }}">{{ old('meta_description',$service->meta_description) }}</textarea>
                             </div>
                         </div>
@@ -218,10 +218,10 @@
                                 <div class="form-group select2-dark">
                                     <label>Category
                                     </label>
-                                    <small>&nbsp;&nbsp;Select category for Service</small>
+                                    <small>&nbsp;&nbsp;Seleccionar categoría para el servicio</small>
 
                                     <select id="category" name="category_id" class="select2" multiple=""
-                                    data-placeholder="Search Category" style="width: 100%;">
+                                    data-placeholder="Buscar categoría" style="width: 100%;">
                                     <option value="">None</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
@@ -239,9 +239,9 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">Status</label>
+                                    <label for="inputStatus">Estado</label>
                                     <select required="required" name="status" id="inputStatus" class="form-control custom-select">
-                                        <option disabled value="">Select Option</option>
+                                        <option disabled value="">Seleccionar opción</option>
                                         <option value="1" {{ isset($service->status) && $service->status == 1 ? 'selected' : '' }}>
                                             PUBLISHED
                                         </option>
@@ -256,13 +256,13 @@
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="featured"
                                             name="featured" value="1" {{ old('featured',$service->featured) == 1 ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="featured">Featured
+                                        <label class="custom-control-label" for="featured">Destacado
                                         </label>
-                                        <small>Featured shall be shown on home as priorty</small>
+                                        <small>Los destacados se mostrarán prioritariamente en el inicio</small>
                                     </div>
                                 </div> --}}
                                 <div class="form-group pt-0 pb-0 text-right">
-                                    <button onclick="return confirm('Are you sure you want to update this item?');" type="submit" class="btn btn-danger">Update
+                                    <button onclick="return confirm('¿Estás seguro de que querés actualizar este elemento?');" type="submit" class="btn btn-danger">Actualizar
                                     </button>
                                 </div>
                             </div>
@@ -270,7 +270,7 @@
                         </div>
                         <div class="card card-primary ">
                             <div class="card-header">
-                                <h3 class="card-title">Featured Image
+                                <h3 class="card-title">Imagen destacada
                                 </h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse"
@@ -480,7 +480,7 @@
 
                 Toast.fire({
                     icon: 'error',
-                    title: 'There are form validation errors. Please fix them.'
+                    title: 'Hay errores de validación. Corregilos e intentá nuevamente.'
                 });
             @endif
 

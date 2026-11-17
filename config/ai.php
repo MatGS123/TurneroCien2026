@@ -21,8 +21,26 @@ return [
 'default_for_reranking' => 'cohere',
 'default_for_classification' => 'typesafe',
 
-'consultant_provider' => env('CONSULTANT_AI_PROVIDER', 'openrouter'),
-'consultant_model' => env('CONSULTANT_AI_MODEL', 'deepseek/deepseek-chat'),
+    'researcher_model' => env('RESEARCHER_AI_MODEL', 'openai/gpt-4o-mini'),
+    'request_timeout' => (int) env('AI_REQUEST_TIMEOUT', 180),
+    'search_timeout' => (int) env('AI_SEARCH_TIMEOUT', 45),
+
+    'consultant_provider' => env('CONSULTANT_AI_PROVIDER', 'openrouter'),
+    'consultant_model' => env('CONSULTANT_AI_MODEL', 'deepseek/deepseek-chat'),
+
+    'scribe_provider' => env('SCRIBE_AI_PROVIDER', 'groq'),
+    'scribe_stt_model' => env('SCRIBE_STT_MODEL', 'whisper-large-v3'),
+    'scribe_text_model' => env('SCRIBE_TEXT_MODEL', 'openai/gpt-oss-120b'),
+    'scribe_text_model_alt' => env('SCRIBE_TEXT_MODEL_ALT', 'openai/gpt-oss-20b'),
+    'scribe_reasoning_effort' => env('SCRIBE_REASONING_EFFORT', 'low'),
+    'scribe_language' => env('SCRIBE_LANGUAGE', 'es'),
+    'scribe_max_duration_seconds' => (int) env('SCRIBE_MAX_DURATION_SECONDS', 600),
+    'scribe_max_transcription_chars' => (int) env('SCRIBE_MAX_TRANSCRIPTION_CHARS', 12000),
+    'scribe_timeout' => (int) env('SCRIBE_TIMEOUT', 180),
+    'scribe_audio_disk' => env('SCRIBE_AUDIO_DISK', 'local'),
+    'scribe_document_disk' => env('SCRIBE_DOCUMENT_DISK', 'local'),
+    'scribe_queue' => env('SCRIBE_QUEUE', 'default'),
+    'scribe_temp_audio_hours' => (int) env('SCRIBE_TEMP_AUDIO_HOURS', 24),
 
 /*
  *    |--------------------------------------------------------------------------
@@ -111,7 +129,8 @@ return [
 
 'groq' => [
     'driver' => 'groq',
-'key' => env('GROQ_API_KEY'),
+    'key' => env('GROQ_API_KEY'),
+    'url' => env('GROQ_BASE_URL', 'https://api.groq.com/openai/v1'),
 ],
 
 'jina' => [
@@ -145,7 +164,8 @@ return [
 
 'openrouter' => [
     'driver' => 'openrouter',
-'key' => env('OPENROUTER_API_KEY'),
+    'key' => env('OPENROUTER_API_KEY'),
+    'url' => env('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
 ],
 
 'typesafe' => [

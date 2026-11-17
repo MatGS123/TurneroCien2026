@@ -68,7 +68,7 @@ class ServiceController extends Controller
         }
 
         Service::create($data);
-        return redirect()->route('service.index')->with('success','Service has been added successfully.');
+        return redirect()->route('service.index')->with('success','¡El servicio se agregó correctamente!');
     }
 
     /**
@@ -131,7 +131,7 @@ class ServiceController extends Controller
         }
 
         $service->update($data);
-        return redirect()->route('service.index')->withSuccess('Service has been updated successfully.');
+        return redirect()->route('service.index')->withSuccess('¡El servicio se actualizó correctamente!');
 
     }
 
@@ -141,7 +141,7 @@ class ServiceController extends Controller
     {
 
         $service->delete();
-        return back()->withSuccess('Service Succesfully moved to trash!');
+        return back()->withSuccess('¡El servicio se envió a la papelera correctamente!');
     }
 
     public function trashView(Request $request)
@@ -157,7 +157,7 @@ class ServiceController extends Controller
         if(!is_null($data)){
             $data->restore();
         }
-        return redirect()->back()->with("success", "Data Restored Succesfully");
+        return redirect()->back()->with("success", "Los datos se restauraron correctamente.");
     }
 
     public function force_delete(Request $request, $id)
@@ -166,7 +166,7 @@ class ServiceController extends Controller
 
          // Check if the category has any services
          if ($service->appointments->count() > 0) {
-            return redirect()->back()->withErrors('Cannot deleted permanently, service with existing bookings.');
+            return redirect()->back()->withErrors('No se puede eliminar permanentemente el servicio porque tiene turnos asociados.');
         }
 
         if (!is_null($service)) {
@@ -180,7 +180,7 @@ class ServiceController extends Controller
             $service->forceDelete();
         }
 
-        return redirect()->back()->with("success", "Data Deleted Permanently!!");
+        return redirect()->back()->with("success", "¡Datos eliminados permanentemente!");
     }
 
 

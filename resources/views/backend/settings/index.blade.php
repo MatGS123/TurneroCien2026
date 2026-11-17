@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Settings')
+@section('title', 'Configuración')
 
 @section('content_header')
 
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
+                <h1 class="m-0">Panel</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
                     <li class="breadcrumb-item active">Configuración</li>
                 </ol>
             </div>
@@ -24,7 +24,7 @@
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                 <span aria-hidden="true">&times;</span>
             </button>
             <strong>{{ session('success') }}</strong>
@@ -66,7 +66,7 @@
             <div class="col-md-9">
                 @if (count($errors) > 0)
                     <div class="alert alert-dismissable alert-danger mt-3">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <strong>ERROR!</strong>Hubo un error con el ingreso de datos<br>
@@ -108,7 +108,7 @@
                                         <label for="inputName" class="col-sm-2 col-form-label">Nombre de la clínica</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control @error('bname') is-invalid @enderror"
-                                                name="bname" id="inputName" placeholder="Business Name"
+                                                name="bname" id="inputName" placeholder="Nombre de la clínica"
                                                 value="{{ $setting->bname }}">
                                             @error('bname')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -116,11 +116,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                        <label for="inputEmail" class="col-sm-2 col-form-label">Correo electrónico</label>
                                         <div class="col-sm-10">
                                             <input type="email"
                                                 class="form-control @error('email') is-invalid @enderror" name="email"
-                                                id="inputEmail" placeholder="Email" value="{{ $setting->email }}">
+                                                id="inputEmail" placeholder="Correo electrónico" value="{{ $setting->email }}">
                                             @error('email')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -142,7 +142,7 @@
                                         <label for="inputName2" class="col-sm-2 col-form-label">Teléfono</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputName2" name="phone"
-                                                placeholder="Contact Number" value="{{ $setting->phone }}">
+                                                placeholder="Número de contacto" value="{{ $setting->phone }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -159,14 +159,14 @@
                                             Logo</label>
                                         <div class="col-sm-10">
                                             <input type="file" class="form-control" id="inputName2"
-                                                placeholder="Profiel Picture" name="logo">
+                                                placeholder="Imagen de perfil" name="logo">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputName2" class="col-sm-2 col-form-label">Dirección</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputName2"
-                                                placeholder="Address" value="{{ $setting->address }}" name="address">
+                                                placeholder="Dirección" value="{{ $setting->address }}" name="address">
                                             <small>La dirección será visible en la página de contacto</small>
                                         </div>
                                     </div>
@@ -274,7 +274,7 @@
                                                 <input type="checkbox" class="custom-control-input" id="login_form"
                                                     name="captcha[login_form]" value="1"
                                                     {{ $setting->captcha['login_form'] ?? false ? 'checked' : '' }}>
-                                                <label class="custom-control-label" for="login_form">Login</label>
+                                                <label class="custom-control-label" for="login_form">Ingresar</label>
                                                 <small>&nbsp;&nbsp;Habilita o desabilita el captcha</small>
                                             </div>
                                         </div>
@@ -337,7 +337,7 @@
                                                     id="user_registration" name="user_registration" value="1"
                                                     {{ $setting->user_registration ?? false ? 'checked' : '' }}>
                                                 <label class="custom-control-label" for="user_registration">Disable/Enable
-                                                    </label> (<span class="text-danger">New User Registration</span>)
+                                                    </label> (<span class="text-danger">Registro de nuevos usuarios</span>)
                                             </div>
                                         </div>
 
@@ -361,7 +361,7 @@
                                 <!-- google map -->
                                 <div class="tab-pane" id="smtp">
                                     <h3 class="mb-1">SMTP</h3>
-                                    <small>Email para notificaciones</small>
+                                    <small>Correo electrónico para notificaciones</small>
                                     <div class="form-group row pt-3">
                                         <label for="inputName2" class="col-sm-2 col-form-label">Mail Host</label>
                                         <div class="col-sm-8">
@@ -413,7 +413,7 @@
                                         <label for="inputName2" class="col-sm-2 col-form-label">Título de la página web</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputName2" name="meta_title"
-                                                placeholder="Site SEO Title" value="{{ $setting->meta_title }}">
+                                                placeholder="Título SEO del sitio" value="{{ $setting->meta_title }}">
                                             <small>Título para búsquedas de Google</small>
                                         </div>
                                     </div>
@@ -430,7 +430,7 @@
                                         <label for="inputName2" class="col-sm-2 col-form-label">Descripción del sitio</label>
                                         <div class="col-sm-10">
                                             <textarea name="meta_description" class="form-control"
-                                                placeholder="Website description..."
+                                                placeholder="Descripción del sitio..."
                                                 cols="30" rows="3">{{ $setting->meta_description }}</textarea>
                                             <small>Descripción para SEO</small>
                                         </div>
@@ -473,13 +473,13 @@
                                 {{-- social login --}}
 
                                 <div class="tab-pane" id="social-login">
-                                    <h3>Login Google</h3>
+                                    <h3>Ingreso con Google</h3>
                                     <div class="form-group row pt-3">
                                         <label for="clientId" class="col-sm-2 col-form-label">Client Id</label>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="social_login[google][client_id]" value="">
                                             <input type="text" class="form-control" id="clientId"
-                                                name="social_login[google][client_id]" placeholder="Google client id"
+                                                name="social_login[google][client_id]" placeholder="ID de cliente de Google"
                                                 value="{{ $setting->social_login['google']['client_id'] ?? '' }}">
                                         </div>
                                     </div>
@@ -488,13 +488,13 @@
                                         <div class="col-sm-9">
                                             <input type="hidden" name="social_login[google][secret_key]" value="">
                                             <input type="text" class="form-control" id="SecretId"
-                                                name="social_login[google][secret_key]" placeholder="Google secret key"
+                                                name="social_login[google][secret_key]" placeholder="Clave secreta de Google"
                                                 value="{{ $setting->social_login['google']['secret_key'] ?? '' }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row pt-3">
-                                        <label for="SecretId" class="col-sm-2 col-form-label">Callback Url</label>
+                                        <label for="SecretId" class="col-sm-2 col-form-label">URL de devolución</label>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="social_login[google][callback_url]"
                                                 value="">
@@ -518,14 +518,14 @@
                                     </div>
 
                                     <hr>
-                                    <h3>Login Facebook</h3>
+                                    <h3>Ingreso con Facebook</h3>
                                     <div class="form-group row pt-3">
                                         <label for="inputName2" class="col-sm-2 col-form-label">Client Id</label>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="social_login[facebook][client_id]"
                                                 value="">
                                             <input type="text" class="form-control" id="inputName2"
-                                                name="social_login[facebook][client_id]" placeholder="Facebook client id"
+                                                name="social_login[facebook][client_id]" placeholder="ID de cliente de Facebook"
                                                 value="{{ $setting->social_login['facebook']['client_id'] ?? '' }}">
                                         </div>
                                     </div>
@@ -537,12 +537,12 @@
                                                 value="">
                                             <input type="text" class="form-control" id="inputName2"
                                                 name="social_login[facebook][secret_key]"
-                                                placeholder="Facebook secret Key"
+                                                placeholder="Clave secreta de Facebook"
                                                 value="{{ $setting->social_login['facebook']['secret_key'] ?? '' }}">
                                         </div>
                                     </div>
                                     <div class="form-group row pt-3">
-                                        <label for="SecretId" class="col-sm-2 col-form-label">Callback Url</label>
+                                        <label for="SecretId" class="col-sm-2 col-form-label">URL de devolución</label>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="social_login[facebook][callback_url]"
                                                 value="">
@@ -572,7 +572,7 @@
                         <!-- /.tab-content -->
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
-                                <button onclick="return confirm('Are you sure you want to update settings?');"
+                                <button onclick="return confirm('¿Estás seguro de que querés actualizar la configuración?');"
                                     type="submit" class="btn btn-danger text-left">Actualizar</button>
                             </div>
                         </div>

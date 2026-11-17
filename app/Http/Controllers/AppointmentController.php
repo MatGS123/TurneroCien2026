@@ -38,7 +38,7 @@ class AppointmentController extends Controller
             'employee_id' => 'required|exists:employees,id',
             'service_id' => 'required|exists:services,id',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'phone' => 'required|string|max:20',
             'obra_social' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
@@ -53,11 +53,8 @@ class AppointmentController extends Controller
         //     $validated['user_id'] = auth()->id();
         // }
 
-        $isPrivilegedRole = auth()->check() && (
-            auth()->user()->hasRole('admin') ||
-            auth()->user()->hasRole('moderator') ||
-            auth()->user()->hasRole('employee')
-        );
+        $isPrivilegedRole = auth()->check()
+            && auth()->user()->hasAnyRole(['superadmin', 'secretarias', 'empleado']);
 
             // If admin/moderator/employee is booking, user_id should be null
         if ($isPrivilegedRole) {
@@ -78,7 +75,7 @@ class AppointmentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Appointment booked successfully!',
+            'message' => '¡Reservaste el turno correctamente!',
             'booking_id' => $appointment->booking_id,
             'appointment' => $appointment
         ]);
@@ -129,7 +126,7 @@ class AppointmentController extends Controller
 
         event(new StatusUpdated($appointment));
 
-        return redirect()->back()->with('success', 'Appointment status updated successfully.');
+        return redirect()->back()->with('success', 'El estado de la cita se actualizó correctamente.');
     }
 
 }

@@ -121,7 +121,7 @@ $(document).ready(function() {
     // Inicializa DataTables automáticamente con traducción básica
     $('#tablaEstudios').DataTable({
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}"
         }
     });
 

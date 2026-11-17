@@ -2,81 +2,50 @@
 
 namespace App\Ai\Tools;
 
-use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Support\Facades\Http;
-use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Tools\Request;
-use Stringable;
+use RuntimeException;
 
-class SearchMedicalEvidence implements Tool
+class SearchMedicalEvidence
 {
-    public function description(): Stringable|string
+    public function search(string $query): array
     {
-        return 'Busca evidencia médica y científica reciente en fuentes confiables usando Tavily.';
-    }
+        $apiKey = config('services.tavily.key');
+        if (! is_string($apiKey) || trim($apiKey) === '') {
+            throw new RuntimeException('TAVILY_API_KEY no está configurada.');
+        }
 
-    public function handle(Request $request): Stringable|string
-    {
-        $response = Http::withToken(config('services.tavily.key'))
-        ->acceptJson()
-        ->post('https://api.tavily.com/search', [
-            'query' => $request['query'],
-            'search_depth' => 'basic',
-            'chunks_per_source' => 1,
-            'max_results' => 5,
-            'include_answer' => false,
-            'include_raw_content' => false,
-
-            'include_domains' => [
-                'pubmed.ncbi.nlm.nih.gov',
-               'ncbi.nlm.nih.gov',
-               'pmc.ncbi.nlm.nih.gov',
-               'cochranelibrary.com',
-               'who.int',
-               'paho.org',
-               'nih.gov',
-            ],
-        ]);
+        $response = Http::withToken($apiKey)
+            ->acceptJson()
+            ->timeout((int) config('ai.search_timeout', 45))
+            ->post('https://api.tavily.com/search', [
+                'query' => $query,
+                'search_depth' => 'basic',
+                'chunks_per_source' => 1,
+                'max_results' => 5,
+                'include_answer' => false,
+                'include_raw_content' => false,
+                'include_domains' => [
+                    'pubmed.ncbi.nlm.nih.gov',
+                    'ncbi.nlm.nih.gov',
+                    'pmc.ncbi.nlm.nih.gov',
+                    'cochranelibrary.com',
+                    'who.int',
+                    'paho.org',
+                    'nih.gov',
+                ],
+            ]);
 
         $response->throw();
 
-        $results = collect($response->json('results', []))
-        ->map(fn ($result) => [
-            'title' => $result['title'] ?? null,
-            'url' => $result['url'] ?? null,
-            'content' => $result['content'] ?? null,
-            'score' => $result['score'] ?? null,
-        ])
-        ->filter(fn ($result) =>
-        ! empty($result['title']) &&
-        ! empty($result['url']) &&
-        ! empty($result['content'])
-        )
-        ->values()
-        ->all();
-
-        if (empty($results)) {
-            return json_encode([
-                'status' => 'no_results',
-                'message' => 'No se encontraron resultados confiables en las fuentes médicas priorizadas.',
-            ], JSON_UNESCAPED_UNICODE);
-        }
-
-        return json_encode([
-            'status' => 'ok',
-            'results' => $results,
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
-
-    public function schema(JsonSchema $schema): array
-    {
-        return [
-            'query' => $schema
-            ->string()
-            ->description(
-                'Consulta médica o científica específica para buscar evidencia confiable y reciente.'
-            )
-            ->required(),
-        ];
+        return collect($response->json('results', []))
+            ->map(fn ($result) => [
+                'title' => $result['title'] ?? null,
+                'url' => $result['url'] ?? null,
+                'content' => $result['content'] ?? null,
+                'score' => $result['score'] ?? null,
+            ])
+            ->filter(fn ($result) => ! empty($result['title']) && ! empty($result['url']) && ! empty($result['content']))
+            ->values()
+            ->all();
     }
 }

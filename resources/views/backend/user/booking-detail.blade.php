@@ -5,7 +5,7 @@
 @section('content_header')
     <div class="row ">
         <div class="col-sm-6">
-            <h1><a href="{{ route('employee.bookings') }}" class="btn btn-sm btn-primary">Back</a></h1>
+            <h1><a href="{{ route('employee.bookings') }}" class="btn btn-sm btn-primary">Volver</a></h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -32,7 +32,7 @@
                         <div class="col-12">
                             <h4>
                                 <i class="fas fa-globe"></i> {{ $setting->bname }}
-                                <small class="float-right">Date: {{ $booking->created_at->format('d, M Y') }}</small>
+                                <small class="float-right">Fecha: {{ $booking->created_at->format('d, M Y') }}</small>
                             </h4>
                         </div>
 
@@ -43,8 +43,8 @@
                             From
                             <address>
                                 <strong>{{ $setting->bname }}</strong><br>
-                                Email: {{ $setting->email }} <br>
-                                Phone: {{ $setting->phone }} <br>
+                                Correo electrónico: {{ $setting->email }} <br>
+                                Teléfono: {{ $setting->phone }} <br>
                                 {{ $setting->address }}
 
                             </address>
@@ -54,8 +54,8 @@
                             To
                             <address>
                                 <strong>{{ $booking->first_name }} {{ $booking->last_name }}</strong><br>
-                                Email: {{ $booking->email }} <br>
-                                Phone: {{ $booking->phone }} <br>
+                                Correo electrónico: {{ $booking->email }} <br>
+                                Teléfono: {{ $booking->phone }} <br>
                                 {{ $booking->city }},
                                 {{ $booking->state }},
                                 {{ $booking->country }}
@@ -64,13 +64,13 @@
                         </div>
 
                         <div class="col-sm-4 invoice-col">
-                            <b>Order ID: </b> #{{ $booking->order_id }}<br>
+                            <b>ID del pedido: </b> #{{ $booking->order_id }}<br>
                             <br>
-                            <b>Transaction ID:</b> {{ $booking->transaction_id }}<br>
-                            <b>Payment Method :</b> {{ $booking->payment_mode }}<br>
+                            <b>ID de transacción:</b> {{ $booking->transaction_id }}<br>
+                            <b>Método de pago:</b> {{ $booking->payment_mode }}<br>
                             @if ($booking->payment_status == true)
-                                <b>Status:</b>
-                                <div class="badge badge-success">Paid</div>
+                                <b>Estado:</b>
+                                <div class="badge badge-success">Pagado</div>
                             @endif
 
                         </div>
@@ -83,15 +83,15 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Phone</th>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
                                         <th>Gender</th>
-                                        <th>Service</th>
-                                        <th>Booking Time</th>
-                                        <th>Booking Date</th>
+                                        <th>Servicio</th>
+                                        <th>Hora del turno</th>
+                                        <th>Fecha del turno</th>
                                         <th>Birth Place</th>
-                                        <th>Birth Time</th>
-                                        <th>Amount</th>
+                                        <th>Hora de nacimiento</th>
+                                        <th>Importe</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -128,9 +128,9 @@
                                 <b>City: </b>{{ $booking->city }} | <b>State: </b>{{ $booking->state }} | <b>Country:
                                 </b>{{ $booking->country }}
                             </p>
-                            <p class="lead mb-0"><b>Service Provider</b>: {{ $booking->employee_name }}</p>
-                            <p class="lead mb-0"><b>Booking Time</b>: {{ $booking->booking_time }}</p>
-                            <p class="lead"><b>Booking Date</b>:
+                            <p class="lead mb-0"><b>Profesional</b>: {{ $booking->employee_name }}</p>
+                            <p class="lead mb-0"><b>Hora del turno</b>: {{ $booking->booking_time }}</p>
+                            <p class="lead"><b>Fecha del turno</b>:
                                 {{ $booking->booking_date ? date('d M Y', strtotime($booking->booking_date)) : 'N/A' }}</p>
 
                         </div>
@@ -167,7 +167,7 @@
 
 
 
-                            {{-- <a href="{{ route('bookings.generate-pdf', ['id' => $booking->id]) }}" class="btn btn-primary float-right" style="margin-right: 5px;"><i class="fas fa-download"></i> Generate PDF</a> --}}
+                            {{-- <a href="{{ route('bookings.generate-pdf', ['id' => $booking->id]) }}" class="btn btn-primary float-right" style="margin-right: 5px;"><i class="fas fa-download"></i> Generar PDF</a> --}}
                         </div>
                     </div>
                 </div>

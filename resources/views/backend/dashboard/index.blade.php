@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Panel')
 
 @section('content_header')
     <h1>Turnos</h1>
     @if (session('success'))
         <div class="alert alert-success alert-dismissable mt-2">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                 <span aria-hidden="true">&times;</span>
             </button>
             <strong>{{ session('success') }}</strong>
@@ -15,7 +15,7 @@
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('error') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -35,7 +35,7 @@
 
     <!-- Appointment Modal -->
     <form id="appointmentStatusForm" method="POST" action="{{ route('dashboard.update.status') }}"
-        onsubmit="return confirm('Are you sure you want to update the booking status?')">
+        onsubmit="return confirm('¿Estás seguro de que deseas actualizar el estado del turno?')">
 
         @csrf
         <input type="hidden" name="appointment_id" id="modalAppointmentId">
@@ -44,23 +44,23 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Appointment Details</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <h5 class="modal-title">Detalles de la cita</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
                     <div class="modal-body">
-                        <p><strong>Cliente:</strong> <span id="modalAppointmentName">N/A</span></p>
-                        <p><strong>Servicio:</strong> <span id="modalService">N/A</span></p>
-                        <p><strong>Email:</strong> <span id="modalEmail">N/A</span></p>
-                        <p><strong>Teléfono:</strong> <span id="modalPhone">N/A</span></p>
-                        <p><strong>Personal:</strong> <span id="modalStaff">N/A</span></p>
-                        <p><strong>Fecha y hora:</strong> <span id="modalStartTime">N/A</span></p>
-                        {{-- <p><strong>End:</strong> <span id="modalEndTime">N/A</span></p> --}}
-                        <p><strong>Cantidad:</strong> <span id="modalAmount">N/A</span></p>
-                        <p><strong>Notas:</strong> <span id="modalNotes">N/A</span></p>
-                        <p><strong>Estado actual:</strong> <span id="modalStatusBadge">N/A</span></p>
+                        <p><strong>Cliente:</strong> <span id="modalAppointmentName">No disponible</span></p>
+                        <p><strong>Servicio:</strong> <span id="modalService">No disponible</span></p>
+                        <p><strong>Correo electrónico:</strong> <span id="modalEmail">No disponible</span></p>
+                        <p><strong>Teléfono:</strong> <span id="modalPhone">No disponible</span></p>
+                        <p><strong>Personal:</strong> <span id="modalStaff">No disponible</span></p>
+                        <p><strong>Fecha y hora:</strong> <span id="modalStartTime">No disponible</span></p>
+                        {{-- <p><strong>End:</strong> <span id="modalEndTime">No disponible</span></p> --}}
+                        <p><strong>Cantidad:</strong> <span id="modalAmount">No disponible</span></p>
+                        <p><strong>Notas:</strong> <span id="modalNotes">No disponible</span></p>
+                        <p><strong>Estado actual:</strong> <span id="modalStatusBadge">No disponible</span></p>
 
                         <div class="form-group">
                             <label><strong>Cambiar estado:</strong></label>
@@ -77,8 +77,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Actualizar Status</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Actualizar estado</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>

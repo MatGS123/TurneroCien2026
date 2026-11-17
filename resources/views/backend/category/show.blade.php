@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Category')
+@section('title', 'Mostrar categoría')
 
 @section('content_header')
 
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Show Category</h1>
+                <h1 class="m-0">Mostrar categoría</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
+                    <li class="breadcrumb-item active">Categoría</li>
                 </ol>
             </div>
         </div>
@@ -27,7 +27,7 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-    <strong>Whoops!</strong> There were some problems with your input.<br>
+    <strong>¡Ups!</strong> Se encontraron algunos problemas con los datos ingresados.<br>
     <ul>
         @foreach ($errors->all() as $error)
             <li>{{ $error }}</li>
@@ -39,7 +39,7 @@
 <div class="container-fluid">
     <div class="rowjustify-content-between pb-5">
         <div class="col-md-6 ">
-            <h5><a href="{{ route('category.index') }}" class="btn btn-primary">Back</a>
+            <h5><a href="{{ route('category.index') }}" class="btn btn-primary">Volver</a>
             </h5>
             <form role="form" method="post" action="#" enctype="multipart/form-data">
                 @csrf
@@ -48,9 +48,9 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Category name*</label>
+                                <label>Nombre de la categoría*</label>
                                 <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror"
-                                    placeholder="Category Name" value="{{ $category->title }}" / disabled>
+                                    placeholder="Nombre de la categoría" value="{{ $category->title }}" / disabled>
                                     @error('title')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -70,7 +70,7 @@
 
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Select parent category*</label>
+                                <label>Seleccionar categoría principal*</label>
                                 <select type="text" name="parent_id" class="form-control" disabled>
                                     <option value="">None</option>
                                     @if($categories)
@@ -90,7 +90,7 @@
 
                         <div class="col-sm-12 mb">
                            <div class="form-group">
-                            <label for="">Short Description</label>
+                            <label for="">Descripción breve</label>
                             <textarea name="description" id="" cols="30" class="form-control" rows="2" value="{{ $category->description }}" disabled>{{ $category->description }}</textarea>
                            </div>
                         </div>
@@ -100,9 +100,9 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="featured"
                                         name="featured" value="1" {{ $category->featured ? 'checked' : '' }} disabled>
-                                    <label class="custom-control-label" for="featured">Featured
+                                    <label class="custom-control-label" for="featured">Destacado
                                     </label><br>
-                                    <small>Featured will be shown on home page on priorty</small>
+                                    <small>Los destacados se mostrarán prioritariamente en el inicio</small>
                                 </div>
                             </div>
                         </div>

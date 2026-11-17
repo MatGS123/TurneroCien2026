@@ -5,9 +5,9 @@
 @section('content_header')
 <div class="row  mb-3">
     <div class="col-lg-8 margin-tb">
-         <h1>All Business Hours</h1>
+         <h1>Todos los horarios de atención</h1>
         <div class="pull-right">
-            <a class="btn btn-primary mt-3" href="{{ route('employee.index') }}"> Back</a>
+            <a class="btn btn-primary mt-3" href="{{ route('employee.index') }}"> Volver</a>
         </div>
     </div>
 @stop
@@ -23,10 +23,10 @@
                             <tr>
                                 <th class="width:30%;">#</th>
 
-                                <th>Days</th>
+                                <th>Días</th>
                                 <th>From</th>
                                 <th>To</th>
-                                {{-- <th width="20%">Action</th> --}}
+                                {{-- <th width="20%">Acción</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -49,10 +49,10 @@
                         <tfoot>
                             <tr>
                                 <th>#</th>
-                                <th>Days</th>
+                                <th>Días</th>
                                 <th>From</th>
                                 <th>To</th>
-                                {{-- <th width="280px">Action</th> --}}
+                                {{-- <th width="280px">Acción</th> --}}
                             </tr>
                         </tfoot>
                     </table>

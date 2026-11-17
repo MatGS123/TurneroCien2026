@@ -42,19 +42,19 @@ class ProfileController extends Controller
         // Validate the incoming request data
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
         ]);
 
         // Check if email is being changed and if user is not admin
-        if ($request->email !== $user->email && !auth()->user()->hasRole('admin')) {
-            return redirect()->back()->withErrors(['email' => 'Only administrators can change email addresses.']);
+        if ($request->email !== $user->email && !auth()->user()->hasRole('superadmin')) {
+            return redirect()->back()->withErrors(['email' => 'Solo los administradores pueden cambiar direcciones de correo electrónico.']);
         }
 
         // Update the user with validated data
         $user->update($data);
 
         // Redirect back with a success message
-        return redirect()->back()->withSuccess('Profile has been successfully updated!');
+        return redirect()->back()->withSuccess('¡El perfil se actualizó correctamente!');
     }
 
 
@@ -65,11 +65,11 @@ class ProfileController extends Controller
             'slot_duration' => function ($attribute, $value, $fail) use ($request) {
                 // Check if 'is_employee' is true and 'slot_duration' is missing
                 if ($request->is_employee && !$value) {
-                    $fail('The ' . $attribute . ' field is required when the employee is true.');
+                    $fail('El campo ' . $attribute . ' es obligatorio cuando el usuario es un profesional.');
                 }
                 // If it's present, it should be numeric
                 if ($value && !is_numeric($value)) {
-                    $fail('The ' . $attribute . ' field must be numeric.');
+                    $fail('El campo ' . $attribute . ' debe ser numérico.');
                 }
             },
             'break_duration' => 'nullable',
@@ -197,5 +197,3 @@ class ProfileController extends Controller
     }
 
 }
-
-

@@ -29,4 +29,9 @@ class Appointment extends Model
     {
         return $this->hasMany(Estudio::class, 'appointment_id');
     }
+
+    public function clinicalNotes()
+    {
+        return $this->hasMany(ClinicalNote::class);
+    }
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -25,18 +25,18 @@
                     <ul class="nav">
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="nav-link active" aria-current="page" href="/">Inicio</a>
                         </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/login">Login</a>
+                                <a class="nav-link text-dark" href="/login">Ingresar</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/register">Register</a>
+                                <a class="nav-link text-dark" href="/register">Registrarse</a>
                             </li>
                         @endguest
                         @auth
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="nav-link active" aria-current="page" href="/">Inicio</a>
                         </li>
                             <li class="nav-item ">
                                 <a class="nav-link text-dark" href="/dashboard">My Account</a>

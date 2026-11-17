@@ -18,8 +18,8 @@ class DashboardController extends Controller
         // Start with base query
         $query = Appointment::query()->with(['employee.user', 'service', 'user']);
 
-        // Only admins can see all data - no conditions added
-        if (!$user->hasRole('admin')) {
+        // Superadmin y secretarias ven todos los turnos; empleado conserva su alcance propio.
+        if (!$user->hasAnyRole(['superadmin', 'secretarias'])) {
             $query->where(function($q) use ($user) {
                 if ($user->employee) {
                     $q->where('employee_id', $user->employee->id);
@@ -113,6 +113,6 @@ class DashboardController extends Controller
 
         event(new StatusUpdated($appointment));
 
-        return back()->with('success', 'Status updated successfully');
+        return back()->with('success', 'El estado se actualizó correctamente.');
     }
 }

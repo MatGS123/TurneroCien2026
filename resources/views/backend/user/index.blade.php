@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'All Users')
+@section('title', 'Todos los usuarios')
 
 @section('content_header')
     <div class="row mb-2">
@@ -9,8 +9,8 @@
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('user.create') }}">+ Add New</a> |</li>
-                <li class=""> &nbsp; <a href="{{ route('user.trash') }}">View Trash</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('user.create') }}">+ Agregar nuevo</a> |</li>
+                <li class=""> &nbsp; <a href="{{ route('user.trash') }}">Ver papelera</a></li>
             </ol>
         </div>
     </div>
@@ -21,10 +21,10 @@
         <div class="container-fluid">
             @if (count($errors) > 0)
             <div class="alert alert-dismissable alert-danger mt-3">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <strong>Whoops!</strong> There were some problems with your input.<br>
+                <strong>¡Ups!</strong> Hubo algunos problemas con los datos ingresados.<br>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -34,7 +34,7 @@
         @endif
         @if (session('success'))
             <div class="alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <strong>{{ session('success') }}</strong>
@@ -94,15 +94,15 @@
                                             </td>
                                             <td>
                                                 @foreach ($user->getRoleNames() as $role)
-                                                    {{ ucfirst($role) }}@if(!$loop->last),@endif
+                                                    {{ ['empleado' => 'Empleado', 'superadmin' => 'Superadmin', 'secretarias' => 'Secretarias'][$role] ?? 'Usuario' }}@if(!$loop->last),@endif
                                                 @endforeach
                                             </td>
 
                                             <td class="project-state">
                                                 @if ($user->status)
-                                                    <span class="badge badge-success">Active</span>
+                                                    <span class="badge badge-success">Activo</span>
                                                 @else
-                                                    <span class="badge badge-danger">In-Active</span>
+                                                    <span class="badge badge-danger">Inactivo</span>
                                                 @endif
                                             </td>
                                             <td class="project-actions text-right d-flex justify-content-between">
@@ -112,7 +112,7 @@
                                                         href="{{ route('user.edit', $user->id) }}">
                                                         <i class="fas fa-pencil-alt">
                                                         </i>
-                                                        Edit
+                                                        Editar
                                                     </a>
                                                 </div>
                                                 <div>
@@ -121,11 +121,11 @@
                                                         @csrf
                                                         @method('delete')
                                                         <button
-                                                            onclick="return confirm('Are you sure you want to delete this item?');"
+                                                            onclick="return confirm('¿Estás seguro de que quieres eliminar este elemento?');"
                                                             type="submit" class="btn btn-danger btn-sm">
                                                             <i class="fas fa-trash">
                                                             </i>
-                                                            Trash
+                                                            Papelera
                                                         </button>
                                                     </form>
                                                 </div>
@@ -163,6 +163,7 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
+                language: { url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}" },
                 responsive: true
             });
 
@@ -185,7 +186,7 @@
 
             Toast.fire({
                 icon: 'error',
-                title: 'There are form validation errors. Please fix them.'
+                title: 'Hay errores de validación. Corregilos e intentá nuevamente.'
             });
         @endif
 

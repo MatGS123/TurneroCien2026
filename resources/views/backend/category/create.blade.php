@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Category')
+@section('title', 'Mostrar categoría')
 
 @section('content_header')
 
@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
                     <li class="breadcrumb-item active">Categoría</li>
                 </ol>
             </div>
@@ -59,7 +59,7 @@
                                     <label for="inputStatus">Título
                                     </label>
                                     <input class="form-control @error('title') is-invalid @enderror" type="text"
-                                        id="title" name="title" placeholder="Title here.." value="{{ old('title') }}">
+                                        id="title" name="title" placeholder="Título aquí.." value="{{ old('title') }}">
                                         <small class="text-muted">Así aparecerá el nombre.</small>
                                     @error('title')
                                         <p class="text-danger">{{ $message }}</p>
@@ -70,7 +70,7 @@
                                     </label>
 
                                     <input style="background-color: rgb(220, 220, 220);" class="form-control @error('slug') is-invalid @enderror" type="text"
-                                        id="slug" name="slug" placeholder="slug here.." value="{{ old('slug') }}">
+                                        id="slug" name="slug" placeholder="slug aquí.." value="{{ old('slug') }}">
                                         <small class="text-muted">&nbsp;&nbsp;El "slug" es la versión más adaptada para links
                                         </small>
 
@@ -111,7 +111,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">SEO
                                 </h3>
-                                <small>&nbsp;&nbsp;Search engine details
+                                <small>&nbsp;&nbsp;Detalles para buscadores
                                 </small>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -124,7 +124,7 @@
                                 <div class="form-group">
                                     <label for="">SEO Title
                                     </label>
-                                    <input placeholder="Post title here for seo..." type="text"
+                                    <input placeholder="Título de la publicación para SEO..." type="text"
                                         class="form-control @error('meta_title') is-invalid @enderror" name="meta_title"
                                         id="" value="{{ old('meta_title') }}">
                                     @error('meta_title')
@@ -136,7 +136,7 @@
                                 <div class="form-group">
                                     <label for="">SEO Description
                                     </label>
-                                    <textarea placeholder="Post description here for seo..."
+                                    <textarea placeholder="Descripción de la publicación para SEO..."
                                         class="form-control @error('meta_description') is-invalid @enderror" name="meta_description" id=""
                                         cols="0" rows="4" value="{{ old('meta_description') }}">{{ old('meta_description') }}</textarea>
                                     @error('meta_description')
@@ -190,8 +190,8 @@
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input" id="featured"
                                                 name="featured" value="1" {{ old('featured') == 1 ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="featured">Featured</label>
-                                            <small>categories prioritize content on the homepage.</small>
+                                            <label class="custom-control-label" for="featured">Destacado</label>
+                                            <small>Las categorías priorizan el contenido de la página de inicio.</small>
                                         </div>
                                     </div> --}}
 

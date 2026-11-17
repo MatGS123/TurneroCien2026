@@ -4,20 +4,20 @@
             <div class="col-md-12">
                 <hr>
                 <div class="mb-3">
-                    <h4 class="mb-0">Only For Employees </h4>
-                    <small class="text-muted">Fill these details if adding an employee only</small>
+                    <h4 class="mb-0">Solo para profesionales</h4>
+                    <small class="text-muted">Completá estos datos solo si agregás un profesional</small>
                 </div>
 
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 mb-3 select2-dark">
                         <label for="service_id" class="my-0">
-                            <i class="fas fa-id-card"></i> Select Service
+                            <i class="fas fa-id-card"></i> Seleccionar servicio
                         </label>
                         <small class="text-muted"> Link employees to services they are assigned
                             to</small>
 
                         <select class="form-control select2 @error('service[]') is-invalid @enderror"
-                            name="service[]" data-placeholder="Select Service" id="service"
+                            name="service[]" data-placeholder="Seleccionar servicio" id="service"
                             multiple>
                             @foreach ($services as $service)
                                 <option value="{{ $service->id }}"
@@ -34,22 +34,21 @@
 
                     <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                         <label for="slot_duration" class="my-0">
-                            <i class="fas fa-stopwatch"></i> Service Duration
+                            <i class="fas fa-stopwatch"></i> Duración del servicio
                         </label>
-                        <small class="text-muted"> Create booking slots based on your preferred time
-                            duration.</small>
+                        <small class="text-muted"> Creá los turnos según la duración de tu horario preferido.</small>
 
                         <select class="form-control @error('slot_duration') is-invalid @enderror"
                             name="slot_duration" id="slot_duration">
                             <option value=""
                                 {{ old('slot_duration', optional($user->employee)->slot_duration) == '' ? 'selected' : '' }}>
-                                Select Duration
+                                Seleccionar duración
                             </option>
 
                             @foreach ($steps as $stepValue)
                                 <option value="{{ $stepValue }}"
                                     {{ old('slot_duration', optional($user->employee)->slot_duration) == $stepValue ? 'selected' : '' }}>
-                                    {{ $stepValue }} minutes
+                                    {{ $stepValue }} minutos
                                 </option>
                             @endforeach
                         </select>
@@ -63,15 +62,15 @@
 
                     <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                         <label for="break_duration" class="my-0">
-                            <i class="fas fa-coffee"></i> Preparation or Break time
+                            <i class="fas fa-coffee"></i> Tiempo de preparación o descanso
                         </label>
-                        <small class="text-muted"> Break between one to another appointment</small>
+                        <small class="text-muted"> Descanso entre un turno y otro</small>
 
                         <select class="form-control @error('break_duration') is-invalid @enderror"
                             name="break_duration" id="break_duration">
                             <option value=""
                                 {{ old('break_duration', optional($user->employee)->break_duration) == '' ? 'selected' : '' }}>
-                                No Break
+                                Sin descanso
                             </option>
 
                             @foreach ($breaks as $breakValue)
@@ -94,10 +93,9 @@
                 <hr>
                 <div class="row">
                     <div class="mb-3">
-                        <h4 class="mb-0">Set Availability - For Employee</h4>
+                        <h4 class="mb-0">Configurar disponibilidad del profesional</h4>
                         <small class="text-muted">
-                            Select days and timings, with the option to add multiple time slots in a
-                            day, e.g., 9 AM–12 PM and 4 PM–8 PM.
+                            Seleccioná los días y horarios. Podés agregar varios horarios en un mismo día, por ejemplo, de 9 a 12 y de 16 a 20.
                         </small>
                     </div>
 
@@ -112,7 +110,7 @@
                                                 @if (old('days.' . $day) || isset($employeeDays[$day])) checked @endif>
                                             <label class="custom-control-label"
                                                 for="{{ $day }}">
-                                                {{ ucfirst($day) }}
+                                                {{ ['monday'=>'Lunes','tuesday'=>'Martes','wednesday'=>'Miércoles','thursday'=>'Jueves','friday'=>'Viernes','saturday'=>'Sábado','sunday'=>'Domingo'][$day] ?? ucfirst($day) }}
                                             </label>
                                         </div>
                                     </div>
@@ -121,7 +119,7 @@
                                 <!-- First Time Input Row -->
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <strong>From:</strong>
+                                        <strong>Desde:</strong>
                                         <input type="time" class="form-control from"
                                             name="days[{{ $day }}][]"
                                             id="{{ $day }}From"
@@ -131,7 +129,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <strong>To:</strong>
+                                        <strong>Hasta:</strong>
                                         <input type="time" class="form-control to"
                                             name="days[{{ $day }}][]"
                                             id="{{ $day }}To"
@@ -153,7 +151,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <strong>From:</strong>
+                                                    <strong>Desde:</strong>
                                                     <input type="time" class="form-control from"
                                                         name="days[{{ $day }}][]"
                                                         value="{{ $time }}"
@@ -163,13 +161,13 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <strong>To</strong>
+                                                    <strong>Hasta</strong>
                                                     <input type="time" class="form-control to"
                                                         name="days[{{ $day }}][]"
                                                         value="{{ old('days.' . $day . '.' . ($index + 1)) ?? ($employeeDays[$day][$index + 1] ?? '') }}"
                                                         id="{{ $day }}" />
                                                     <div class="remove-field text-danger text-right">
-                                                        Remove</div>
+                                                        Quitar</div>
                                                 </div>
                                             </div>
 
@@ -186,28 +184,28 @@
                 <hr>
                 {{-- <div class="row d-flex ">
                     <div class="col-md-10">
-                        <h2 class="mb-0">Add Holidays</h2>
-                        <p class="text-muted">No need to add time for a full day; for part-time work,
-                            specify the day and time.</p>
+                        <h2 class="mb-0">Agregar feriados</h2>
+                        <p class="text-muted">No hace falta agregar horarios para un día completo; para jornadas parciales,
+                            especificá el día y el horario.</p>
                         <span id="addHoliday" class="btn btn-primary mb-2 btn-sm"><i
-                                class="fa fa-plus"></i> Add Holiday</span>
+                                class="fa fa-plus"></i> Agregar feriado</span>
                         <div class="holidayContainer"></div>
                     </div>
                 </div> --}}
                 {{-- <div class="row d-flex">
                     <div class="col-md-10">
-                        <h2 class="mb-0">Add Holidays</h2>
-                        <p class="text-muted">No need to add time for a full day; for part-time work,
-                            specify the day and time.</p>
+                        <h2 class="mb-0">Agregar feriados</h2>
+                        <p class="text-muted">No hace falta agregar horarios para un día completo; para jornadas parciales,
+                            especificá el día y el horario.</p>
                         <span id="addHoliday" class="btn btn-primary mb-2 btn-sm"><i
-                                class="fa fa-plus"></i> Add Holiday</span>
+                                class="fa fa-plus"></i> Agregar feriado</span>
                         <div class="holidayContainer">
                             @if (is_array(old('holidays.date')))
                                 @foreach (old('holidays.date') as $index => $date)
                                     <div class="row holiday-row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="mb-0" for="date">Date</label>
+                                                <label class="mb-0" for="date">Fecha</label>
                                                 <input class="form-control" type="date"
                                                     name="holidays[date][]"
                                                     value="{{ $date }}">
@@ -215,7 +213,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <strong>From:</strong>
+                                                <strong>Desde:</strong>
                                                 <input type="time" class="form-control from"
                                                     name="holidays[from_time][]"
                                                     value="{{ old('holidays.from_time')[$index] ?? '' }}">
@@ -223,12 +221,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <strong>To:</strong>
+                                                <strong>Hasta:</strong>
                                                 <input type="time" class="form-control to"
                                                     name="holidays[to_time][]"
                                                     value="{{ old('holidays.to_time')[$index] ?? '' }}">
                                                 <div class="text-right text-danger removeHoliday"
-                                                    style="cursor:pointer;">Remove</div>
+                                                    style="cursor:pointer;">Eliminar</div>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -250,11 +248,11 @@
                 </div> --}}
                 {{-- <div class="row d-flex">
                     <div class="col-md-10">
-                        <h2 class="mb-0">Add Holidays</h2>
-                        <p class="text-muted">No need to add time for a full day; for part-time work,
-                            specify the day and time.</p>
+                        <h2 class="mb-0">Agregar feriados</h2>
+                        <p class="text-muted">No hace falta agregar horarios para un día completo; para jornadas parciales,
+                            especificá el día y el horario.</p>
                         <span id="addHoliday" class="btn btn-primary mb-2 btn-sm"><i
-                                class="fa fa-plus"></i> Add Holiday</span>
+                                class="fa fa-plus"></i> Agregar feriado</span>
                         <div class="holidayContainer">
                             @if ($user->employee && $user->employee->holidays->isNotEmpty())
                                 @foreach ($user->employee->holidays as $index => $holiday)
@@ -271,14 +269,14 @@
                                     <div class="row holiday-row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="mb-0" for="date">Date</label>
+                                                <label class="mb-0" for="date">Fecha</label>
                                                 <input class="form-control" type="date"
                                                     name="holidays[date][]" value="">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <strong>From:</strong>
+                                                <strong>Desde:</strong>
                                                 <input type="time" class="form-control from"
                                                     name="holidays[from_time][]"
                                                     value="{{ $fromTime }}">
@@ -286,12 +284,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <strong>To:</strong>
+                                                <strong>Hasta:</strong>
                                                 <input type="time" class="form-control to"
                                                     name="holidays[to_time][]"
                                                     value="{{ $toTime }}">
                                                 <div class="text-right text-danger removeHoliday"
-                                                    style="cursor:pointer;">Remove</div>
+                                                    style="cursor:pointer;">Eliminar</div>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -308,7 +306,7 @@
                                     </div>
                                 @endforeach
                             @else
-                                <p>No holidays found for this user.</p>
+                                <p>No se encontraron feriados para este usuario.</p>
                             @endif
                         </div>
                     </div>
@@ -318,12 +316,12 @@
 
                 {{-- <div class="row d-flex">
                     <div class="col-md-10">
-                        <h2 class="mb-0">Add Holidays</h2>
+                        <h2 class="mb-0">Agregar feriados</h2>
                         <p class="text-muted">
-                            No need to add time for a full day; for part-time work, specify the day and time.
+                            No hace falta agregar horarios para un día completo; para jornadas parciales, especificá el día y el horario.
                         </p>
                         <span id="addHoliday" class="btn btn-primary mb-2 btn-sm">
-                            <i class="fa fa-plus"></i> Add Holiday
+                            <i class="fa fa-plus"></i> Agregar feriado
                         </span>
                         <div class="holidayContainer">
                             @if ($user->employee && $user->employee->holidays->isNotEmpty())
@@ -340,7 +338,7 @@
                                     <div class="row holiday-row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="mb-0" for="date">Date</label>
+                                                <label class="mb-0" for="date">Fecha</label>
                                                 <input class="form-control" type="date"
                                                     name="holidays[date][]"
                                                     value="{{ $holiday->date }}">
@@ -348,7 +346,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <strong>From:</strong>
+                                                <strong>Desde:</strong>
                                                 <input type="time" class="form-control from"
                                                     name="holidays[from_time][]"
                                                     value="{{ $fromTime }}">
@@ -356,19 +354,19 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <strong>To:</strong>
+                                                <strong>Hasta:</strong>
                                                 <input type="time" class="form-control to"
                                                     name="holidays[to_time][]"
                                                     value="{{ $toTime }}">
                                                 <div class="text-right text-danger removeHoliday"
-                                                    style="cursor:pointer;">Remove</div>
+                                                    style="cursor:pointer;">Eliminar</div>
                                             </div>
                                         </div>
                                         <input type="hidden" name="holidays[recurring][]" value="{{ $holiday->recurring ? 1 : 0 }}">
                                     </div>
                                 @endforeach
                             @else
-                                <p>No holidays found for this user. Click "Add Holiday" to create one.</p>
+                                <p>No se encontraron feriados para este usuario. Hacé clic en «Agregar feriado» para crear uno.</p>
                             @endif
                         </div>
                     </div>
@@ -377,12 +375,12 @@
 
                 {{-- <div class="row d-flex">
                     <div class="col-md-10">
-                        <h2 class="mb-0">Add Holidays</h2>
+                        <h2 class="mb-0">Agregar feriados</h2>
                         <p class="text-muted">
-                            No need to add time for a full day; for part-time work, specify the day and time.
+                            No hace falta agregar horarios para un día completo; para jornadas parciales, especificá el día y el horario.
                         </p>
                         <span id="addHoliday" class="btn btn-primary mb-2 btn-sm">
-                            <i class="fa fa-plus"></i> Add Holiday
+                            <i class="fa fa-plus"></i> Agregar feriado
                         </span>
                         <div class="holidayContainer">
                             @forelse(old('holidays.date', $user->employee->holidays ?? []) as $index => $date)
@@ -397,7 +395,7 @@
                                 <div class="row holiday-row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="mb-0">Date</label>
+                                            <label class="mb-0">Fecha</label>
                                             <input class="form-control" type="date"
                                                    name="holidays[date][]"
                                                    value="{{ old("holidays.date.$index", $date) }}" required>
@@ -405,7 +403,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <strong>From:</strong>
+                                            <strong>Desde:</strong>
                                             <input type="time" class="form-control from"
                                                    name="holidays[from_time][]"
                                                    value="{{ $fromTime }}">
@@ -413,31 +411,31 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <strong>To:</strong>
+                                            <strong>Hasta:</strong>
                                             <input type="time" class="form-control to"
                                                    name="holidays[to_time][]"
                                                    value="{{ $toTime }}">
                                             <div class="text-right text-danger removeHoliday" style="cursor:pointer;">
-                                                Remove
+                                                Quitar
                                             </div>
                                         </div>
                                     </div>
                                     <input type="hidden" name="holidays[recurring][]" value="{{ $recurring }}">
                                 </div>
                             @empty
-                                <p>No holidays found for this user. Click "Add Holiday" to create one.</p>
+                                <p>No se encontraron feriados para este usuario. Hacé clic en «Agregar feriado» para crear uno.</p>
                             @endforelse
                         </div>
                     </div>
                 </div> --}}
                 <div class="row d-flex">
                     <div class="col-md-10">
-                        <h2 class="mb-0">Add Holidays</h2>
+                        <h2 class="mb-0">Agregar feriados</h2>
                         <p class="text-muted">
-                            No need to add time for a full day; for part-time work, specify the day and time.
+                            No hace falta agregar horarios para un día completo; para jornadas parciales, especificá el día y el horario.
                         </p>
                         <span id="addHoliday" class="btn btn-primary mb-2 btn-sm">
-                            <i class="fa fa-plus"></i> Add Holiday
+                            <i class="fa fa-plus"></i> Agregar feriado
                         </span>
                         <div class="holidayContainer">
                             @php
@@ -477,7 +475,7 @@
                                 <div class="row holiday-row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="mb-0">Date</label>
+                                            <label class="mb-0">Fecha</label>
                                             <input class="form-control" type="date"
                                                    name="holidays[date][]"
                                                    value="{{ $date }}" required>
@@ -485,7 +483,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <strong>From:</strong>
+                                            <strong>Desde:</strong>
                                             <input type="time" class="form-control from"
                                                    name="holidays[from_time][]"
                                                    value="{{ $fromTime }}">
@@ -493,19 +491,19 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <strong>To:</strong>
+                                            <strong>Hasta:</strong>
                                             <input type="time" class="form-control to"
                                                    name="holidays[to_time][]"
                                                    value="{{ $toTime }}">
                                             <div class="text-right text-danger removeHoliday" style="cursor:pointer;">
-                                                Remove
+                                                Quitar
                                             </div>
                                         </div>
                                     </div>
                                     <input type="hidden" name="holidays[recurring][]" value="{{ $recurring }}">
                                 </div>
                             @empty
-                                <p>No holidays found for this user. Click "Add Holiday" to create one.</p>
+                                <p>No se encontraron feriados para este usuario. Hacé clic en «Agregar feriado» para crear uno.</p>
                             @endforelse
                         </div>
                     </div>

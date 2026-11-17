@@ -4,12 +4,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">All Role & Permissions</h1>
+                <h1 class="m-0">Todos los roles y permisos</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
+                    <li class="breadcrumb-item active">Permisos</li>
                 </ol>
             </div>
         </div>
@@ -32,7 +32,7 @@
 
         @if (session()->has('success'))
             <div class="alert alert-dismissable alert-success">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <strong>
@@ -79,7 +79,7 @@
                                                     href="{{ route('permission.edit', $role->id) }}">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
-                                                    Edit
+                                                    Editar
                                                 </a>
                                             </div>
 
@@ -112,7 +112,9 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable( {
-                responsive: true
+
+                language: { url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}" },
+responsive: true
             } );
 
         });

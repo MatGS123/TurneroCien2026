@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Category')
+@section('title', 'Mostrar categoría')
 
 @section('content_header')
 
     <div class="container-fluid">
         <div class="row ">
             <div class="col-sm-6">
-                <h1 class="m-0">All Categories</h1>
+                <h1 class="m-0">Todas las categorías</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
+                    <li class="breadcrumb-item active">Categoría</li>
                 </ol>
             </div>
         </div>
@@ -24,10 +24,10 @@
 
     @if (count($errors) > 0)
         <div class="alert alert-dismissable alert-danger mt-3">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>Whoops!</strong> There were some problems with your input.<br>
+            <strong>¡Ups!</strong> Hay algunos problemas con los datos ingresados.<br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -37,7 +37,7 @@
     @endif
     @if (session('success'))
         <div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                 <span aria-hidden="true">&times;</span>
             </button>
             <strong>{{ session('success') }}</strong>
@@ -49,7 +49,7 @@
 
             <div class="col-md-12 ">
                 <h5><a href="{{ route('category.create') }}" class="btn btn-primary mb-1"><i class="fas fa-fw fa-plus "></i>
-                        Add New</a>
+                        Agregar nuevo</a>
                 </h5>
                 <div class="card p-2">
 
@@ -98,9 +98,9 @@
                                         </td>
                                         <td>
                                             @if ($category->status)
-                                                <span class="badge badge-success">Active</span>
+                                                <span class="badge badge-success">Activo</span>
                                             @else
-                                                <span class="badge badge-danger">In active</span>
+                                                <span class="badge badge-danger">Inactivo</span>
                                             @endif
                                         </td>
                                         <td class="project-actions text-right d-flex">
@@ -110,7 +110,7 @@
                                                     href="{{ route('category.edit', $category->id) }}">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
-                                                    Edit
+                                                    Editar
                                                 </a>
                                             </div>
                                             <div>
@@ -119,10 +119,10 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button
-                                                        onclick="return confirm('Category cannot be delted - Post attached');"
+                                                        onclick="return confirm('La categoría no se puede eliminar porque tiene contenido asociado.');"
                                                         class="btn btn-danger btn-sm ml-2">
                                                         <i class="fas fa-trash"></i>
-                                                        Delete
+                                                        Eliminar
                                                         </a>
                                                     </button>
                                                 </form>
@@ -157,6 +157,7 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
+                language: { url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}" },
                 responsive: true
             });
 

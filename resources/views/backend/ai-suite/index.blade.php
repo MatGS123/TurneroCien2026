@@ -25,7 +25,7 @@
 <button type="button"
 class="ai-agent-item btn btn-block text-left d-flex align-items-center {{ !$agent['available'] ? 'ai-agent-item-muted' : '' }}"
 data-agent-id="{{ $agent['id'] }}"
-data-action-url="{{ $agent['id'] === 'consultant' ? url('/suite-ia/consultant') : url('/suite-ia/researcher') }}"
+data-action-url="{{ $agent['action_url'] ?? url('/suite-ia/researcher') }}"
 role="listitem"
 aria-pressed="false">
 <span class="ai-agent-icon mr-3" aria-hidden="true"><i class="{{ $agent['icon'] }}"></i></span>

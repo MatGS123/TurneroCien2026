@@ -20,11 +20,11 @@
             <div class="row mb-3">
                 <div class="col-lg-12 margin-tb">
                     {{-- <div class="pull-left">
-                            <h2>Users Management</h2>
+                            <h2>Gestión de usuarios</h2>
                         </div> --}}
                     @can('user-create')
                         <div class="pull-right">
-                            <a class="btn btn-success" href="{{ route('employee.create') }}"> Create New Employee</a>
+                            <a class="btn btn-success" href="{{ route('employee.create') }}"> Crear nuevo profesional</a>
                         </div>
                     @endcan
                 </div>
@@ -52,14 +52,14 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th >Phone</th>
-                                        <th width="20%">Time</th>
-                                        <th width="10%">Date</th>
+                                        <th>Nombre</th>
+                                        <th>Correo electrónico</th>
+                                        <th >Teléfono</th>
+                                        <th width="20%">Hora</th>
+                                        <th width="10%">Fecha</th>
                                         <th>Employee</th>
-                                        <th>Status</th>
-                                        <th width="10%">Action</th>
+                                        <th>Estado</th>
+                                        <th width="10%">Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,7 +76,7 @@
 
                                             <td>
                                                 @if ($booking->payment_status == true)
-                                                    <div class="badge badge-success">Paid</div>
+                                                    <div class="badge badge-success">Pagado</div>
                                                 @else
                                                     <div class="badge badge-danger">Pending</div>
                                                 @endif
@@ -86,7 +86,7 @@
 
 
                                                     <a class="btn btn-primary btn-sm mr-2"
-                                                        href="{{ Route('employee.booking.detail',$booking->id) }}">View</a>
+                                                        href="{{ Route('employee.booking.detail',$booking->id) }}">Ver</a>
 
                                             </td>
                                         </tr>
@@ -95,11 +95,11 @@
                                 <tfoot>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Status</th>
-                                        <th width="280px">Action</th>
+                                        <th>Nombre</th>
+                                        <th>Correo electrónico</th>
+                                        <th>Teléfono</th>
+                                        <th>Estado</th>
+                                        <th width="280px">Acción</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -123,10 +123,10 @@
 @section('js')
     <script>
         function DeleteAlert() {
-            var confirmed = confirm("Are you sure you want to delete this data?");
+            var confirmed = confirm("¿Estás seguro de que querés eliminar estos datos?");
             if (confirmed) {
                 // code to delete data goes here
-                console.log("Data has been deleted.");
+                console.log("Los datos fueron eliminados.");
 
             } else {
                 addEventListener("click", function(event) {
@@ -146,13 +146,13 @@
 
     <script>
         $(document).ready(function() {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({ language: { url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}" } });
 
         });
     </script>
 
     <script type="text/javascript">
-        $("#example").DataTable();
+        $("#example").DataTable({ language: { url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}" } });
     </script>
 
 @stop

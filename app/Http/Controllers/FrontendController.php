@@ -230,7 +230,7 @@ class FrontendController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error processing availability: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Error al procesar la disponibilidad: ' . $e->getMessage()], 500);
         }
     }
 

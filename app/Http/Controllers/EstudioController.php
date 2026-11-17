@@ -12,7 +12,7 @@ class EstudioController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->hasRole('employee')) {
+        if ($user->hasRole('empleado')) {
             $employee = Employee::where('user_id', $user->id)->first();
             $employeeId = $employee?->id;
 
@@ -48,7 +48,7 @@ class EstudioController extends Controller
 
         // 2. Si es un médico, verificamos que el turno elegido sea realmente suyo
         //    (protege contra manipular el <select> o pegar el request a mano)
-        if ($user->hasRole('employee')) {
+        if ($user->hasRole('empleado')) {
             $employee = Employee::where('user_id', $user->id)->first();
             $appointment = Appointment::findOrFail($request->appointment_id);
 
@@ -76,7 +76,7 @@ class EstudioController extends Controller
         $user = auth()->user();
 
         // Si es médico, solo puede descargar estudios de sus propios turnos
-        if ($user->hasRole('employee')) {
+        if ($user->hasRole('empleado')) {
             $employee = Employee::where('user_id', $user->id)->first();
 
             if (!$employee || $estudio->appointment->employee_id !== $employee->id) {

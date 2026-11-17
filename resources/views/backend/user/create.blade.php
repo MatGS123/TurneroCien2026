@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Create User')
+@section('title', 'Crear usuario')
 
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-1">
             <div class="col-sm-6">
-                <h1 class="m-0">Add User</h1>
+                <h1 class="m-0">Agregar usuario</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Add user</li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
+                    <li class="breadcrumb-item active">Agregar usuario</li>
                 </ol>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="">
                 @if (session()->has('success'))
                     <div class="alert alert-dismissable alert-success">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <strong>
@@ -38,10 +38,10 @@
                 @endif
                 @if (count($errors) > 0)
                     <div class="alert alert-dismissable alert-danger mt-3">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <strong>Whoops!</strong> There were some problems with your input.<br>
+                        <strong>¡Ups!</strong> Se encontraron algunos problemas con los datos ingresados.<br>
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -58,7 +58,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <label class="my-0">Name</label>
+                                        <label class="my-0">Nombre</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend ">
                                                 <span class="input-group-text ">
@@ -67,7 +67,7 @@
                                                 </span>
                                             </div>
                                             <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                                name="name" value="{{ old('name') }}" placeholder="Full Name">
+                                                name="name" value="{{ old('name') }}" placeholder="Nombre completo">
                                         </div>
                                         @error('name')
                                             <small class="text-danger"><strong>{{ $message }}</strong></small>
@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <label class="my-0">Email</label>
+                                        <label class="my-0">Correo electrónico <small class="text-muted">(opcional)</small></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -85,7 +85,7 @@
                                                 </span>
                                             </div>
                                             <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                                name="email" value="{{ old('email') }}" placeholder="Email">
+                                                name="email" value="{{ old('email') }}" placeholder="Correo electrónico">
                                         </div>
                                         @error('email')
                                             <small class="text-danger"><strong>{{ $message }}</strong></small>
@@ -94,7 +94,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <label class="my-0">Phone</label>
+                                        <label class="my-0">Teléfono</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -103,7 +103,7 @@
                                                 </span>
                                             </div>
                                             <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                                name="phone" value="{{ old('phone') }}" placeholder="Phone No.">
+                                                name="phone" value="{{ old('phone') }}" placeholder="Número de teléfono">
                                         </div>
                                         @error('phone')
                                             <small class="text-danger"><strong>{{ $message }}</strong></small>
@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <label class="my-0">Password</label>
+                                        <label class="my-0">Contraseña</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -122,7 +122,7 @@
                                             <input type="password"
                                                 class="form-control @error('password') is-invalid @enderror"
                                                 name="password"
-                                                placeholder="Enter Password">
+                                                placeholder="Ingresar contraseña">
                                         </div>
                                         @error('password')
                                             <small class="text-danger"><strong>{{ $message }}</strong></small>
@@ -132,7 +132,7 @@
 
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <label class="my-0">Confirm Password</label>
+                                        <label class="my-0">Confirmar contraseña</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -142,7 +142,7 @@
                                             <input type="password"
                                                 class="form-control @error('password_confirmation') is-invalid @enderror"
                                                 name="password_confirmation"
-                                                placeholder="Confirm Password">
+                                                placeholder="Confirmar contraseña">
                                         </div>
                                         @error('password_confirmation')
                                             <small class="text-danger"><strong>{{ $message }}</strong></small>
@@ -151,12 +151,12 @@
                                 </div>
 
                                 <div class="col-xs-12 col-sm-12 col-md-12 mb-3 select2-primary">
-                                    <label class="my-0"><i class="fas fa-user-lock"></i> User Role</label>
-                                    <select name="roles[]" class="form-control select2 @error('roles[]') is-invalid @enderror" data-placeholder="Select Role" multiple>
+                                    <label class="my-0"><i class="fas fa-user-lock"></i> Rol de usuario</label>
+                                    <select name="roles[]" class="form-control select2 @error('roles[]') is-invalid @enderror" data-placeholder="Seleccionar un rol">
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->name }}"
                                                 {{ in_array($role->name, old('roles', [])) ? 'selected' : '' }}>
-                                                {{ ucfirst($role->name) }}
+                                                {{ ['superadmin' => 'Superadmin', 'secretarias' => 'Secretarias', 'empleado' => 'Empleado'][$role->name] ?? $role->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -179,7 +179,7 @@
                                     <input type="checkbox" class="custom-control-input" id="is_employee"
                                         name="is_employee"
                                         {{ old('is_employee') ? 'checked' : '' }}>
-                                    <label class="custom-control-label" for="is_employee">Is Employee</label>
+                                    <label class="custom-control-label" for="is_employee">Es profesional</label>
                                 </div>
                             </div>
                         </div>
@@ -191,18 +191,16 @@
                                 <div class="col-md-12">
                                     <hr>
                                     <div class="mb-3">
-                                        <h4 class="mb-0">Only For Employees </h4>
-                                        <small class="text-muted">Fill these details if adding an employee only</small>
+                                        <h4 class="mb-0">Solo para profesionales</h4>
+                                        <small class="text-muted">Completá estos datos solo si agregás un profesional</small>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12 mb-3 select2-dark">
                                             <label for="service_id" class="my-0"><i class="fas fa-id-card"></i>
-                                                Select
-                                                Service</label> <small class="text-muted"> Link employees to services they
-                                                are assigned to</small>
+                                                Seleccionar servicio</label> <small class="text-muted"> Vinculá los profesionales con los servicios que tienen asignados</small>
                                             <select class="form-control select2 @error('service[]') is-invalid @enderror"
-                                                name="service[]" data-placeholder="Select Service" id="service"
+                                                name="service[]" data-placeholder="Seleccionar servicio" id="service"
                                                 multiple>
                                                 @foreach ($services as $service)
                                                     <option
@@ -217,17 +215,14 @@
 
                                         <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                                             <label for="slot_duration" class="my-0"><i class="fas fa-stopwatch"></i>
-                                                Service
-                                                Duration</label> <small class="text-muted"> Create booking slots based on
-                                                your preferred time duration.</small>
+                                                Duración del servicio</label> <small class="text-muted"> Creá los turnos según la duración de tu horario preferido.</small>
                                             @php
                                                 $steps = ['10', '15', '20', '30', '45', '60'];
                                                 $selectedStep = old('slot_duration'); // Get the selected step value from old input
                                             @endphp
                                             <select class="form-control @error('step') is-invalid @enderror"
                                                 name="slot_duration" id="slot_duration">
-                                                <option value="" {{ !$selectedStep ? 'selected' : '' }}>Select
-                                                    Duration
+                                                <option value="" {{ !$selectedStep ? 'selected' : '' }}>Seleccionar duración
                                                 </option>
                                                 @foreach ($steps as $stepValue)
                                                     <option {{ $selectedStep == $stepValue ? 'selected' : '' }}
@@ -241,15 +236,14 @@
 
                                         <div class="col-xs-12 col-sm-12 col-md-12 mb-3">
                                             <label for="break_duration" class="my-0"><i class="fas fa-coffee"></i>
-                                                Preparation or Break time</label> <small class="text-muted"> Break between
-                                                one to another appointment</small>
+                                                Tiempo de preparación o descanso</label> <small class="text-muted"> Descanso entre un turno y otro</small>
                                             @php
                                                 $breaks = ['5', '10', '15', '20', '25', '30'];
                                                 $selectedBreak = old('break_duration'); // Get the selected step value from old input
                                             @endphp
                                             <select class="form-control @error('step') is-invalid @enderror"
                                                 name="break_duration" id="break_duration">
-                                                <option value="" {{ !$selectedBreak ? 'selected' : '' }}>No Break
+                                                <option value="" {{ !$selectedBreak ? 'selected' : '' }}>Sin descanso
                                                 </option>
                                                 @foreach ($breaks as $breakValue)
                                                     <option {{ $selectedBreak == $breakValue ? 'selected' : '' }}
@@ -267,9 +261,8 @@
                                     <hr>
                                     <div class="row">
                                         <div class="mb-3">
-                                            <h4 class="mb-0">Set Availibity - For Employee</h4>
-                                            <small class="text-muted">Select days and timings, with the option to add
-                                                multiple time slots in a day, e.g., 9 AM–12 PM and 4 PM–8 PM</small>
+                                            <h4 class="mb-0">Configurar disponibilidad del profesional</h4>
+                                            <small class="text-muted">Seleccioná los días y horarios. Podés agregar varios horarios en un mismo día, por ejemplo, de 9 a 12 y de 16 a 20</small>
                                         </div>
                                         <div class="col-md-12">
                                             @foreach ($days as $day)
@@ -282,7 +275,7 @@
                                                                     id="{{ $day }}"
                                                                     @if (old('days.' . $day)) checked @endif>
                                                                 <label class="custom-control-label"
-                                                                    for="{{ $day }}">{{ ucfirst($day) }}</label>
+                                                                    for="{{ $day }}">{{ ['monday'=>'Lunes','tuesday'=>'Martes','wednesday'=>'Miércoles','thursday'=>'Jueves','friday'=>'Viernes','saturday'=>'Sábado','sunday'=>'Domingo'][$day] ?? ucfirst($day) }}</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -290,7 +283,7 @@
                                                     <!-- First time input row (main row) -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <strong>From:</strong>
+                                                            <strong>Desde:</strong>
                                                             <input type="time" class="form-control from"
                                                                 name="days[{{ $day }}][]"
                                                                 value="{{ old('days.' . $day . '.0') }}"
@@ -299,14 +292,14 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <strong>To:</strong>
+                                                            <strong>Hasta:</strong>
                                                             <input type="time" class="form-control to"
                                                                 name="days[{{ $day }}][]"
                                                                 value="{{ old('days.' . $day . '.1') }}"
                                                                 id="{{ $day }}To">
                                                         </div>
                                                         <div style="margin-top:-15px;" id="{{ $day }}AddMore"
-                                                            class="text-right d-none text-primary">Add More</div>
+                                                            class="text-right d-none text-primary">Agregar otro</div>
                                                     </div>
                                                 </div>
 
@@ -321,7 +314,7 @@
                                                                 <div class="col-md-2"></div>
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
-                                                                        <strong>From:</strong>
+                                                                        <strong>Desde:</strong>
                                                                         <input type="time" class="form-control from"
                                                                             name="days[{{ $day }}][]"
                                                                             value="{{ $time }}"
@@ -330,7 +323,7 @@
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
-                                                                        <strong>To:</strong>
+                                                                        <strong>Hasta:</strong>
                                                                         <input type="time" class="form-control to"
                                                                             name="days[{{ $day }}][]"
                                                                             value="{{ old('days.' . $day . '.' . ($index + 1)) }}"
@@ -338,7 +331,7 @@
                                                                     </div>
                                                                     <div style="margin-top:-15px;"
                                                                         class="text-right remove-field text-danger">
-                                                                        Remove</div>
+                                                                        Quitar</div>
                                                                 </div>
                                                             </div>
                                                         @endif
@@ -352,7 +345,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 pt-3 pl-md-3">
-                        <button type="submit" class="btn btn-primary">Add User</button>
+                        <button type="submit" class="btn btn-primary">Agregar usuario</button>
                     </div>
             </div>
         </div>
@@ -406,7 +399,7 @@
                 clonedRow.find('.col-md-2').replaceWith('<div class="col-md-2"></div>');
 
                 // Update "Add More" to "Remove" for the cloned row
-                clonedRow.find(`#${dayId}AddMore`).text('Remove').attr('id', '').addClass(
+                clonedRow.find(`#${dayId}AddMore`).text('Quitar').attr('id', '').addClass(
                     'remove-field text-danger');
 
                 // Add a unique class to the cloned row for targeting specific day rows
@@ -461,7 +454,7 @@
             $('#employee').hide();  // Hide the row if checkbox is unchecked
         }
 
-        // When the 'Is Employee' checkbox is changed, toggle the row visibility
+        // When the 'Es profesional' checkbox is changed, toggle the row visibility
         $('#is_employee').change(function () {
             if ($(this).prop('checked')) {
                 $('#employee').show();  // Show the row if checkbox is checked

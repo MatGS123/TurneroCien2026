@@ -5,13 +5,13 @@
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>Deleted Services</h1>
+            <h1>Servicios eliminados</h1>
             <small>Servicios eliminados, pueden ser restaurados</small>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Add New</a> |</li>
-                <li class=""> &nbsp; <a href="{{ route('service.index') }}">View All</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('service.create') }}">+ Agregar nuevo</a> |</li>
+                <li class=""> &nbsp; <a href="{{ route('service.index') }}">Ver todos</a></li>
             </ol>
         </div>
     </div>
@@ -24,7 +24,7 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <strong>Whoops!</strong> There were some problems with your input.<br>
+                <strong>¡Ups!</strong> Se encontraron algunos problemas con los datos ingresados.<br>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -64,7 +64,7 @@
                                                 Category
                                             </th>
                                             <th>
-                                                Featured
+                                                Destacado
                                             </th>
 
                                             <th style="" class="text-center">
@@ -112,7 +112,7 @@
                                                 </td>
                                                 <td class="project-state">
                                                     @if ($service->status)
-                                                        <span class="badge badge-success">Active</span>
+                                                        <span class="badge badge-success">Activo</span>
                                                     @else
                                                         <span class="badge badge-danger">Pending</span>
                                                     @endif
@@ -120,11 +120,11 @@
 
                                                 <td class="project-actions text-right d-flex">
                                                     <div class="mr-2">
-                                                        <a onclick="return confirm('Are you sure you want to Restore this item?');"
+                                                        <a onclick="return confirm('¿Estás seguro de que querés restaurar este elemento?');"
                                                             class="btn btn-primary btn-sm"
                                                             href="{{ route('service.restore', $service->id) }}"> <i
                                                                 class="fas fa-folder">
-                                                            </i> Restore </a>
+                                                            </i> Restaurar </a>
                                                     </div>
                                                     <div>
                                                         <form action="{{ route('service.force.delete', $service->id) }}"
@@ -132,11 +132,11 @@
                                                             @csrf
                                                             @method('delete')
                                                             <button
-                                                                onclick="return confirm('Are you sure you want to delete this item?');"
+                                                                onclick="return confirm('¿Estás seguro de que querés eliminar este elemento?');"
                                                                 type="submit" class="btn btn-danger btn-sm">
                                                                 <i class="fas fa-trash">
                                                                 </i>
-                                                                Delete
+                                                                Eliminar
                                                             </button>
                                                         </form>
                                                     </div>
@@ -177,7 +177,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#table-1').DataTable();
+            $('#table-1').DataTable({ language: { url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}" } });
         });
     </script>
 
@@ -197,7 +197,7 @@
 
                 Toast.fire({
                     icon: 'error',
-                    title: 'There are form validation errors. Please fix them.'
+                    title: 'Hay errores de validación. Corregilos e intentá nuevamente.'
                 });
             @endif
 

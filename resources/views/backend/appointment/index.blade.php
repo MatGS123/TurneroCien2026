@@ -21,22 +21,22 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Detalles</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
                     <div class="modal-body">
-                        <p><strong>Cliente:</strong> <span id="modalAppointmentName">N/A</span></p>
-                        <p><strong>Servicio:</strong> <span id="modalService">N/A</span></p>
-                        <p><strong>Email:</strong> <span id="modalEmail">N/A</span></p>
-                        <p><strong>Teléfono:</strong> <span id="modalPhone">N/A</span></p>
-                        <p><strong>Obra social:</strong> <span id="modalObraSocial">N/A</span></p>
-                        <p><strong>Personal:</strong> <span id="modalStaff">N/A</span></p>
-                        <p><strong>Inicio:</strong> <span id="modalStartTime">N/A</span></p>
-                        <p><strong>Monto:</strong> <span id="modalAmount">N/A</span></p>
-                        <p><strong>Notas:</strong> <span id="modalNotes">N/A</span></p>
-                        <p><strong>Estado actual:</strong> <span id="modalStatusBadge">N/A</span></p>
+                        <p><strong>Cliente:</strong> <span id="modalAppointmentName">No disponible</span></p>
+                        <p><strong>Servicio:</strong> <span id="modalService">No disponible</span></p>
+                        <p><strong>Correo electrónico:</strong> <span id="modalEmail">No disponible</span></p>
+                        <p><strong>Teléfono:</strong> <span id="modalPhone">No disponible</span></p>
+                        <p><strong>Obra social:</strong> <span id="modalObraSocial">No disponible</span></p>
+                        <p><strong>Personal:</strong> <span id="modalStaff">No disponible</span></p>
+                        <p><strong>Inicio:</strong> <span id="modalStartTime">No disponible</span></p>
+                        <p><strong>Monto:</strong> <span id="modalAmount">No disponible</span></p>
+                        <p><strong>Notas:</strong> <span id="modalNotes">No disponible</span></p>
+                        <p><strong>Estado actual:</strong> <span id="modalStatusBadge">No disponible</span></p>
 
                         <div class="form-group">
                             <label><strong>Estado:</strong></label>
@@ -65,7 +65,7 @@
     <div class="">
         @if (session('success'))
             <div class="alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <strong>{{ session('success') }}</strong>
@@ -85,7 +85,7 @@
                                             <th style="width: 1%">#</th>
                                             <th style="width: 15%">Usuario</th>
                                             <th style="width: 10%">Obra</th>
-                                            <th style="width: 15%">Email</th>
+                                            <th style="width: 15%">Correo electrónico</th>
                                             <th style="width: 10%">Teléfono</th>
                                             <th style="width: 10%">Personal</th>
                                             <th style="width: 10%">Servicio</th>
@@ -140,7 +140,7 @@
                                                 <td>{{ $appointment->phone }}</td>
 
                                                 {{-- Personal --}}
-                                                <td>{{ $appointment->employee->user->name }}</td>
+                                                <td>{{ $appointment->employee?->user?->name ?? 'Sin asignar' }}</td>
 
                                                 {{-- Servicio --}}
                                                 <td>{{ $appointment->service->title ?? 'N/A' }}</td>
@@ -174,7 +174,7 @@
                                                         data-email="{{ $appointment->email }}"
                                                         data-phone="{{ $appointment->phone }}"
                                                         data-obra_social="{{ $appointment->obra_social ?? 'N/A' }}"
-                                                        data-employee="{{ $appointment->employee->user->name }}"
+                                                        data-employee="{{ $appointment->employee?->user?->name ?? 'Sin asignar' }}"
                                                         data-start="{{ $appointment->booking_date . ' ' . $appointment->booking_time }}"
                                                         data-amount="{{ $appointment->amount }}"
                                                         data-notes="{{ $appointment->notes }}"
@@ -209,21 +209,7 @@
             $('#myTable').DataTable({
                 responsive: true,
                 language: {
-                    "lengthMenu": "Mostrar _MENU_ registros",
-                    "zeroRecords": "No se encontraron resultados",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 registros",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "search": "Buscar:",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    },
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "emptyTable": "No hay datos disponibles"
+                    url: "{{ asset('vendor/datatables/i18n/es-ES.json') }}"
                 }
             });
         });
